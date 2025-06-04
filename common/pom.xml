@@ -7,14 +7,12 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>product-service</artifactId>
+    <artifactId>common</artifactId>
     <packaging>pom</packaging>
-
     <modules>
-        <module>product-domain</module>
-        <module>product-dataaccess</module>
-        <module>product-container</module>
-        <module>product-application</module>
-        <module>product-messaging</module>
+        <module>common-domain</module>
+        <module>common-dataaccess</module>
+        <module>common-application</module>
     </modules>
+
 </project>
