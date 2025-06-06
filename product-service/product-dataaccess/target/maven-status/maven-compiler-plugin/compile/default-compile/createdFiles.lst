@@ -1,0 +1,6 @@
+ma/foodplus/ordering/system/product/service/dataaccess/product/adapter/ProductRepositoryImpl.class
+ma/foodplus/ordering/system/product/service/dataaccess/product/mapper/ProductDataAccessMapper.class
+ma/foodplus/ordering/system/product/service/dataaccess/product/entity/ProductEntity$ProductEntityBuilder.class
+ma/foodplus/ordering/system/product/service/dataaccess/product/repository/ProductJpaRepository.class
+ma/foodplus/ordering/system/product/service/dataaccess/product/entity/ProductEntity.class
+ma/foodplus/ordering/system/product/service/dataaccess/product/exception/ProductDataaccessException.class

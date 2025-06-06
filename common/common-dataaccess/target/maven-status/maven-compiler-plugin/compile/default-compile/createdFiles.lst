@@ -1,0 +1,7 @@
+ma/foodplus/ordering/system/dataaccess/entity/StoreEntity$StoreEntityBuilder.class
+ma/foodplus/ordering/system/dataaccess/repository/StoreJpaRepository.class
+ma/foodplus/ordering/system/dataaccess/entity/StoreEntity.class
+ma/foodplus/ordering/system/dataaccess/utils/SlugUtil.class
+ma/foodplus/ordering/system/dataaccess/exception/StoreDataAccessException.class
+ma/foodplus/ordering/system/dataaccess/entity/StoreEntityId.class
+ma/foodplus/ordering/system/dataaccess/entity/StoreEntityId$StoreEntityIdBuilder.class

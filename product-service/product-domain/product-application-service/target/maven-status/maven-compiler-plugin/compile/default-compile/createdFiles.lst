@@ -1,0 +1,11 @@
+ma/foodplus/ordering/system/product/service/domain/ports/output/repository/ProductRepository.class
+ma/foodplus/ordering/system/product/service/domain/create/CreateProductAttributeValueCommand.class
+ma/foodplus/ordering/system/product/service/domain/ports/output/message/publisher/ProductMessagePublisher.class
+ma/foodplus/ordering/system/product/service/domain/create/CreateProductResponse.class
+ma/foodplus/ordering/system/product/service/domain/ports/input/service/ProductApplicationService.class
+ma/foodplus/ordering/system/product/service/domain/mapper/ProductDataMapper.class
+ma/foodplus/ordering/system/product/service/domain/create/CreateProductResponse$CreateProductResponseBuilder.class
+ma/foodplus/ordering/system/product/service/domain/create/CreateProductCommand.class
+ma/foodplus/ordering/system/product/service/domain/ProductCreateCommandHandler.class
+ma/foodplus/ordering/system/product/service/domain/ProductApplicationServiceImpl.class
+ma/foodplus/ordering/system/product/service/domain/config/ProductServiceConfigData.class

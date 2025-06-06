@@ -1,0 +1,5 @@
+/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product/adapter/ProductRepositoryImpl.java
+/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product/entity/ProductEntity.java
+/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product/exception/ProductDataaccessException.java
+/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product/mapper/ProductDataAccessMapper.java
+/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product/repository/ProductJpaRepository.java
