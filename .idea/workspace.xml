@@ -5,18 +5,95 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/product-domain/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/product-domain/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/dataaccess/utils/SlugUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/common-domain/src/main/java/ma/foodplus/ordering/system/domain/valueobject/CategoryId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-application/src/main/java/ma/foodplus/ordering/system/product/service/application/handler/ProductGlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-application/src/main/java/ma/foodplus/ordering/system/product/service/application/rest/ProductController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-container/src/main/java/ma/foodplus/ordering/system/product/service/BeanConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-container/src/main/java/ma/foodplus/ordering/system/product/service/ProductServiceApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-container/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-container/src/main/resources/init-schema.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product/adapter/ProductRepositoryImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product/entity/ProductEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product/exception/ProductDataaccessException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product/mapper/ProductDataAccessMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product/repository/ProductJpaRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/ProductApplicationServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/ProductCreateCommandHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/config/ProductServiceConfigData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/create/CreateCategoryCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/create/CreateCategoryResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/create/CreateProductCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/create/CreateProductResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/mapper/ProductDataMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/ports/input/service/CategoryApplicationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/ports/input/service/ProductApplicationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/ports/output/message/publisher/ProductMessagePublisher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/ports/output/repository/CategoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/product/service/domain/ports/output/repository/ProductRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/ProductDomainService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/ProductDomainServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/entity/Attribute.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/entity/Category.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/entity/Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/entity/ProductAttributeValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/entity/Store.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/entity/Unit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/enums/DataType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/event/product/ProductCreatedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/event/product/ProductDeletedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/event/product/ProductEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/event/product/ProductUpdatedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/exception/NegativeQuantityException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/exception/ProductAlreadyExistException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/exception/ProductDomainException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/exception/ProductNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/valueobject/AttributeId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/valueobject/ProductAttributeValueId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/valueobject/Quantity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/product/service/domain/valueobject/UnitId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/store/entity/StoreEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/dataaccess/entity/StoreEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/store/entity/StoreEntityId.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/dataaccess/entity/StoreEntityId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/store/exception/StoreDataAccessException.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/dataaccess/exception/StoreDataAccessException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/store/repository/StoreJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/dataaccess/repository/StoreJpaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-application/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/product-application/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-application/src/main/java/ma/foodplus/ordering/system/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-application/src/test/java/ma/foodplus/ordering/system/AppTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-container/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/product-container/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-container/src/main/java/ma/foodplus/ordering/system/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-container/src/test/java/ma/foodplus/ordering/system/AppTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-dataaccess/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/product-dataaccess/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-dataaccess/src/test/java/ma/foodplus/ordering/system/AppTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-domain/product-application-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/product-domain/product-application-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/main/java/ma/foodplus/ordering/system/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/product-domain/product-domain-core/src/test/java/ma/foodplus/ordering/system/AppTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JvmLoggingSettingsStorage">
+    <option name="loggerId" value="Lombok Slf4j" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -38,6 +115,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.ProductServiceApplication.executor": "Run",
     "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ChatTagsLlmMigration": "true",
@@ -52,10 +130,47 @@
     "RunOnceActivity.DeprecatedChatLlmMigration": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.ToggleCodyToolWindowAfterMigration": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "feature/build-product-ms",
-    "last_opened_file_path": "/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system"
+    "last_opened_file_path": "/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/product-service/product-container/src/main/java/ma/foodplus/ordering/system/product/service"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/product-service/product-container/src/main/java/ma/foodplus/ordering/system/product/service" />
+      <recent name="$PROJECT_DIR$/product-service/product-container/src/main/resources" />
+      <recent name="$PROJECT_DIR$/product-service/product-dataaccess/src/main/java/ma/foodplus/ordering/system/product/service/dataaccess/product" />
+      <recent name="$PROJECT_DIR$/product-service/product-application/src/main/java/ma/foodplus/ordering/system/order/service/application" />
+      <recent name="$PROJECT_DIR$/product-service/product-domain/product-application-service/src/main/java/ma/foodplus/ordering/system/order/service/domain" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ma.foodplus.ordering.system.product.service.domain.ports.output.repository" />
+      <recent name="ma.foodplus.ordering.system.product.service.domain.create" />
+      <recent name="ma.foodplus.ordering.system.product.service.domain.ports.input.service" />
+      <recent name="ma.foodplus.ordering.system.product.service.domain.entity" />
+      <recent name="ma.foodplus.ordering.system.product.service.domain.exception" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="ProductServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.product.service.ProductServiceApplication" />
+      <module name="product-container" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ma.foodplus.ordering.system.product.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ProductServiceApplication" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="" />

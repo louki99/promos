@@ -8,21 +8,31 @@
     </parent>
 
     <artifactId>product-container</artifactId>
-    <packaging>jar</packaging>
-
-    <name>product-container</name>
-    <url>http://maven.apache.org</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ma.foodplus.ordering.system</groupId>
+            <artifactId>product-domain-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ma.foodplus.ordering.system</groupId>
+            <artifactId>product-application-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ma.foodplus.ordering.system</groupId>
+            <artifactId>product-application</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ma.foodplus.ordering.system</groupId>
+            <artifactId>product-dataaccess</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ma.foodplus.ordering.system</groupId>
+            <artifactId>product-messaging</artifactId>
         </dependency>
     </dependencies>
 </project>
