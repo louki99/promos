@@ -4,44 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="build promos">
+    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add customer">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/service/CustomerService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/configuration/CacheConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/configuration/CacheConfiguration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/configuration/CacheMetricsCollector.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/configuration/CacheMetricsCollector.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/configuration/CacheMonitoringConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/configuration/CacheMonitoringConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/configuration/OpenApiConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/configuration/OpenApiConfiguration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/controller/ProductController.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/controller/ProductController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/dto/query/FindProductByIdQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/dto/query/FindProductByIdQuery.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/exception/ProductExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/exception/ProductExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/mapper/ProductPersistenceMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/mapper/ProductPersistenceMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/model/Product$ProductBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/model/Product$ProductBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/model/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/model/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/repository/ProductRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/repository/ProductRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/service/ProductManagementUseCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/service/ProductManagementUseCase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/service/ProductService.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/service/ProductService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/controller/CartController.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/controller/CartController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/dto/ApplyPromotionRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/dto/ApplyPromotionRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/dto/CartItemDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/dto/CartItemDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/mapper/ConditionMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/mapper/ConditionMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/mapper/PromotionMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/mapper/PromotionMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/mapper/PromotionRuleMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/mapper/PromotionRuleMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/mapper/PromotionTierMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/mapper/PromotionTierMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Condition$ConditionType.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Condition$ConditionType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Condition$Operator.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Condition$Operator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Condition.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Condition.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/DynamicCondition.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/DynamicCondition.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Promotion.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Promotion.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$BreakpointType.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$BreakpointType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$CalculationMethod.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$CalculationMethod.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$ConditionLogic.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$ConditionLogic.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionTier.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionTier.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Reward$RewardType.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Reward$RewardType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Reward.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Reward.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/service/ConditionEvaluator.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/service/ConditionEvaluator.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,8 +125,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.FoodPlusOrderingApplication" />
         <item itemvalue="Application.ProductServiceApplication" />
+        <item itemvalue="Application.FoodPlusOrderingApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -213,12 +178,29 @@
       <option name="project" value="LOCAL" />
       <updated>1749482092342</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add customer">
+      <option name="closed" value="true" />
+      <created>1749489174080</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1749489174080</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add customer">
+      <option name="closed" value="true" />
+      <created>1749489182738</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1749489182738</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="build product" />
     <MESSAGE value="build promos" />
-    <option name="LAST_COMMIT_MESSAGE" value="build promos" />
+    <MESSAGE value="add customer" />
+    <option name="LAST_COMMIT_MESSAGE" value="add customer" />
   </component>
 </project>
