@@ -38,23 +38,42 @@ public class AdvancedPromotionEngine {
         List<Promotion> sortedPromotions = getActivePromotions();
         log.info("Found {} active promotions to evaluate.", sortedPromotions.size());
 
+        Integer skipToSequence = null;
+        String customerFamilyCode = initialOrder.getCustomerId() != null ? getCustomerFamilyCodeForOrder(initialOrder.getCustomerId()) : null;
         for (Promotion currentPromotion : sortedPromotions) {
+            // --- Customer Family Eligibility Check ---
+            if (currentPromotion.getCustomerFamilies() != null && !currentPromotion.getCustomerFamilies().isEmpty()) {
+                boolean eligible = currentPromotion.getCustomerFamilies().stream().anyMatch(fam ->
+                    fam.getCustomerFamilyCode().equals(customerFamilyCode)
+                    && (fam.getStartDate() == null || !ZonedDateTime.now().isBefore(fam.getStartDate()))
+                    && (fam.getEndDate() == null || !ZonedDateTime.now().isAfter(fam.getEndDate()))
+                );
+                if (!eligible) {
+                    log.debug("Skipping promotion {} for ineligible customer family {}", currentPromotion.getPromoCode(), customerFamilyCode);
+                    continue;
+                }
+            }
+            // --- End Customer Family Eligibility Check ---
+
+            if (skipToSequence != null && currentPromotion.getPriority() < skipToSequence) {
+                log.debug("Skipping promotion {} due to skipToSequence logic", currentPromotion.getPromoCode());
+                continue;
+            }
             if (!isPromotionValid(currentPromotion, initialOrder)) {
                 log.debug("Skipping invalid promotion: {}", currentPromotion.getPromoCode());
                 continue;
             }
-
             if (!isCombinable(context, currentPromotion)) {
                 log.debug("Skipping non-combinable promotion: {}", currentPromotion.getPromoCode());
                 continue;
             }
-
             boolean wasApplied = processPromotionRules(context, currentPromotion);
-
             if (wasApplied) {
                 log.info("Successfully applied promotion '{}'", currentPromotion.getPromoCode());
                 context.markPromotionAsApplied(currentPromotion);
-                
+                if (currentPromotion.getSkipToSequence() != null) {
+                    skipToSequence = currentPromotion.getSkipToSequence();
+                }
                 if (currentPromotion.isExclusive()) {
                     log.info("Exclusive promotion applied, stopping further promotions");
                     break;
@@ -221,5 +240,11 @@ public class AdvancedPromotionEngine {
             return false;
         }
         return true;
+    }
+
+    // Helper method to get customer family code for a given customerId (stub, implement as needed)
+    private String getCustomerFamilyCodeForOrder(Long customerId) {
+        // TODO: Implement actual lookup from customer service or repository
+        return null;
     }
 }

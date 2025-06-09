@@ -25,6 +25,13 @@ public class RewardApplicator {
             return;
         }
 
+        // --- Apply repetition limit if set ---
+        Integer repetition = rule.getRepetition();
+        if (repetition != null && repetition > 0) {
+            eligibleItems = limitItemsByRepetition(eligibleItems, repetition, rule.getBreakpointType());
+        }
+        // --- End repetition logic ---
+
         BigDecimal breakpointValue = calculateBreakpointValue(eligibleItems, rule.getBreakpointType());
         if (breakpointValue.compareTo(BigDecimal.ZERO) <= 0) {
             return;
@@ -253,28 +260,39 @@ public class RewardApplicator {
     }
 
     private List<OrderItemContext> findEligibleItemsForRule(PromotionContext context, PromotionRule rule) {
-        List<Condition> productConditions = rule.getConditions().stream()
-                .filter(c -> c.getConditionType() == Condition.ConditionType.PRODUCT_IN_CART)
-                .collect(Collectors.toList());
-
-        if (productConditions.isEmpty()) {
-            return context.getOrder().getItems().stream()
-                .map(OrderItemContext::new)
-                .collect(Collectors.toList());
-        }
-
-        return productConditions.stream()
-            .flatMap(condition -> {
-                if ("PRODUCT".equalsIgnoreCase(condition.getEntityType())) {
-                    return context.getOrder().findItemsByProductId(Long.valueOf(condition.getEntityId())).stream();
-                } else if ("PRODUCT_FAMILY".equalsIgnoreCase(condition.getEntityType())) {
-                    return context.getOrder().findItemsByFamilyId(Long.valueOf(condition.getEntityId())).stream();
-                }
-                return null;
-            })
-            .filter(java.util.Objects::nonNull)
-            .distinct()
+        List<OrderItemContext> allItems = context.getOrder().getItems().stream()
             .map(OrderItemContext::new)
             .collect(Collectors.toList());
+        List<PromotionLine> lines = rule.getPromotion() != null ? rule.getPromotion().getPromotionLines() : null;
+        if (lines == null || lines.isEmpty()) {
+            return allItems;
+        }
+        return allItems.stream().filter(item ->
+            lines.stream().anyMatch(line ->
+                (line.getPaidProductId() != null && line.getPaidProductId().equals(item.getOriginalItem().getProductId())) ||
+                (line.getPaidFamilyCode() != null && line.getPaidFamilyCode().equals(item.getOriginalItem().getProductFamilyId() != null ? item.getOriginalItem().getProductFamilyId().toString() : null))
+            )
+        ).collect(Collectors.toList());
+    }
+
+    private List<OrderItemContext> limitItemsByRepetition(List<OrderItemContext> items, int repetition, PromotionRule.BreakpointType type) {
+        if (type == PromotionRule.BreakpointType.QUANTITY) {
+            int total = 0;
+            List<OrderItemContext> result = new java.util.ArrayList<>();
+            for (OrderItemContext item : items) {
+                int qty = item.getOriginalItem().getQuantity();
+                if (total + qty > repetition) {
+                    // Only take part of this item
+                    // (Assume we can clone or partially use the item, or just break)
+                    break;
+                }
+                result.add(item);
+                total += qty;
+                if (total >= repetition) break;
+            }
+            return result;
+        }
+        // For amount or SKU_POINTS, similar logic can be added if needed
+        return items;
     }
 }

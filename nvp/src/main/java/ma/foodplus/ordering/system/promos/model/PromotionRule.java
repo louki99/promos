@@ -42,6 +42,9 @@ public class PromotionRule {
     @OneToMany(mappedBy = "rule", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PromotionTier> tiers;
 
+    @Column(name = "repetition")
+    private Integer repetition; // Répétition
+
     // Enums for clarity
     public enum ConditionLogic { ALL, ANY }
     public enum CalculationMethod { BRACKET, CUMULATIVE }
@@ -153,6 +156,14 @@ public class PromotionRule {
 
     public void setTiers(List<PromotionTier> tiers) {
         this.tiers = tiers;
+    }
+
+    public Integer getRepetition() {
+        return repetition;
+    }
+
+    public void setRepetition(Integer repetition) {
+        this.repetition = repetition;
     }
 
     @Override

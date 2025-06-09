@@ -93,6 +93,18 @@ public class Promotion {
     )
     private List<DynamicCondition> dynamicConditions;
 
+    @Column(name = "skip_to_sequence")
+    private Integer skipToSequence; // Aller à
+
+    @Column(name = "index_discount")
+    private Integer indexDiscount; // Index Discount
+
+    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PromotionCustomerFamily> customerFamilies;
+
+    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PromotionLine> promotionLines;
+
     // Constructors
     public Promotion() {
     }
@@ -307,6 +319,38 @@ public class Promotion {
         if (currentUsageCount != null) {
             currentUsageCount++;
         }
+    }
+
+    public Integer getSkipToSequence() {
+        return skipToSequence;
+    }
+
+    public void setSkipToSequence(Integer skipToSequence) {
+        this.skipToSequence = skipToSequence;
+    }
+
+    public Integer getIndexDiscount() {
+        return indexDiscount;
+    }
+
+    public void setIndexDiscount(Integer indexDiscount) {
+        this.indexDiscount = indexDiscount;
+    }
+
+    public List<PromotionCustomerFamily> getCustomerFamilies() {
+        return customerFamilies;
+    }
+
+    public void setCustomerFamilies(List<PromotionCustomerFamily> customerFamilies) {
+        this.customerFamilies = customerFamilies;
+    }
+
+    public List<PromotionLine> getPromotionLines() {
+        return promotionLines;
+    }
+
+    public void setPromotionLines(List<PromotionLine> promotionLines) {
+        this.promotionLines = promotionLines;
     }
 
     @Override
