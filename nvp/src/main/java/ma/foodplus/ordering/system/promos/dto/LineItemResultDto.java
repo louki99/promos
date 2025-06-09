@@ -1,6 +1,7 @@
 package ma.foodplus.ordering.system.promos.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * A Data Transfer Object (DTO) that represents the final, calculated state
@@ -32,9 +33,11 @@ public class LineItemResultDto {
      */
     private final BigDecimal finalPrice;
 
+    private final List<String> appliedPromotions;
+
     /**
      * Constructs a new LineItemResultDto.
-     * This is typically created from a CartItemContext object at the end of the
+     * This is typically created from a OrdertemContext object at the end of the
      * promotion calculation process.
      *
      * @param productId The product's unique ID.
@@ -43,13 +46,14 @@ public class LineItemResultDto {
      * @param originalPrice The original total price for the line.
      * @param totalDiscount The total discount applied to the line.
      */
-    public LineItemResultDto(Long productId, String productName, int quantity, BigDecimal originalPrice, BigDecimal totalDiscount) {
+    public LineItemResultDto(Long productId, String productName, int quantity, BigDecimal originalPrice, BigDecimal totalDiscount, List<String> appliedPromotions) {
         this.productId = productId;
         this.productName = productName;
         this.quantity = quantity;
         this.originalPrice = originalPrice;
         this.totalDiscount = totalDiscount;
         this.finalPrice = originalPrice.subtract(totalDiscount);
+        this.appliedPromotions = appliedPromotions;
     }
 
 
@@ -77,5 +81,9 @@ public class LineItemResultDto {
 
     public BigDecimal getFinalPrice() {
         return finalPrice;
+    }
+
+    public List<String> getAppliedPromotions() {
+        return appliedPromotions;
     }
 }

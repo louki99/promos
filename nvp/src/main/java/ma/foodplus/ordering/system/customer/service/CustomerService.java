@@ -1,7 +1,10 @@
 package ma.foodplus.ordering.system.customer.service;
 
 import ma.foodplus.ordering.system.customer.dto.CustomerDTO;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface CustomerService {
     
@@ -67,4 +70,32 @@ public interface CustomerService {
     List<CustomerDTO> searchCustomersByDescription(String searchTerm);
     void activateCustomer(Long id);
     void deactivateCustomer(Long id);
-} 
+
+    int getCustomerLoyaltyLevel(String entityId);
+
+    Map<String, Object> getCustomerPurchaseHistory(String entityId);
+
+    Set<String> getCustomerGroups(String entityId);
+
+    /**
+     * Check if a customer belongs to a specific group
+     * @param customerId the customer ID
+     * @param groupId the group ID
+     * @return true if the customer belongs to the group
+     */
+    boolean isCustomerInGroup(Long customerId, Long groupId);
+
+    /**
+     * Get a customer's loyalty level
+     * @param customerId the customer ID
+     * @return the customer's loyalty level (0-5)
+     */
+    int getCustomerLoyaltyLevel(Long customerId);
+
+    /**
+     * Get a customer's total spent amount
+     * @param customerId the customer ID
+     * @return the total amount spent by the customer
+     */
+    BigDecimal getCustomerTotalSpent(Long customerId);
+}

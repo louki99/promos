@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * client is well-formed and meets the basic requirements before any business
  * logic is executed.
  */
-public class CartItemDto {
+public class OrdertemDto{
 
     /**
      * The unique identifier for the product.
@@ -45,7 +45,7 @@ public class CartItemDto {
      * A no-argument constructor is required for libraries like Jackson
      * to be able to deserialize JSON into this object.
      */
-    public CartItemDto() {
+    public OrdertemDto() {
     }
 
     /**
@@ -56,7 +56,7 @@ public class CartItemDto {
      * @param quantity The number of units.
      * @param unitPrice The price per unit.
      */
-    public CartItemDto(Long productId, Integer quantity, BigDecimal unitPrice) {
+    public OrdertemDto(Long productId,Integer quantity,BigDecimal unitPrice) {
         this.productId = productId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;

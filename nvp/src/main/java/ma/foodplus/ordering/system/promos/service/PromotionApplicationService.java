@@ -1,7 +1,7 @@
 package ma.foodplus.ordering.system.promos.service;
 
+import ma.foodplus.ordering.system.order.model.Order;
 import ma.foodplus.ordering.system.product.service.ProductService;
-import ma.foodplus.ordering.system.promos.component.Cart;
 import ma.foodplus.ordering.system.promos.dto.*;
 import ma.foodplus.ordering.system.promos.exception.PromotionApplicationException;
 import ma.foodplus.ordering.system.promos.model.Promotion;
@@ -42,12 +42,12 @@ public class PromotionApplicationService {
     public ApplyPromotionResponse calculatePromotions(ApplyPromotionRequest request) {
         try {
             validateRequest(request);
-            Cart cart = createCartFromRequest(request);
-            PromotionContext context = promotionEngine.apply(cart);
-            return createResponseFromCart(context.getCart());
+            Order order = createOrderFromRequest(request);
+            PromotionContext context = promotionEngine.apply(order);
+            return createResponseFromOrder(context.getOrder());
         } catch (Exception e) {
             log.error("Failed to calculate promotions for request: {}", request, e);
-            throw new PromotionApplicationException("Failed to calculate promotions", e);
+            throw new PromotionApplicationException("Failed to calculate promotions: " + e.getMessage(), e);
         }
     }
 
@@ -60,16 +60,16 @@ public class PromotionApplicationService {
     @Transactional(readOnly = true)
     public List<PromotionDTO> getEligiblePromotions(ApplyPromotionRequest request) {
         try {
-            Cart cart = createCartFromRequest(request);
+            Order order = createOrderFromRequest(request);
             List<Promotion> activePromotions = promotionRepository.findActivePromotions(ZonedDateTime.now());
             
             return activePromotions.stream()
-                    .filter(promotion -> isPromotionEligible(cart, promotion))
+                    .filter(promotion -> isPromotionEligible(order, promotion))
                     .map(this::convertToPromotionDTO)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Failed to get eligible promotions for request: {}", request, e);
-            throw new PromotionApplicationException("Failed to get eligible promotions", e);
+            throw new PromotionApplicationException("Failed to get eligible promotions: " + e.getMessage(), e);
         }
     }
 
@@ -83,15 +83,22 @@ public class PromotionApplicationService {
     @Transactional(readOnly = true)
     public boolean validatePromotionCode(ApplyPromotionRequest request, String promotionCode) {
         try {
-            Cart cart = createCartFromRequest(request);
+            Order order = createOrderFromRequest(request);
             Optional<Promotion> promotion = promotionRepository.findByCode(promotionCode);
             
-            return promotion.isPresent() && 
-                   promotion.get().isActive(ZonedDateTime.now()) && 
-                   isPromotionEligible(cart, promotion.get());
+            if (promotion.isEmpty()) {
+                return false;
+            }
+
+            Promotion promo = promotion.get();
+            if (!promo.isActive(ZonedDateTime.now())) {
+                return false;
+            }
+
+            return isPromotionEligible(order, promo);
         } catch (Exception e) {
             log.error("Failed to validate promotion code: {} for request: {}", promotionCode, request, e);
-            throw new PromotionApplicationException("Failed to validate promotion code", e);
+            throw new PromotionApplicationException("Failed to validate promotion code: " + e.getMessage(), e);
         }
     }
 
@@ -105,23 +112,27 @@ public class PromotionApplicationService {
     @Transactional(readOnly = true)
     public PromotionBreakdownDTO getPromotionBreakdown(ApplyPromotionRequest request, String promotionCode) {
         try {
-            Cart cart = createCartFromRequest(request);
+            Order order = createOrderFromRequest(request);
             Optional<Promotion> promotion = promotionRepository.findByCode(promotionCode);
             
             if (promotion.isEmpty()) {
                 throw new PromotionApplicationException("Promotion not found: " + promotionCode);
             }
 
-            if (!isPromotionEligible(cart, promotion.get())) {
-                throw new PromotionApplicationException("Promotion is not eligible for this cart");
+            Promotion promo = promotion.get();
+            if (!promo.isActive(ZonedDateTime.now())) {
+                throw new PromotionApplicationException("Promotion is not active");
             }
 
-            // Apply the promotion to a copy of the cart to see its effects
-            PromotionContext context = promotionEngine.applyPromotion(cart, promotion.get());
-            return createPromotionBreakdown(cart, context.getCart(), promotion.get());
+            if (!isPromotionEligible(order, promo)) {
+                throw new PromotionApplicationException("Promotion is not eligible for this order");
+            }
+
+            PromotionContext context = promotionEngine.applyPromotion(order, promo);
+            return createPromotionBreakdown(order, context.getOrder(), promo);
         } catch (Exception e) {
             log.error("Failed to get promotion breakdown for code: {} and request: {}", promotionCode, request, e);
-            throw new PromotionApplicationException("Failed to get promotion breakdown", e);
+            throw new PromotionApplicationException("Failed to get promotion breakdown: " + e.getMessage(), e);
         }
     }
 
@@ -134,23 +145,82 @@ public class PromotionApplicationService {
         if (request.getCustomerId() == null) {
             throw new PromotionApplicationException("Customer ID cannot be null");
         }
-        if (request.getCartItems() == null || request.getCartItems().isEmpty()) {
-            throw new PromotionApplicationException("Cart items cannot be empty");
+        if (request.getOrderItems() == null || request.getOrderItems().isEmpty()) {
+            throw new PromotionApplicationException("Order items cannot be empty");
+        }
+        if (request.getPromoCode() != null && !isValidPromoCodeFormat(request.getPromoCode())) {
+            throw new PromotionApplicationException("Invalid promotion code format");
         }
     }
 
-    private Cart createCartFromRequest(ApplyPromotionRequest request) {
-        return new Cart(request.getCustomerId(), request.getCartItems());
+    private boolean isValidPromoCodeFormat(String promoCode) {
+        // Promo code format: 2-10 alphanumeric characters, optional hyphens
+        return promoCode != null && promoCode.matches("^[A-Za-z0-9-]{2,10}$");
     }
 
-    private boolean isPromotionEligible(Cart cart, Promotion promotion) {
+    private Order createOrderFromRequest(ApplyPromotionRequest request) {
+        return new Order(request.getCustomerId(), request.getOrderItems());
+    }
+
+    private boolean isPromotionEligible(Order order, Promotion promotion) {
+        // Check if promotion is expired
+        if (promotion.getEndDate() != null && promotion.getEndDate().isBefore(ZonedDateTime.now())) {
+            log.debug("Promotion {} is expired", promotion.getPromoCode());
+            return false;
+        }
+
+        // Check usage limits
+        if (promotion.getMaxUsageCount() != null && 
+            promotion.getCurrentUsageCount() >= promotion.getMaxUsageCount()) {
+            log.debug("Promotion {} has reached its usage limit", promotion.getPromoCode());
+            return false;
+        }
+
+        // Check per-customer usage limits
+        if (promotion.getMaxUsagePerCustomer() != null) {
+            int customerUsageCount = promotion.getCustomerUsageCount(order.getCustomerId());
+            if (customerUsageCount >= promotion.getMaxUsagePerCustomer()) {
+                log.debug("Customer {} has reached usage limit for promotion {}", 
+                    order.getCustomerId(), promotion.getPromoCode());
+                return false;
+            }
+        }
+
+        // Check minimum purchase requirement
+        if (promotion.getMinPurchaseAmount() != null && 
+            order.getTotal().compareTo(promotion.getMinPurchaseAmount()) < 0) {
+            log.debug("Order total {} is below minimum purchase amount {} for promotion {}", 
+                order.getTotal(), promotion.getMinPurchaseAmount(), promotion.getPromoCode());
+            return false;
+        }
+
+        // Check if any excluded products are in the cart
+        if (promotion.getExcludedProductIds() != null && !promotion.getExcludedProductIds().isEmpty()) {
+            boolean hasExcludedProduct = order.getItems().stream()
+                .anyMatch(item -> promotion.getExcludedProductIds().contains(item.getProductId()));
+            if (hasExcludedProduct) {
+                log.debug("Order contains excluded products for promotion {}", promotion.getPromoCode());
+                return false;
+            }
+        }
+
+        // Check if any excluded categories are in the cart
+        if (promotion.getExcludedCategoryIds() != null && !promotion.getExcludedCategoryIds().isEmpty()) {
+            boolean hasExcludedCategory = order.getItems().stream()
+                .anyMatch(item -> promotion.getExcludedCategoryIds().contains(item.getProductFamilyId()));
+            if (hasExcludedCategory) {
+                log.debug("Order contains excluded categories for promotion {}", promotion.getPromoCode());
+                return false;
+            }
+        }
+
         return promotion.getRules().stream()
-                .anyMatch(rule -> conditionEvaluator.evaluate(cart, rule.getConditions(), rule.getConditionLogic()));
+                .anyMatch(rule -> conditionEvaluator.evaluate(order, rule.getConditions(), rule.getConditionLogic()));
     }
 
     private PromotionDTO convertToPromotionDTO(Promotion promotion) {
         return PromotionDTO.builder()
-                .id(promotion.getId())
+                .id(promotion.getId().intValue())
                 .promoCode(promotion.getPromoCode())
                 .name(promotion.getName())
                 .description(promotion.getDescription())
@@ -162,14 +232,15 @@ public class PromotionApplicationService {
                 .build();
     }
 
-    private ApplyPromotionResponse createResponseFromCart(Cart cart) {
-        List<LineItemResultDto> lineItemResults = cart.getItems().stream()
-                .map(ctx -> new LineItemResultDto(
-                        ctx.getOriginalItem().getProductId(),
-                        ctx.getOriginalItem().getProductName(),
-                        ctx.getOriginalItem().getQuantity(),
-                        ctx.getOriginalItem().getOriginalTotalPrice(),
-                        ctx.getDiscountAmount()
+    private ApplyPromotionResponse createResponseFromOrder(Order order) {
+        List<LineItemResultDto> lineItemResults = order.getItems().stream()
+                .map(item -> new LineItemResultDto(
+                        item.getProductId(),
+                        item.getProductName(),
+                        item.getQuantity(),
+                        item.getPrice().multiply(new BigDecimal(item.getQuantity())),
+                        item.getDiscountAmount(),
+                        item.getAppliedPromotions() // Add applied promotions to response
                 ))
                 .collect(Collectors.toList());
 
@@ -183,33 +254,45 @@ public class PromotionApplicationService {
 
         BigDecimal finalTotal = originalTotal.subtract(totalDiscount);
 
+        // Add promotion summary to response
+        Map<String, BigDecimal> promotionDiscounts = new HashMap<>();
+        order.getItems().forEach(item -> {
+            if (item.getAppliedPromotionCode() != null) {
+                promotionDiscounts.merge(
+                    item.getAppliedPromotionCode(),
+                    item.getDiscountAmount(),
+                    BigDecimal::add
+                );
+            }
+        });
+
         return ApplyPromotionResponse.builder()
                 .originalTotal(originalTotal)
                 .discountTotal(totalDiscount)
                 .finalTotal(finalTotal)
                 .lineItems(lineItemResults)
+                .promotionDiscounts(promotionDiscounts)
                 .build();
     }
 
-    private PromotionBreakdownDTO createPromotionBreakdown(Cart originalCart, Cart cartWithPromotion, Promotion promotion) {
+    private PromotionBreakdownDTO createPromotionBreakdown(Order originalOrder, Order orderWithPromotion, Promotion promotion) {
         Map<Long, BigDecimal> itemDiscounts = new HashMap<>();
         
-        // Calculate discounts per item
-        cartWithPromotion.getItems().forEach(ctx -> {
-            BigDecimal originalPrice = ctx.getOriginalItem().getOriginalTotalPrice();
-            BigDecimal finalPrice = ctx.getFinalPrice();
+        orderWithPromotion.getItems().forEach(item -> {
+            BigDecimal originalPrice = item.getPrice().multiply(new BigDecimal(item.getQuantity()));
+            BigDecimal finalPrice = originalPrice.subtract(item.getDiscountAmount());
             BigDecimal discount = originalPrice.subtract(finalPrice);
             if (discount.compareTo(BigDecimal.ZERO) > 0) {
-                itemDiscounts.put(ctx.getOriginalItem().getProductId(), discount);
+                itemDiscounts.put(item.getProductId(), discount);
             }
         });
 
         return PromotionBreakdownDTO.builder()
                 .promotionCode(promotion.getPromoCode())
                 .promotionName(promotion.getName())
-                .originalTotal(originalCart.getFinalTotalPrice())
-                .discountTotal(cartWithPromotion.getFinalTotalPrice().subtract(originalCart.getFinalTotalPrice()))
-                .finalTotal(cartWithPromotion.getFinalTotalPrice())
+                .originalTotal(originalOrder.getTotal())
+                .discountTotal(orderWithPromotion.getTotal().subtract(originalOrder.getTotal()))
+                .finalTotal(orderWithPromotion.getTotal())
                 .itemDiscounts(itemDiscounts)
                 .build();
     }

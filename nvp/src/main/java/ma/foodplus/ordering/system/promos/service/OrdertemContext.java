@@ -1,6 +1,6 @@
 package ma.foodplus.ordering.system.promos.service;
 
-import ma.foodplus.ordering.system.promos.component.CartItem;
+import ma.foodplus.ordering.system.order.model.OrderItem;
 
 import java.math.BigDecimal;
 
@@ -10,9 +10,9 @@ import java.math.BigDecimal;
  * quantities and prices that are eligible for further discounts.
  * This approach avoids mutating the original CartItem data.
  */
-public class CartItemContext {
+public class OrdertemContext{
 
-    private final CartItem originalItem;
+    private final OrderItem originalItem;
 
     private BigDecimal remainingPriceForDiscount; // The price still eligible for discounts.
     private int remainingQuantityForRewards;   // The quantity still eligible for rewards (like "buy X get Y").
@@ -23,7 +23,7 @@ public class CartItemContext {
      * Constructs a context wrapper for a given CartItem.
      * @param originalItem The initial, immutable CartItem.
      */
-    public CartItemContext(CartItem originalItem) {
+    public OrdertemContext(OrderItem originalItem) {
         if (originalItem == null) {
             throw new IllegalArgumentException("Original CartItem cannot be null.");
         }
@@ -74,7 +74,7 @@ public class CartItemContext {
     /**
      * @return The original, immutable CartItem.
      */
-    public CartItem getOriginalItem() {
+    public OrderItem getOriginalItem() {
         return originalItem;
     }
 
@@ -108,7 +108,7 @@ public class CartItemContext {
 
     @Override
     public String toString() {
-        return "CartItemContext{" +
+        return "OrdertemContext{" +
                 "originalItem=" + originalItem.getProductName() +
                 ", remainingPrice=" + remainingPriceForDiscount +
                 ", remainingQuantity=" + remainingQuantityForRewards +

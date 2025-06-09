@@ -1,20 +1,20 @@
-package ma.foodplus.ordering.system.promos.component;
+package ma.foodplus.ordering.system.order.model;
 
 import java.math.BigDecimal;
 
-public class CartItemContext {
-    private final CartItem originalItem;
+public class OrderItemContext {
+    private final OrderItem originalItem;
     private BigDecimal discountAmount;
     private String appliedPromotionCode;
     private int consumedQuantity;
 
-    public CartItemContext(CartItem originalItem) {
+    public OrderItemContext(OrderItem originalItem) {
         this.originalItem = originalItem;
         this.discountAmount = BigDecimal.ZERO;
         this.consumedQuantity = 0;
     }
 
-    public CartItem getOriginalItem() {
+    public OrderItem getOriginalItem() {
         return originalItem;
     }
 

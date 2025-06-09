@@ -1,7 +1,9 @@
 package ma.foodplus.ordering.system.promos.component;
 
+import ma.foodplus.ordering.system.order.model.OrderItemContext;
+
 import java.math.BigDecimal;
-import java.util.Objects;
+import java.util.List;
 
 /**
  * A Data Transfer Object (DTO) that represents a promotion that has been
@@ -17,7 +19,7 @@ public class AppliedPromotion {
      * The unique code of the promotion that was applied (e.g., "SUMMER2024").
      * This helps in tracking and referencing the promotion.
      */
-    private final String promoCode;
+    private final String promotionCode;
 
     /**
      * A human-readable description of the reward that was granted.
@@ -33,24 +35,28 @@ public class AppliedPromotion {
      */
     private final BigDecimal discountAmount;
 
+    private final List<OrderItemContext> affectedItems;
+
     /**
      * Constructs a new AppliedPromotion record.
      *
-     * @param promoCode The unique code of the promotion.
+     * @param promotionCode The unique code of the promotion.
      * @param description A description of the applied benefit.
      * @param discountAmount The total discount value provided by this promotion.
+     * @param affectedItems The list of affected items by this promotion.
      */
-    public AppliedPromotion(String promoCode, String description, BigDecimal discountAmount) {
-        this.promoCode = Objects.requireNonNull(promoCode, "Promo code cannot be null.");
-        this.description = Objects.requireNonNull(description, "Description cannot be null.");
-        this.discountAmount = Objects.requireNonNullElse(discountAmount, BigDecimal.ZERO);
+    public AppliedPromotion(String promotionCode, String description, BigDecimal discountAmount, List<OrderItemContext> affectedItems) {
+        this.promotionCode = promotionCode;
+        this.description = description;
+        this.discountAmount = discountAmount;
+        this.affectedItems = affectedItems;
     }
 
     // --- Getters ---
     // No setters are provided as this object is intended to be immutable.
 
-    public String getPromoCode() {
-        return promoCode;
+    public String getPromotionCode() {
+        return promotionCode;
     }
 
     public String getDescription() {
@@ -61,12 +67,17 @@ public class AppliedPromotion {
         return discountAmount;
     }
 
+    public List<OrderItemContext> getAffectedItems() {
+        return affectedItems;
+    }
+
     @Override
     public String toString() {
         return "AppliedPromotion{" +
-                "promoCode='" + promoCode + '\'' +
+                "promotionCode='" + promotionCode + '\'' +
                 ", description='" + description + '\'' +
                 ", discountAmount=" + discountAmount +
+                ", affectedItems=" + affectedItems +
                 '}';
     }
 }

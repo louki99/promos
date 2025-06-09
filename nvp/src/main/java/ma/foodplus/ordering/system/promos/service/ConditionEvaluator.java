@@ -2,8 +2,7 @@ package ma.foodplus.ordering.system.promos.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ma.foodplus.ordering.system.promos.component.Cart;
-import ma.foodplus.ordering.system.promos.component.CartItemContext;
+import ma.foodplus.ordering.system.order.model.Order;
 import ma.foodplus.ordering.system.promos.model.Condition;
 import ma.foodplus.ordering.system.promos.model.DynamicCondition;
 import ma.foodplus.ordering.system.promos.model.PromotionRule;
@@ -14,9 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,45 +32,45 @@ public class ConditionEvaluator {
     /**
      * Evaluates a list of conditions based on the provided logic (ALL or ANY).
      *
-     * @param cart       The current shopping cart.
+     * @param order       The current shopping order.
      * @param conditions The list of conditions to evaluate.
      * @param logic      The logic to apply (ALL conditions must be true, or ANY one condition must be true).
      * @return True if the conditions are met according to the logic, false otherwise.
      */
-    public boolean evaluate(Cart cart, List<Condition> conditions, PromotionRule.ConditionLogic logic) {
+    public boolean evaluate(Order order,List<Condition> conditions,PromotionRule.ConditionLogic logic) {
         if (conditions == null || conditions.isEmpty()) {
             return true; // A rule with no conditions is always considered met.
         }
 
         if (logic == PromotionRule.ConditionLogic.ALL) {
             // ALL: Every single condition in the list must return true.
-            return conditions.stream().allMatch(condition -> isSingleConditionMet(cart, condition));
+            return conditions.stream().allMatch(condition -> isSingleConditionMet(order, condition));
         } else {
             // ANY: At least one condition in the list must return true.
-            return conditions.stream().anyMatch(condition -> isSingleConditionMet(cart, condition));
+            return conditions.stream().anyMatch(condition -> isSingleConditionMet(order, condition));
         }
     }
 
     /**
-     * Evaluates a single condition against the cart's state.
+     * Evaluates a single condition against the order's state.
      * This method acts as a router to the specific evaluation logic based on the condition type.
      *
-     * @param cart      The current shopping cart.
+     * @param order      The current shopping order.
      * @param condition The condition to evaluate.
      * @return True if the condition is met.
      */
-    private boolean isSingleConditionMet(Cart cart, Condition condition) {
+    private boolean isSingleConditionMet(Order order, Condition condition) {
         // This switch is the key to extensibility. To add a new condition type,
         // you just add a new case here and a corresponding private method.
         switch (condition.getConditionType()) {
             case CART_SUBTOTAL:
-                return evaluateCartSubtotal(cart, condition);
+                return evaluateCartSubtotal(order, condition);
 
             case PRODUCT_IN_CART:
-                return evaluateProductInCart(cart, condition);
+                return evaluateProductInCart(order, condition);
 
             case CUSTOMER_IN_GROUP:
-                return evaluateCustomerGroup(cart, condition);
+                return evaluateCustomerGroup(order, condition);
 
             case TIME_OF_DAY:
                 return evaluateTimeOfDay(condition);
@@ -82,10 +79,10 @@ public class ConditionEvaluator {
                 return evaluateDayOfWeek(condition);
 
             case CUSTOMER_LOYALTY_LEVEL:
-                return evaluateCustomerLoyaltyLevel(cart, condition);
+                return evaluateCustomerLoyaltyLevel(order, condition);
 
             case PAYMENT_METHOD:
-                return evaluatePaymentMethod(cart, condition);
+                return evaluatePaymentMethod(order, condition);
 
             default:
                 // It's good practice to log a warning for unhandled condition types.
@@ -96,20 +93,22 @@ public class ConditionEvaluator {
 
     // --- Private Helper Methods for Specific Condition Types ---
 
-    private boolean evaluateCartSubtotal(Cart cart, Condition condition) {
-        BigDecimal cartTotal = cart.getFinalTotalPrice();
+    private boolean evaluateCartSubtotal(Order order, Condition condition) {
+        BigDecimal cartTotal = order.getTotal();
         BigDecimal expectedValue = new BigDecimal(condition.getValue());
         return checkValue(cartTotal, condition.getOperator(), expectedValue);
     }
 
-    private boolean evaluateProductInCart(Cart cart, Condition condition) {
-        List<CartItemContext> matchingItems;
+    private boolean evaluateProductInCart(Order order, Condition condition) {
+        List<OrderItemContext> matchingItems;
 
         // Find items based on whether the condition is for a single product or a family of products.
         if ("PRODUCT".equalsIgnoreCase(condition.getEntityType())) {
-            matchingItems = cart.findItemsByProductId(Long.valueOf(condition.getEntityId()));
+            matchingItems = order.findItemsByProductId(Long.valueOf(condition.getEntityId()))
+                .stream().map(OrderItemContext::new).collect(Collectors.toList());
         } else if ("PRODUCT_FAMILY".equalsIgnoreCase(condition.getEntityType())) {
-            matchingItems = cart.findItemsByFamilyId(Long.valueOf(condition.getEntityId()));
+            matchingItems = order.findItemsByFamilyId(Long.valueOf(condition.getEntityId()))
+                .stream().map(OrderItemContext::new).collect(Collectors.toList());
         } else {
             return false; // Invalid entity type for this condition
         }
@@ -126,10 +125,11 @@ public class ConditionEvaluator {
         return checkValue(new BigDecimal(totalQuantity), condition.getOperator(), new BigDecimal(requiredQuantity));
     }
 
-    private boolean evaluateCustomerGroup(Cart cart, Condition condition) {
-        // This would typically involve a service call to check customer group membership
-        // For now, we'll return true as a placeholder
-        return true;
+    private boolean evaluateCustomerGroup(Order order, Condition condition) {
+        if (order.getCustomerId() == null || condition.getCustomerGroupId() == null) {
+            return false;
+        }
+        return customerService.isCustomerInGroup(order.getCustomerId(), condition.getCustomerGroupId());
     }
 
     private boolean evaluateTimeOfDay(Condition condition) {
@@ -162,16 +162,19 @@ public class ConditionEvaluator {
         }
     }
 
-    private boolean evaluateCustomerLoyaltyLevel(Cart cart, Condition condition) {
-        // This would typically involve a service call to check customer loyalty level
-        // For now, we'll return true as a placeholder
-        return true;
+    private boolean evaluateCustomerLoyaltyLevel(Order order, Condition condition) {
+        if (order.getCustomerId() == null) {
+            return false;
+        }
+        int customerLevel = customerService.getCustomerLoyaltyLevel(order.getCustomerId());
+        return customerLevel >= condition.getRequiredLoyaltyLevel();
     }
 
-    private boolean evaluatePaymentMethod(Cart cart, Condition condition) {
-        // This would typically involve checking the selected payment method
-        // For now, we'll return true as a placeholder
-        return true;
+    private boolean evaluatePaymentMethod(Order order, Condition condition) {
+        if (order.getPaymentMethod() == null || condition.getPaymentMethod() == null) {
+            return false;
+        }
+        return order.getPaymentMethod().name().equals(condition.getPaymentMethod());
     }
 
     /**
@@ -208,102 +211,49 @@ public class ConditionEvaluator {
      * @param condition The dynamic condition to evaluate
      * @return true if the condition is met, false otherwise
      */
-    public boolean evaluateDynamicCondition(DynamicCondition condition) {
-        if (!condition.isActive()) {
+    public boolean evaluateDynamicCondition(DynamicCondition condition, Order order) {
+        if (!condition.isActive() || order == null) {
             return false;
         }
 
-        switch (condition.getConditionType()) {
-            case "TIME_BASED":
-                return evaluateTimeBasedCondition(condition);
-            case "CUSTOMER_BASED":
-                return evaluateCustomerBasedCondition(condition);
-            case "PRODUCT_BASED":
-                return evaluateProductBasedCondition(condition);
-            case "CART_BASED":
-                return evaluateCartBasedCondition(condition);
-            default:
-                log.warn("Unknown dynamic condition type: {}", condition.getConditionType());
-                return false;
-        }
-    }
-
-    private boolean evaluateTimeBasedCondition(DynamicCondition condition) {
-        ZonedDateTime now = ZonedDateTime.now();
-        String[] timeRange = condition.getConditionValue().split("-");
-        
-        if (timeRange.length != 2) {
-            log.warn("Invalid time range format in condition: {}", condition.getConditionValue());
-            return false;
-        }
-
-        try {
-            ZonedDateTime startTime = ZonedDateTime.parse(timeRange[0]);
-            ZonedDateTime endTime = ZonedDateTime.parse(timeRange[1]);
-            
-            return now.isAfter(startTime) && now.isBefore(endTime);
-        } catch (Exception e) {
-            log.error("Error parsing time range: {}", e.getMessage());
-            return false;
-        }
-    }
-
-    private boolean evaluateCustomerBasedCondition(DynamicCondition condition) {
-        switch (condition.getOperator()) {
-            case "LOYALTY_LEVEL":
-                return evaluateCustomerLoyaltyLevel(condition);
-            case "PURCHASE_HISTORY":
-                return evaluatePurchaseHistory(condition);
+        switch (condition.getConditionType().toUpperCase()) {
+            case "CUSTOMER_LOYALTY":
             case "CUSTOMER_GROUP":
-                return evaluateCustomerGroup(condition);
+            case "PURCHASE_HISTORY":
+                return evaluateCustomerBasedCondition(condition, order);
+            case "ORDER_TOTAL":
+                return condition.evaluateNumeric(order.getFinalTotalPrice().doubleValue());
+            case "PAYMENT_METHOD":
+                return condition.evaluate(order.getPaymentMethod().name());
             default:
-                log.warn("Unknown customer condition operator: {}", condition.getOperator());
                 return false;
         }
     }
 
-    private boolean evaluateCustomerLoyaltyLevel(DynamicCondition condition) {
-        try {
-            int requiredLevel = Integer.parseInt(condition.getConditionValue());
-            int customerLevel = customerService.getCustomerLoyaltyLevel(condition.getEntityId());
-            return customerLevel >= requiredLevel;
-        } catch (Exception e) {
-            log.error("Error evaluating customer loyalty level: {}", e.getMessage());
+    private boolean evaluateCustomerBasedCondition(DynamicCondition condition, Order order) {
+        if (order.getCustomerId() == null) {
             return false;
         }
-    }
 
-    private boolean evaluatePurchaseHistory(DynamicCondition condition) {
-        try {
-            String[] params = condition.getConditionValue().split(",");
-            if (params.length != 2) {
+        switch (condition.getConditionType().toUpperCase()) {
+            case "CUSTOMER_LOYALTY":
+                int customerLevel = customerService.getCustomerLoyaltyLevel(order.getCustomerId());
+                return condition.evaluateNumeric((double) customerLevel);
+            case "CUSTOMER_GROUP":
+                return evaluatePurchaseHistory(condition, order.getCustomerId());
+            case "PURCHASE_HISTORY":
+                return evaluatePurchaseHistory(condition, order.getCustomerId());
+            default:
                 return false;
-            }
-            int minPurchases = Integer.parseInt(params[0]);
-            double minAmount = Double.parseDouble(params[1]);
-
-            Map<String, Object> purchaseHistory = customerService.getCustomerPurchaseHistory(condition.getEntityId());
-            int totalPurchases = (int) purchaseHistory.get("totalPurchases");
-            double totalAmount = (double) purchaseHistory.get("totalAmount");
-
-            return totalPurchases >= minPurchases && totalAmount >= minAmount;
-        } catch (Exception e) {
-            log.error("Error evaluating purchase history: {}", e.getMessage());
-            return false;
         }
     }
 
-    private boolean evaluateCustomerGroup(DynamicCondition condition) {
-        try {
-            Set<String> customerGroups = customerService.getCustomerGroups(condition.getEntityId());
-            return customerGroups.contains(condition.getConditionValue());
-        } catch (Exception e) {
-            log.error("Error evaluating customer group: {}", e.getMessage());
-            return false;
-        }
+    private boolean evaluatePurchaseHistory(DynamicCondition condition, Long customerId) {
+        BigDecimal totalSpent = customerService.getCustomerTotalSpent(customerId);
+        return condition.evaluateNumeric(totalSpent.doubleValue());
     }
 
-    private boolean evaluateProductBasedCondition(DynamicCondition condition) {
+    private boolean evaluateProductBasedCondition(DynamicCondition condition, Order order) {
         switch (condition.getOperator()) {
             case "CATEGORY":
                 return evaluateProductCategory(condition);
@@ -319,8 +269,8 @@ public class ConditionEvaluator {
 
     private boolean evaluateProductCategory(DynamicCondition condition) {
         try {
-            String productCategory = productService.getProductCategory(condition.getEntityId());
-            return productCategory.equals(condition.getConditionValue());
+            List<String> productCategories = productService.getProductCategory(condition.getEntityId());
+            return productCategories.contains(condition.getConditionValue());
         } catch (Exception e) {
             log.error("Error evaluating product category: {}", e.getMessage());
             return false;
@@ -347,7 +297,7 @@ public class ConditionEvaluator {
     private boolean evaluateProductStockLevel(DynamicCondition condition) {
         try {
             int minStock = Integer.parseInt(condition.getConditionValue());
-            int currentStock = inventoryService.getProductStockLevel(condition.getEntityId());
+            int currentStock = inventoryService.getProductStockLevel(Long.valueOf(condition.getEntityId()));
             return currentStock >= minStock;
         } catch (Exception e) {
             log.error("Error evaluating product stock level: {}", e.getMessage());
@@ -355,24 +305,24 @@ public class ConditionEvaluator {
         }
     }
 
-    private boolean evaluateCartBasedCondition(DynamicCondition condition) {
+    private boolean evaluateOrderBasedCondition(DynamicCondition condition, Order order) {
         switch (condition.getOperator()) {
             case "TOTAL_ITEMS":
-                return evaluateCartTotalItems(condition);
+                return evaluateOrderTotalItems(condition);
             case "TOTAL_AMOUNT":
                 return evaluateCartTotalAmount(condition);
             case "ITEM_CATEGORIES":
-                return evaluateCartItemCategories(condition);
+                return evaluateOrderItemCategories(condition);
             default:
                 log.warn("Unknown cart condition operator: {}", condition.getOperator());
                 return false;
         }
     }
 
-    private boolean evaluateCartTotalItems(DynamicCondition condition) {
+    private boolean evaluateOrderTotalItems(DynamicCondition condition) {
         try {
             int requiredItems = Integer.parseInt(condition.getConditionValue());
-            int totalItems = condition.getCart().getItems().stream()
+            int totalItems = condition.getOrder().getItems().stream()
                     .mapToInt(item -> item.getOriginalItem().getQuantity())
                     .sum();
             return totalItems >= requiredItems;
@@ -385,7 +335,7 @@ public class ConditionEvaluator {
     private boolean evaluateCartTotalAmount(DynamicCondition condition) {
         try {
             double requiredAmount = Double.parseDouble(condition.getConditionValue());
-            double cartTotal = condition.getCart().getFinalTotalPrice().doubleValue();
+            double cartTotal = condition.getOrder().getFinalTotalPrice().doubleValue();
             return cartTotal >= requiredAmount;
         } catch (Exception e) {
             log.error("Error evaluating cart total amount: {}", e.getMessage());
@@ -393,15 +343,26 @@ public class ConditionEvaluator {
         }
     }
 
-    private boolean evaluateCartItemCategories(DynamicCondition condition) {
+    private boolean evaluateOrderItemCategories(DynamicCondition condition) {
         try {
-            String[] requiredCategories = condition.getConditionValue().split(",");
-            Set<String> cartCategories = condition.getCart().getItems().stream()
-                    .map(item -> productService.getProductCategory(item.getOriginalItem().getProductId()))
+            Set<String> requiredCategories = Arrays.stream(condition.getConditionValue().split(","))
+                    .map(String::trim)
                     .collect(Collectors.toSet());
-            
-            return Set.of(requiredCategories).stream()
-                    .allMatch(cartCategories::contains);
+
+            Set<String> orderCategories = condition.getOrder().getItems().stream()
+                    .map(item -> {
+                        try {
+                            List<String> path = productService.getProductCategory(item.getOriginalItem().getProductId().toString());
+                            return path.get(0); // أو path.get(n) أو path كاملة لو بغيت
+                        } catch (Exception e) {
+                            log.warn("Failed to get product category for item {}: {}", item.getId(), e.getMessage());
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet());
+
+            return requiredCategories.stream().allMatch(orderCategories::contains);
         } catch (Exception e) {
             log.error("Error evaluating cart item categories: {}", e.getMessage());
             return false;

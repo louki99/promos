@@ -22,4 +22,8 @@ public interface ProductManagementUseCase{
     boolean existsByReference(String reference);
     boolean existsByBarcode(String barcode);
     ProductResponse getProductNameById(ProductId id);
-} 
+
+    List<String>  getProductCategory(String entityId);
+
+    double getProductPrice(String entityId);
+}

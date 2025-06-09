@@ -1,8 +1,8 @@
 package ma.foodplus.ordering.system.promos.service;
 
 import lombok.Getter;
+import ma.foodplus.ordering.system.order.model.Order;
 import ma.foodplus.ordering.system.promos.component.AppliedPromotion;
-import ma.foodplus.ordering.system.promos.component.Cart;
 import ma.foodplus.ordering.system.promos.dto.FreeItemLog;
 import ma.foodplus.ordering.system.promos.model.Promotion;
 
@@ -21,7 +21,7 @@ import java.util.*;
 @Getter
 public class PromotionContext {
 
-    private final Cart cart;
+    private final Order order;
     private final Set<Promotion> appliedPromotions;
     private final Set<String> appliedCombinabilityGroups;
     private final Map<String, BigDecimal> appliedDiscounts;
@@ -40,13 +40,13 @@ public class PromotionContext {
 
     /**
      * Constructs a new PromotionContext for a given cart.
-     * @param cart The initial cart to be processed.
+     * @param order The initial cart to be processed.
      */
-    public PromotionContext(Cart cart) {
-        if (cart == null) {
+    public PromotionContext(Order order) {
+        if (order== null) {
             throw new IllegalArgumentException("Cart cannot be null.");
         }
-        this.cart = cart;
+        this.order=order;
         this.appliedPromotions = new HashSet<>();
         this.appliedCombinabilityGroups = new HashSet<>();
         this.appliedDiscounts = new HashMap<>();
@@ -81,7 +81,7 @@ public class PromotionContext {
      */
     public void logAppliedDiscount(String promoCode, String description, BigDecimal discountAmount) {
         if (discountAmount != null && discountAmount.compareTo(BigDecimal.ZERO) > 0) {
-            this.appliedPromotionsLog.add(new AppliedPromotion(promoCode, description, discountAmount));
+            this.appliedPromotionsLog.add(new AppliedPromotion(promoCode, description, discountAmount, Collections.emptyList()));
             appliedDiscounts.merge(promoCode, discountAmount, BigDecimal::add);
         }
     }
@@ -110,8 +110,8 @@ public class PromotionContext {
 
     // --- Methods for Querying State (called by the Engine and Applicator) ---
 
-    public Cart getCart() {
-        return cart;
+    public Order getOrder() {
+        return order;
     }
 
     public boolean isExclusivePromotionApplied() {

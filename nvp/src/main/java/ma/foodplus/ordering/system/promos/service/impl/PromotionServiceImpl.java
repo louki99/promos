@@ -6,12 +6,15 @@ import ma.foodplus.ordering.system.promos.mapper.PromotionMapper;
 import ma.foodplus.ordering.system.promos.mapper.PromotionRuleMapper;
 import ma.foodplus.ordering.system.promos.model.Promotion;
 import ma.foodplus.ordering.system.promos.model.PromotionRule;
+import ma.foodplus.ordering.system.promos.model.PromotionTier;
+import ma.foodplus.ordering.system.promos.model.Condition;
 import ma.foodplus.ordering.system.promos.repository.PromotionRepository;
 import ma.foodplus.ordering.system.promos.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,15 +40,17 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public Optional<PromotionDTO> getPromotionById(Integer id) {
+    public PromotionDTO getPromotionById(Integer id) {
         return promotionRepository.findById(id)
-                .map(promotionMapper::toDTO);
+                .map(promotionMapper::toDTO)
+                .orElseThrow(() -> new RuntimeException("Promotion not found"));
     }
 
     @Override
-    public Optional<PromotionDTO> getPromotionByCode(String promoCode) {
+    public PromotionDTO getPromotionByCode(String promoCode) {
         return promotionRepository.findByCode(promoCode)
-                .map(promotionMapper::toDTO);
+                .map(promotionMapper::toDTO)
+                .orElseThrow(() -> new RuntimeException("Promotion not found"));
     }
 
     @Override
@@ -181,20 +186,73 @@ public class PromotionServiceImpl implements PromotionService {
         return bestCombination;
     }
 
+    @Override
+    public boolean hasActivePromotions(Long productId) {
+        return promotionRepository.findActivePromotions(ZonedDateTime.now())
+                .stream()
+                .anyMatch(promo -> promo.getRules().stream()
+                        .anyMatch(rule -> rule.getConditions().stream()
+                                .anyMatch(condition -> condition.getConditionType() == Condition.ConditionType.PRODUCT_IN_CART &&
+                                        condition.getEntityId() != null && 
+                                        condition.getEntityId().equals(productId.toString()))));
+    }
+
     private boolean isPromotionEligible(Promotion promotion, Double orderAmount, Integer itemQuantity) {
         return promotion.getRules().stream()
-                .anyMatch(rule -> isRuleEligible(rule, orderAmount, itemQuantity));
+                .allMatch(rule -> isRuleEligible(rule, orderAmount, itemQuantity));
     }
 
     private boolean isRuleEligible(PromotionRule rule, Double orderAmount, Integer itemQuantity) {
-        // Implementation depends on specific rule conditions
-        // This is a placeholder for the actual logic
-        return true;
+        if (!rule.hasValidConditions()) {
+            return false;
+        }
+
+        // Convert order amount and quantity to BigDecimal for comparison
+        BigDecimal amount = BigDecimal.valueOf(orderAmount);
+        BigDecimal quantity = BigDecimal.valueOf(itemQuantity);
+
+        // Check if any tier is applicable
+        if (rule.hasValidTiers()) {
+            PromotionTier applicableTier = rule.findApplicableTier(
+                    rule.getBreakpointType() == PromotionRule.BreakpointType.AMOUNT ? amount : quantity
+            );
+            if (applicableTier == null) {
+                return false;
+            }
+        }
+
+        // Evaluate conditions based on the rule's logic
+        return rule.evaluateConditions(rule.getConditions());
     }
 
-    private Double calculateRuleDiscount(PromotionRuleDTO rule, Double orderAmount, Integer itemQuantity) {
-        // Implementation depends on specific rule calculation method
-        // This is a placeholder for the actual logic
-        return 0.0;
+    private Double calculateRuleDiscount(PromotionRuleDTO ruleDTO, Double orderAmount, Integer itemQuantity) {
+        PromotionRule rule = ruleMapper.toEntity(ruleDTO);
+        if (!isRuleEligible(rule, orderAmount, itemQuantity)) {
+            return 0.0;
+        }
+
+        BigDecimal amount = BigDecimal.valueOf(orderAmount);
+        BigDecimal quantity = BigDecimal.valueOf(itemQuantity);
+        BigDecimal discount = BigDecimal.ZERO;
+
+        if (rule.hasValidTiers()) {
+            PromotionTier applicableTier = rule.findApplicableTier(
+                    rule.getBreakpointType() == PromotionRule.BreakpointType.AMOUNT ? amount : quantity
+            );
+            if (applicableTier != null) {
+                if (rule.getCalculationMethod() == PromotionRule.CalculationMethod.BRACKET) {
+                    // For bracket calculation, apply the tier's reward to the entire amount
+                    discount = applicableTier.calculateReward(amount);
+                } else {
+                    // For cumulative calculation, apply the tier's reward to the amount above the threshold
+                    BigDecimal amountAboveThreshold = amount.subtract(applicableTier.getMinimumThreshold());
+                    if (amountAboveThreshold.compareTo(BigDecimal.ZERO) > 0) {
+                        discount = applicableTier.calculateReward(amountAboveThreshold);
+                    }
+                }
+            }
+        }
+
+        return discount.doubleValue();
     }
 } 

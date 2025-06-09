@@ -16,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.math.BigDecimal;
@@ -140,5 +141,39 @@ public class ProductService implements ProductManagementUseCase {
             throw new ProductNotFoundException("Product not found with id: " + id.getValue());
         }
         return mapper.entityToResponse(product.get());
+    }
+
+    @Override
+    public List<String> getProductCategory(String productId){
+        Product product = productRepository.findById(Long.valueOf(productId))
+                .orElseThrow(() -> new ProductNotFoundException("Product not found for id: " + productId));
+
+        List<String> categories = List.of(
+                product.getCategory1(),
+                product.getCategory2(),
+                product.getCategory3(),
+                product.getCategory4()
+        );
+
+        if (categories.stream().anyMatch(Objects::isNull)) {
+            throw new ProductNotFoundException("Product categories not found for id: " + productId);
+        }
+
+        return categories;
+    }
+
+
+    @Override
+    public double getProductPrice(String entityId){
+        Optional<Product> product = productRepository.findById(Long.parseLong(entityId));
+        if (product.isEmpty()) {
+            throw new ProductNotFoundException("Product not found with id: " + entityId);
+        }
+        BigDecimal salePrice=product.get().getSalePrice();
+        if (salePrice == null) {
+            throw new ProductNotFoundException("Product sale price not found for id: " + entityId);
+        }
+        return salePrice.doubleValue();
+
     }
 }

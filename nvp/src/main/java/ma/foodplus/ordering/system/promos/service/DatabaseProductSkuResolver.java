@@ -42,9 +42,7 @@ public class DatabaseProductSkuResolver implements ProductSkuResolver {
             return BigDecimal.ZERO;
         }
 
-        // The repository method returns an Optional<BigDecimal>.
-        // The orElse() method provides a default value if the Optional is empty
-        // (i.e., the product was not found), which prevents NullPointerExceptions.
+        // Fetch the SKU points from the repository, returning BigDecimal.ZERO if not found
         return productRepository.findPromoSkuPointsById(productId)
                 .orElse(BigDecimal.ZERO);
     }

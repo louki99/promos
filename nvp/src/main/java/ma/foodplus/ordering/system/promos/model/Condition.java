@@ -1,6 +1,9 @@
 package ma.foodplus.ordering.system.promos.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "promotion_conditions")
@@ -8,19 +11,23 @@ public class Condition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ConditionType conditionType;
 
+    @NotBlank
     @Column(nullable = false)
     private String attribute;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Operator operator;
 
+    @NotBlank
     @Column(nullable = false)
     private String value;
 
@@ -29,6 +36,15 @@ public class Condition {
 
     @Column(name = "entity_id")
     private String entityId;
+
+    @Column(name = "customer_group_id")
+    private Long customerGroupId;
+
+    @Column(name = "required_loyalty_level")
+    private Integer requiredLoyaltyLevel;
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rule_id")
@@ -57,12 +73,95 @@ public class Condition {
         NOT_IN
     }
 
+    // Constructors
+    public Condition() {
+    }
+
+    public Condition(ConditionType conditionType, String attribute, Operator operator, String value) {
+        this.conditionType = conditionType;
+        this.attribute = attribute;
+        this.operator = operator;
+        this.value = value;
+    }
+
+    // Business Logic Methods
+    public boolean evaluate() {
+        switch (conditionType) {
+            case CART_SUBTOTAL:
+                return evaluateNumericComparison(new BigDecimal(value));
+            case PRODUCT_IN_CART:
+                return evaluateProductInCart();
+            case CUSTOMER_IN_GROUP:
+                return evaluateCustomerGroup();
+            case TIME_OF_DAY:
+                return evaluateTimeOfDay();
+            case DAY_OF_WEEK:
+                return evaluateDayOfWeek();
+            case CUSTOMER_LOYALTY_LEVEL:
+                return evaluateLoyaltyLevel();
+            case PAYMENT_METHOD:
+                return evaluatePaymentMethod();
+            default:
+                return false;
+        }
+    }
+
+    private boolean evaluateNumericComparison(BigDecimal threshold) {
+        BigDecimal actualValue = new BigDecimal(attribute);
+        switch (operator) {
+            case EQUAL:
+                return actualValue.compareTo(threshold) == 0;
+            case NOT_EQUAL:
+                return actualValue.compareTo(threshold) != 0;
+            case GREATER_THAN:
+                return actualValue.compareTo(threshold) > 0;
+            case GREATER_THAN_OR_EQUAL:
+                return actualValue.compareTo(threshold) >= 0;
+            case LESS_THAN:
+                return actualValue.compareTo(threshold) < 0;
+            case LESS_THAN_OR_EQUAL:
+                return actualValue.compareTo(threshold) <= 0;
+            default:
+                return false;
+        }
+    }
+
+    private boolean evaluateProductInCart() {
+        // Implementation depends on cart context
+        return false;
+    }
+
+    private boolean evaluateCustomerGroup() {
+        // Implementation depends on customer context
+        return false;
+    }
+
+    private boolean evaluateTimeOfDay() {
+        // Implementation depends on time context
+        return false;
+    }
+
+    private boolean evaluateDayOfWeek() {
+        // Implementation depends on time context
+        return false;
+    }
+
+    private boolean evaluateLoyaltyLevel() {
+        // Implementation depends on customer context
+        return false;
+    }
+
+    private boolean evaluatePaymentMethod() {
+        // Implementation depends on payment context
+        return false;
+    }
+
     // Getters and Setters
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -114,11 +213,59 @@ public class Condition {
         this.entityId = entityId;
     }
 
+    public Long getCustomerGroupId() {
+        return customerGroupId;
+    }
+
+    public void setCustomerGroupId(Long customerGroupId) {
+        this.customerGroupId = customerGroupId;
+    }
+
+    public Integer getRequiredLoyaltyLevel() {
+        return requiredLoyaltyLevel;
+    }
+
+    public void setRequiredLoyaltyLevel(Integer requiredLoyaltyLevel) {
+        this.requiredLoyaltyLevel = requiredLoyaltyLevel;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
     public PromotionRule getRule() {
         return rule;
     }
 
     public void setRule(PromotionRule rule) {
         this.rule = rule;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Condition condition = (Condition) o;
+        return Objects.equals(id, condition.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Condition{" +
+                "id=" + id +
+                ", conditionType=" + conditionType +
+                ", attribute='" + attribute + '\'' +
+                ", operator=" + operator +
+                ", value='" + value + '\'' +
+                '}';
     }
 } 
