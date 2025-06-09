@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, UUID> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByReference(String reference);
     Optional<Product> findByBarcode(String barcode);
     List<Product> findByFamilyCode(String familyCode);

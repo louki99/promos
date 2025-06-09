@@ -16,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -129,5 +130,14 @@ public class ProductService implements ProductManagementUseCase {
     @Cacheable(value = CacheConstants.PRODUCT_CACHE, key = "'exists:barcode:' + #barcode")
     public boolean existsByBarcode(String barcode) {
         return productRepository.existsByBarcode(barcode);
+    }
+
+    @Override
+    public ProductResponse getProductNameById(ProductId id){
+        Optional<Product> product=productRepository.findById(id.getValue());
+        if (product.isEmpty()) {
+            throw new ProductNotFoundException("Product not found with id: " + id.getValue());
+        }
+        return mapper.entityToResponse(product.get());
     }
 }

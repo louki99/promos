@@ -35,6 +35,9 @@ public class Promotion {
 
     private boolean isActive;
 
+    @Column(name = "apply_first_matching_rule_only")
+    private boolean applyFirstMatchingRuleOnly;
+
     // علاقة One-to-Many مع القواعد الترويجية
     @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PromotionRule> rules;
@@ -80,6 +83,10 @@ public class Promotion {
         return isActive;
     }
 
+    public boolean isApplyFirstMatchingRuleOnly() {
+        return applyFirstMatchingRuleOnly;
+    }
+
     public List<PromotionRule> getRules(){
         return rules;
     }
@@ -122,6 +129,10 @@ public class Promotion {
 
     public void setActive(boolean active){
         isActive=active;
+    }
+
+    public void setApplyFirstMatchingRuleOnly(boolean applyFirstMatchingRuleOnly) {
+        this.applyFirstMatchingRuleOnly = applyFirstMatchingRuleOnly;
     }
 
     public void setRules(List<PromotionRule> rules){

@@ -1,5 +1,6 @@
 package ma.foodplus.ordering.system.promos.service;
 
+import lombok.Getter;
 import ma.foodplus.ordering.system.promos.component.AppliedPromotion;
 import ma.foodplus.ordering.system.promos.component.Cart;
 import ma.foodplus.ordering.system.promos.dto.FreeItemLog;
@@ -17,14 +18,16 @@ import java.util.*;
  * This class is not thread-safe and is intended to be used for a single
  * execution of the promotion engine.
  */
+@Getter
 public class PromotionContext {
 
     private final Cart cart;
+    private final Set<Promotion> appliedPromotions;
+    private final Set<String> appliedCombinabilityGroups;
+    private final Map<String, BigDecimal> appliedDiscounts;
+    private final Map<String, List<FreeItem>> freeItems;
 
     // --- State Tracking Fields ---
-
-    /** Tracks which combinability groups have been used to prevent applying multiple promotions from the same group. */
-    private final Set<String> usedCombinabilityGroups = new HashSet<>();
 
     /** A flag that is set to true once an exclusive promotion is applied, preventing any further promotions. */
     private boolean exclusivePromotionApplied = false;
@@ -35,7 +38,6 @@ public class PromotionContext {
     /** A map to store free items granted by promotions. Key: Product ID, Value: A simple holder for quantity and reason. */
     private final Map<Long, FreeItemLog> freeItemsLog = new HashMap<>();
 
-
     /**
      * Constructs a new PromotionContext for a given cart.
      * @param cart The initial cart to be processed.
@@ -45,6 +47,10 @@ public class PromotionContext {
             throw new IllegalArgumentException("Cart cannot be null.");
         }
         this.cart = cart;
+        this.appliedPromotions = new HashSet<>();
+        this.appliedCombinabilityGroups = new HashSet<>();
+        this.appliedDiscounts = new HashMap<>();
+        this.freeItems = new HashMap<>();
     }
 
 
@@ -57,11 +63,12 @@ public class PromotionContext {
      * @param promotion The promotion that was just applied.
      */
     public void markPromotionAsApplied(Promotion promotion) {
+        appliedPromotions.add(promotion);
         if (promotion.isExclusive()) {
             this.exclusivePromotionApplied = true;
         }
         if (promotion.getCombinabilityGroup() != null && !promotion.getCombinabilityGroup().isBlank()) {
-            this.usedCombinabilityGroups.add(promotion.getCombinabilityGroup());
+            this.appliedCombinabilityGroups.add(promotion.getCombinabilityGroup());
         }
     }
 
@@ -75,6 +82,7 @@ public class PromotionContext {
     public void logAppliedDiscount(String promoCode, String description, BigDecimal discountAmount) {
         if (discountAmount != null && discountAmount.compareTo(BigDecimal.ZERO) > 0) {
             this.appliedPromotionsLog.add(new AppliedPromotion(promoCode, description, discountAmount));
+            appliedDiscounts.merge(promoCode, discountAmount, BigDecimal::add);
         }
     }
 
@@ -95,6 +103,8 @@ public class PromotionContext {
                 return existingLog;
             }
         });
+        freeItems.computeIfAbsent(promoCode, k -> new ArrayList<>())
+                .add(new FreeItem(productId, quantity));
     }
 
 
@@ -110,7 +120,7 @@ public class PromotionContext {
 
     public Set<String> getUsedCombinabilityGroups() {
         // Return a copy to prevent external modification
-        return new HashSet<>(usedCombinabilityGroups);
+        return new HashSet<>(appliedCombinabilityGroups);
     }
 
     public List<AppliedPromotion> getAppliedPromotionsLog() {
@@ -133,8 +143,39 @@ public class PromotionContext {
     public Set<String> getAppliedCombinabilityGroups() {
         // I am returning the direct reference here for performance. Since the Set itself is final
         // and only modified internally, this is safe within the context of a single-threaded engine run.
-        // For absolute safety, one could return `new HashSet<>(usedCombinabilityGroups)`, but it's often not necessary.
-        return this.usedCombinabilityGroups;
+        // For absolute safety, one could return `new HashSet<>(appliedCombinabilityGroups)`, but it's often not necessary.
+        return this.appliedCombinabilityGroups;
+    }
+
+    public boolean hasExclusivePromotionApplied() {
+        return appliedPromotions.stream().anyMatch(Promotion::isExclusive);
+    }
+
+    public boolean hasAppliedPromotions() {
+        return !appliedPromotions.isEmpty();
+    }
+
+    public BigDecimal getTotalDiscountApplied() {
+        return appliedDiscounts.values().stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public static class FreeItem {
+        private final Long productId;
+        private final int quantity;
+
+        public FreeItem(Long productId, int quantity) {
+            this.productId = productId;
+            this.quantity = quantity;
+        }
+
+        public Long getProductId() {
+            return productId;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
     }
 
     // This method lives inside the AdvancedPromotionEngine class.

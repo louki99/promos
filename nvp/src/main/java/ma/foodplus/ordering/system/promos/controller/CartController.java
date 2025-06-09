@@ -1,31 +1,45 @@
 package ma.foodplus.ordering.system.promos.controller;
 
 import jakarta.validation.Valid;
-import ma.foodplus.ordering.system.promos.dto.ApplyPromotionRequest;
-import ma.foodplus.ordering.system.promos.dto.ApplyPromotionResponse;
+import lombok.RequiredArgsConstructor;
+import ma.foodplus.ordering.system.promos.dto.*;
+import ma.foodplus.ordering.system.promos.service.PromotionApplicationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/cart")
+@RequiredArgsConstructor
 public class CartController {
 
-    // ... inject your service here
+    private final PromotionApplicationService promotionApplicationService;
 
-    // When a POST request is made to /api/cart/calculate,
-    // Spring Boot will automatically try to create an `ApplyPromotionRequest`
-    // object from the JSON body. This request object would contain a list of `CartItemDto`.
-    @PostMapping ("/api/promotions/apply")
-    public ResponseEntity<ApplyPromotionResponse> applyPromotions(
+    @PostMapping("/calculate")
+    public ResponseEntity<ApplyPromotionResponse> calculateCartWithPromotions(
             @Valid @RequestBody ApplyPromotionRequest request) {
+        return ResponseEntity.ok(promotionApplicationService.calculatePromotions(request));
+    }
 
-        // The @Valid annotation tells Spring to run the validators (@NotNull, @Positive)
-        // on the incoming request object and its fields.
+    @GetMapping("/eligible-promotions")
+    public ResponseEntity<List<PromotionDTO>> getEligiblePromotions(
+            @Valid @RequestBody ApplyPromotionRequest request) {
+        return ResponseEntity.ok(promotionApplicationService.getEligiblePromotions(request));
+    }
 
-        // ... call your promotion engine service with the validated DTO data
+    @GetMapping("/validate-promotion/{promoCode}")
+    public ResponseEntity<Boolean> validatePromotionForCart(
+            @PathVariable String promoCode,
+            @Valid @RequestBody ApplyPromotionRequest request) {
+        return ResponseEntity.ok(promotionApplicationService.validatePromotionCode(request, promoCode));
+    }
 
-        return ResponseEntity.ok(yourCalculatedResponse);
+    @GetMapping("/promotion-breakdown/{promoCode}")
+    public ResponseEntity<PromotionBreakdownDTO> getPromotionBreakdownForCart(
+            @PathVariable String promoCode,
+            @Valid @RequestBody ApplyPromotionRequest request) {
+        return ResponseEntity.ok(promotionApplicationService.getPromotionBreakdown(request, promoCode));
     }
 }
 

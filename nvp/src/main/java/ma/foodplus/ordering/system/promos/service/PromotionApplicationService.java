@@ -43,8 +43,8 @@ public class PromotionApplicationService {
         try {
             validateRequest(request);
             Cart cart = createCartFromRequest(request);
-            Cart finalCart = promotionEngine.apply(cart);
-            return createResponseFromCart(finalCart);
+            PromotionContext context = promotionEngine.apply(cart);
+            return createResponseFromCart(context.getCart());
         } catch (Exception e) {
             log.error("Failed to calculate promotions for request: {}", request, e);
             throw new PromotionApplicationException("Failed to calculate promotions", e);
@@ -117,9 +117,8 @@ public class PromotionApplicationService {
             }
 
             // Apply the promotion to a copy of the cart to see its effects
-            Cart cartWithPromotion = promotionEngine.applyPromotion(cart, promotion.get());
-            
-            return createPromotionBreakdown(cart, cartWithPromotion, promotion.get());
+            PromotionContext context = promotionEngine.applyPromotion(cart, promotion.get());
+            return createPromotionBreakdown(cart, context.getCart(), promotion.get());
         } catch (Exception e) {
             log.error("Failed to get promotion breakdown for code: {} and request: {}", promotionCode, request, e);
             throw new PromotionApplicationException("Failed to get promotion breakdown", e);
