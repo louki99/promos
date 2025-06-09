@@ -4,35 +4,44 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="build product">
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/component/AppliedPromotion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/component/Cart.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/component/CartItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/controller/CartController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/ApplyPromotionRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/ApplyPromotionResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/CartItemDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/FreeItemDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/FreeItemLog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/LineItemResultDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Promotion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/PromotionRule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/PromotionTier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Reward.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/repository/PromotionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/AdvancedPromotionEngine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/CartItemContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/ConditionEvaluator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/DatabaseProductSkuResolver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/ProductSkuResolver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/RewardApplicator.java" afterDir="false" />
+    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="build promos">
+      <change afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/foodplus-ordering.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/foodplus-ordering.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/mapper/ProductPersistenceMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/mapper/ProductPersistenceMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/model/ProductJpaEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/model/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/repository/ProductJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/repository/ProductRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/src/main/java/ma/foodplus/ordering/system/domain/valueobject/ProductId.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/src/main/java/ma/foodplus/ordering/system/domain/valueobject/ProductId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/ProductId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/ProductId.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductManagementUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductManagementUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/component/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/component/Cart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/component/CartItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/component/CartItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/ApplyPromotionResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/ApplyPromotionResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Promotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Promotion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/PromotionRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/PromotionRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/repository/PromotionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/repository/PromotionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/AdvancedPromotionEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/AdvancedPromotionEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/CartItemContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/CartItemContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/ConditionEvaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/ConditionEvaluator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/RewardApplicator.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/RewardApplicator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/controller/ProductController.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/controller/ProductController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/mapper/ProductPersistenceMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/mapper/ProductPersistenceMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/model/Product$ProductBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/model/Product$ProductBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/model/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/model/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/service/ProductManagementUseCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/service/ProductManagementUseCase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/service/ProductService.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/product/service/ProductService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/component/Cart.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/component/Cart.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/component/CartItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/component/CartItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/dto/ApplyPromotionResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/dto/ApplyPromotionResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Promotion.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/Promotion.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$BreakpointType.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$BreakpointType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$CalculationMethod.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$CalculationMethod.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$ConditionLogic.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule$ConditionLogic.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/model/PromotionRule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/repository/PromotionRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/repository/PromotionRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/service/AdvancedPromotionEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/service/AdvancedPromotionEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/service/CartItemContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/service/CartItemContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/service/ConditionEvaluator.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/service/ConditionEvaluator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/service/RewardApplicator.class" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/target/classes/ma/foodplus/ordering/system/promos/service/RewardApplicator.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,11 +197,20 @@
       <option name="project" value="LOCAL" />
       <updated>1749472669807</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="build promos">
+      <option name="closed" value="true" />
+      <created>1749476927050</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1749476927050</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="build product" />
-    <option name="LAST_COMMIT_MESSAGE" value="build product" />
+    <MESSAGE value="build promos" />
+    <option name="LAST_COMMIT_MESSAGE" value="build promos" />
   </component>
 </project>

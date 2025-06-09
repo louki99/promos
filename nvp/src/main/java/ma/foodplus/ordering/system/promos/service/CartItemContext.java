@@ -93,7 +93,6 @@ public class CartItemContext {
     }
 
     /**
-
      * @return The total cumulative discount that has been applied to this item so far.
      */
     public BigDecimal getTotalDiscountApplied() {

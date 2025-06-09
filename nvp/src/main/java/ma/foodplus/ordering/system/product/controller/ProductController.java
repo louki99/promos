@@ -35,9 +35,9 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     @Operation(summary = "Get a product by ID")
-    public ResponseEntity<ProductResponse> getProductById(@PathVariable String productId) {
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long productId) {
         return ResponseEntity.ok(productService.getProduct(
-                new ProductId(UUID.fromString(productId))));
+                new ProductId(productId)));
     }
 
     @PostMapping
@@ -51,16 +51,16 @@ public class ProductController {
     @PutMapping("/{productId}")
     @Operation(summary = "Update a product")
     @CacheEvict(value = {CacheConstants.PRODUCTS_CACHE, CacheConstants.PRODUCT_CACHE}, allEntries = true)
-    public ResponseEntity<ProductId> updateProduct(@PathVariable String productId, @RequestBody UpdateProductCommand updateProductCommand) {
+    public ResponseEntity<ProductId> updateProduct(@PathVariable Long productId, @RequestBody UpdateProductCommand updateProductCommand) {
         return ResponseEntity.ok(
-                productService.updateProduct(new ProductId(UUID.fromString(productId)), updateProductCommand));
+                productService.updateProduct(new ProductId(productId), updateProductCommand));
     }
 
     @DeleteMapping("/{productId}")
     @Operation(summary = "Delete a product")
     @CacheEvict(value = {CacheConstants.PRODUCTS_CACHE, CacheConstants.PRODUCT_CACHE}, allEntries = true)
-    public ResponseEntity<Void> deleteProduct(@PathVariable String productId) {
-        productService.deleteProduct(new ProductId(UUID.fromString(productId)));
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(new ProductId(productId));
         return ResponseEntity.noContent().build();
     }
 

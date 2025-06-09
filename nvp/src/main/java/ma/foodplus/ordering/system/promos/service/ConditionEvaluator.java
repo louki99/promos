@@ -1,11 +1,14 @@
 package ma.foodplus.ordering.system.promos.service;
 
 import ma.foodplus.ordering.system.promos.component.Cart;
+import ma.foodplus.ordering.system.promos.component.CartItemContext;
+import ma.foodplus.ordering.system.promos.model.Condition;
 import ma.foodplus.ordering.system.promos.model.PromotionRule;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 import java.util.stream.Collectors;
 
 /**
@@ -23,7 +26,7 @@ public class ConditionEvaluator {
      * @param logic      The logic to apply (ALL conditions must be true, or ANY one condition must be true).
      * @return True if the conditions are met according to the logic, false otherwise.
      */
-    public boolean evaluate(Cart cart,List<Condition> conditions,PromotionRule.ConditionLogic logic) {
+    public boolean evaluate(Cart cart, List<Condition> conditions, PromotionRule.ConditionLogic logic) {
         if (conditions == null || conditions.isEmpty()) {
             return true; // A rule with no conditions is always considered met.
         }
@@ -56,9 +59,19 @@ public class ConditionEvaluator {
                 return evaluateProductInCart(cart, condition);
 
             case CUSTOMER_IN_GROUP:
-                // This would require fetching customer data.
-                // return evaluateCustomerGroup(cart.getCustomerId(), condition);
-                return true; // Placeholder for now
+                return evaluateCustomerGroup(cart, condition);
+
+            case TIME_OF_DAY:
+                return evaluateTimeOfDay(condition);
+
+            case DAY_OF_WEEK:
+                return evaluateDayOfWeek(condition);
+
+            case CUSTOMER_LOYALTY_LEVEL:
+                return evaluateCustomerLoyaltyLevel(cart, condition);
+
+            case PAYMENT_METHOD:
+                return evaluatePaymentMethod(cart, condition);
 
             default:
                 // It's good practice to log a warning for unhandled condition types.
@@ -99,6 +112,54 @@ public class ConditionEvaluator {
         return checkValue(new BigDecimal(totalQuantity), condition.getOperator(), new BigDecimal(requiredQuantity));
     }
 
+    private boolean evaluateCustomerGroup(Cart cart, Condition condition) {
+        // This would typically involve a service call to check customer group membership
+        // For now, we'll return true as a placeholder
+        return true;
+    }
+
+    private boolean evaluateTimeOfDay(Condition condition) {
+        LocalTime currentTime = ZonedDateTime.now().toLocalTime();
+        LocalTime targetTime = LocalTime.parse(condition.getValue());
+        
+        switch (condition.getOperator()) {
+            case GREATER_THAN:
+                return currentTime.isAfter(targetTime);
+            case LESS_THAN:
+                return currentTime.isBefore(targetTime);
+            case EQUAL:
+                return currentTime.equals(targetTime);
+            default:
+                return false;
+        }
+    }
+
+    private boolean evaluateDayOfWeek(Condition condition) {
+        int currentDay = ZonedDateTime.now().getDayOfWeek().getValue();
+        int targetDay = Integer.parseInt(condition.getValue());
+        
+        switch (condition.getOperator()) {
+            case EQUAL:
+                return currentDay == targetDay;
+            case NOT_EQUAL:
+                return currentDay != targetDay;
+            default:
+                return false;
+        }
+    }
+
+    private boolean evaluateCustomerLoyaltyLevel(Cart cart, Condition condition) {
+        // This would typically involve a service call to check customer loyalty level
+        // For now, we'll return true as a placeholder
+        return true;
+    }
+
+    private boolean evaluatePaymentMethod(Cart cart, Condition condition) {
+        // This would typically involve checking the selected payment method
+        // For now, we'll return true as a placeholder
+        return true;
+    }
+
     /**
      * A generic comparison utility for BigDecimal values.
      *
@@ -109,14 +170,20 @@ public class ConditionEvaluator {
      */
     private boolean checkValue(BigDecimal actualValue, Condition.Operator operator, BigDecimal expectedValue) {
         int comparisonResult = actualValue.compareTo(expectedValue);
+        
         switch (operator) {
-            case GREATER_THAN_OR_EQUAL:
-                return comparisonResult >= 0;
             case EQUAL:
                 return comparisonResult == 0;
+            case NOT_EQUAL:
+                return comparisonResult != 0;
+            case GREATER_THAN:
+                return comparisonResult > 0;
+            case GREATER_THAN_OR_EQUAL:
+                return comparisonResult >= 0;
             case LESS_THAN:
                 return comparisonResult < 0;
-            // Add other operators like GREATER_THAN, LESS_THAN_OR_EQUAL as needed.
+            case LESS_THAN_OR_EQUAL:
+                return comparisonResult <= 0;
             default:
                 return false;
         }

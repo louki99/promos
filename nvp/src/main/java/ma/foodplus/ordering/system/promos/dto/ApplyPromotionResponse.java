@@ -1,7 +1,5 @@
 package ma.foodplus.ordering.system.promos.dto;
 
-// Inside ApplyPromotionResponse.java
-
 import ma.foodplus.ordering.system.promos.component.AppliedPromotion;
 
 import java.math.BigDecimal;
@@ -13,55 +11,41 @@ public class ApplyPromotionResponse {
     private BigDecimal finalTotal;
     private List<LineItemResultDto> lineItems;
     private List<FreeItemDto> freeItems;
-
-    // Here is the list of applied promotions
     private List<AppliedPromotion> appliedPromotions;
 
-    public BigDecimal getOriginalTotal(){
-        return originalTotal;
+    // Private constructor for the builder
+    private ApplyPromotionResponse(Builder builder) {
+        this.originalTotal = builder.originalTotal;
+        this.discountTotal = builder.discountTotal;
+        this.finalTotal = builder.finalTotal;
+        this.lineItems = builder.lineItems;
+        this.freeItems = builder.freeItems;
+        this.appliedPromotions = builder.appliedPromotions;
     }
 
-    public BigDecimal getDiscountTotal(){
-        return discountTotal;
+    // Getters...
+
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public BigDecimal getFinalTotal(){
-        return finalTotal;
-    }
+    public static class Builder {
+        private BigDecimal originalTotal;
+        private BigDecimal discountTotal;
+        private BigDecimal finalTotal;
+        private List<LineItemResultDto> lineItems;
+        private List<FreeItemDto> freeItems;
+        private List<AppliedPromotion> appliedPromotions;
 
-    public List<LineItemResultDto> getLineItems(){
-        return lineItems;
-    }
+        public Builder originalTotal(BigDecimal val) { originalTotal = val; return this; }
+        public Builder discountTotal(BigDecimal val) { discountTotal = val; return this; }
+        public Builder finalTotal(BigDecimal val) { finalTotal = val; return this; }
+        public Builder lineItems(List<LineItemResultDto> val) { lineItems = val; return this; }
+        public Builder freeItems(List<FreeItemDto> val) { freeItems = val; return this; }
+        public Builder appliedPromotions(List<AppliedPromotion> val) { appliedPromotions = val; return this; }
 
-    public List<FreeItemDto> getFreeItems(){
-        return freeItems;
-    }
-
-    public List<AppliedPromotion> getAppliedPromotions(){
-        return appliedPromotions;
-    }
-
-    public void setOriginalTotal(BigDecimal originalTotal){
-        this.originalTotal=originalTotal;
-    }
-
-    public void setDiscountTotal(BigDecimal discountTotal){
-        this.discountTotal=discountTotal;
-    }
-
-    public void setFinalTotal(BigDecimal finalTotal){
-        this.finalTotal=finalTotal;
-    }
-
-    public void setLineItems(List<LineItemResultDto> lineItems){
-        this.lineItems=lineItems;
-    }
-
-    public void setFreeItems(List<FreeItemDto> freeItems){
-        this.freeItems=freeItems;
-    }
-
-    public void setAppliedPromotions(List<AppliedPromotion> appliedPromotions){
-        this.appliedPromotions=appliedPromotions;
+        public ApplyPromotionResponse build() {
+            return new ApplyPromotionResponse(this);
+        }
     }
 }

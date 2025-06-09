@@ -21,4 +21,5 @@ public interface ProductManagementUseCase{
     void deleteProduct(ProductId id);
     boolean existsByReference(String reference);
     boolean existsByBarcode(String barcode);
+    ProductResponse getProductNameById(ProductId id);
 } 

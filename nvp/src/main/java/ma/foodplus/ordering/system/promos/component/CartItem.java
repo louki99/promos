@@ -15,16 +15,17 @@ import java.util.Objects;
  */
 public final class CartItem {
 
-    private final Long productId;
-    private final String productName;
-    private final int quantity;
-    private final BigDecimal unitPrice;
+    private Long productId;
+    private Long productFamilyId;
+    private String productName;
+    private BigDecimal price;
+    private int quantity;
+    private String sku;
 
     // Enriched data from the database
-    private final Long productFamilyId;
     private final BigDecimal skuPoints;
 
-    public CartItem(Long productId, String productName, int quantity, BigDecimal unitPrice, Long productFamilyId, BigDecimal skuPoints) {
+    public CartItem(Long productId,Long productFamilyId,String productName,BigDecimal price,int quantity,String sku,BigDecimal skuPoints) {
         // Perform rigorous validation to ensure the integrity of the domain object.
         if (productId == null) {
             throw new IllegalArgumentException("Product ID cannot be null.");
@@ -32,15 +33,16 @@ public final class CartItem {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
-        if (unitPrice == null || unitPrice.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Unit price must be non-negative.");
+        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Price must be non-negative.");
         }
 
         this.productId = productId;
-        this.productName = Objects.requireNonNullElse(productName, "Unknown Product");
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
         this.productFamilyId = productFamilyId;
+        this.productName=productName;
+        this.price = price;
+        this.quantity = quantity;
+        this.sku = sku;
         this.skuPoints = Objects.requireNonNullElse(skuPoints, BigDecimal.ZERO);
     }
 
@@ -52,7 +54,7 @@ public final class CartItem {
      * @return The total price (quantity * unitPrice).
      */
     public BigDecimal getOriginalTotalPrice() {
-        return this.unitPrice.multiply(new BigDecimal(this.quantity));
+        return this.price.multiply(new BigDecimal(this.quantity));
     }
 
     /**
@@ -71,24 +73,24 @@ public final class CartItem {
         return productId;
     }
 
+    public Long getProductFamilyId() {
+        return productFamilyId;
+    }
+
     public String getProductName() {
         return productName;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
-    public Long getProductFamilyId() {
-        return productFamilyId;
-    }
-
-    public BigDecimal getSkuPoints() {
-        return skuPoints;
+    public String getSku() {
+        return sku;
     }
 
     // --- Standard Object Methods ---
@@ -97,9 +99,11 @@ public final class CartItem {
     public String toString() {
         return "CartItem{" +
                 "productId=" + productId +
-                ", productName='" + productName + '\'' +
+                ", productFamilyId=" + productFamilyId +
+                ", name='" +productName+ '\'' +
+                ", price=" + price +
                 ", quantity=" + quantity +
-                ", unitPrice=" + unitPrice +
+                ", sku='" + sku + '\'' +
                 '}';
     }
 

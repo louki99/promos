@@ -1,9 +1,7 @@
 package ma.foodplus.ordering.system.domain.valueobject;
 
-import java.util.UUID;
-
-public class ProductId extends BaseId<UUID> {
-    public ProductId(UUID value) {
+public class ProductId extends BaseId<Long> {
+    public ProductId(Long value) {
         super(value);
     }
 }

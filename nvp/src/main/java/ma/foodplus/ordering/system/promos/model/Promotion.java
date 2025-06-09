@@ -127,4 +127,14 @@ public class Promotion {
     public void setRules(List<PromotionRule> rules){
         this.rules=rules;
     }
+
+    /**
+     * Checks if the promotion is active at the given time.
+     *
+     * @param now The time to check
+     * @return true if the promotion is active, false otherwise
+     */
+    public boolean isActive(ZonedDateTime now) {
+        return startDate.isBefore(now) && (endDate == null || endDate.isAfter(now));
+    }
 }

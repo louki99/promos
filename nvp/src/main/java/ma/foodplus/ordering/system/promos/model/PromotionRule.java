@@ -3,7 +3,6 @@ package ma.foodplus.ordering.system.promos.model;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 
 @Entity
 @Table (name = "promotion_rules")

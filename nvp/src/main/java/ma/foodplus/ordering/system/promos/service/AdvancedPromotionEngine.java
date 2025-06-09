@@ -7,7 +7,7 @@ import ma.foodplus.ordering.system.promos.repository.PromotionRepository;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -23,7 +23,7 @@ public class AdvancedPromotionEngine {
         PromotionContext context = new PromotionContext(initialCart);
 
         // 2. جلب العروض المرتبة حسب الأولوية
-        List<Promotion> promotions = promotionRepository.findActivePromotionsSortedByPriority(LocalDate.now());
+        List<Promotion> promotions = promotionRepository.findActivePromotions(ZonedDateTime.now());
 
         // 3. المرور على العروض لتطبيقها
         for (Promotion promotion : promotions) {
@@ -33,6 +33,19 @@ public class AdvancedPromotionEngine {
             }
         }
 
+        return context.getCart();
+    }
+
+    /**
+     * Applies a specific promotion to a cart.
+     *
+     * @param cart The cart to apply the promotion to
+     * @param promotion The promotion to apply
+     * @return The cart with the promotion applied
+     */
+    public Cart applyPromotion(Cart cart, Promotion promotion) {
+        PromotionContext context = new PromotionContext(cart);
+        processPromotionRules(context, promotion);
         return context.getCart();
     }
 
