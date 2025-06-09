@@ -544,19 +544,33 @@ public class ProductStockServiceImpl implements ProductStockService {
         productStockRepository.findAll().stream()
                 .filter(stock -> stock.getQuantity().compareTo(BigDecimal.ZERO) > 0)
                 .forEach(stock -> {
-                    // Alert for unusual stock movements (e.g., sudden large changes)
                     BigDecimal averageMovement = calculateAverageStockMovement(stock.getId());
                     BigDecimal currentMovement = calculateCurrentStockMovement(stock.getId());
                     
                     if (isUnusualMovement(currentMovement, averageMovement)) {
+                        InventoryAlertResponse.AlertSeverity severity = calculateStockMovementSeverity(currentMovement, averageMovement);
                         alerts.add(InventoryAlertResponse.builder()
                                 .type(InventoryAlertResponse.AlertType.STOCK_MOVEMENT)
-                                .severity(InventoryAlertResponse.AlertSeverity.WARNING)
+                                .severity(severity)
                                 .productStockId(stock.getId())
                                 .productName(stock.getProductName())
                                 .depotName(stock.getDepotName())
                                 .currentQuantity(stock.getQuantity())
                                 .message(generateStockMovementMessage(stock, currentMovement, averageMovement))
+                                .createdAt(stock.getUpdatedAt().toLocalDateTime())
+                                .build());
+                    }
+
+                    // Check for sudden stock depletion
+                    if (isSuddenStockDepletion(stock)) {
+                        alerts.add(InventoryAlertResponse.builder()
+                                .type(InventoryAlertResponse.AlertType.STOCK_MOVEMENT)
+                                .severity(InventoryAlertResponse.AlertSeverity.CRITICAL)
+                                .productStockId(stock.getId())
+                                .productName(stock.getProductName())
+                                .depotName(stock.getDepotName())
+                                .currentQuantity(stock.getQuantity())
+                                .message(generateSuddenDepletionMessage(stock))
                                 .createdAt(stock.getUpdatedAt().toLocalDateTime())
                                 .build());
                     }
@@ -571,13 +585,27 @@ public class ProductStockServiceImpl implements ProductStockService {
                     BigDecimal currentCost = stock.getUnitCost();
                     
                     if (isSignificantCostChange(currentCost, averageCost)) {
+                        InventoryAlertResponse.AlertSeverity severity = calculateCostAlertSeverity(currentCost, averageCost);
                         alerts.add(InventoryAlertResponse.builder()
                                 .type(InventoryAlertResponse.AlertType.COST_ALERT)
-                                .severity(calculateCostAlertSeverity(currentCost, averageCost))
+                                .severity(severity)
                                 .productStockId(stock.getId())
                                 .productName(stock.getProductName())
                                 .depotName(stock.getDepotName())
                                 .message(generateCostAlertMessage(stock, currentCost, averageCost))
+                                .createdAt(stock.getUpdatedAt().toLocalDateTime())
+                                .build());
+                    }
+
+                    // Check for cost trends
+                    if (isCostTrendSignificant(stock.getProductId())) {
+                        alerts.add(InventoryAlertResponse.builder()
+                                .type(InventoryAlertResponse.AlertType.COST_ALERT)
+                                .severity(InventoryAlertResponse.AlertSeverity.WARNING)
+                                .productStockId(stock.getId())
+                                .productName(stock.getProductName())
+                                .depotName(stock.getDepotName())
+                                .message(generateCostTrendMessage(stock))
                                 .createdAt(stock.getUpdatedAt().toLocalDateTime())
                                 .build());
                     }
@@ -700,13 +728,56 @@ public class ProductStockServiceImpl implements ProductStockService {
     }
 
     private BigDecimal calculateAverageStockMovement(Long stockId) {
-        // Implementation would depend on your stock movement tracking system
-        return BigDecimal.ZERO;
+        // Get stock movement history for the last 30 days
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(30);
+        List<StockMovementResponse> movements = getStockMovementHistory(stockId, startDate, endDate);
+        
+        if (movements.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+
+        // Calculate average daily movement
+        BigDecimal totalMovement = movements.stream()
+                .map(StockMovementResponse::getQuantity)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        return totalMovement.divide(new BigDecimal(movements.size()), 2, RoundingMode.HALF_UP);
     }
 
     private BigDecimal calculateCurrentStockMovement(Long stockId) {
-        // Implementation would depend on your stock movement tracking system
-        return BigDecimal.ZERO;
+        // Get stock movement for the last 24 hours
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(1);
+        List<StockMovementResponse> movements = getStockMovementHistory(stockId, startDate, endDate);
+        
+        return movements.stream()
+                .map(StockMovementResponse::getQuantity)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private BigDecimal calculateAverageUnitCost(Long productId) {
+        // Get all stock entries for the product
+        List<ProductStock> stocks = productStockRepository.findByProductId(productId);
+        
+        if (stocks.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+
+        // Calculate weighted average cost based on quantities
+        BigDecimal totalQuantity = stocks.stream()
+                .map(ProductStock::getQuantity)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        if (totalQuantity.compareTo(BigDecimal.ZERO) == 0) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal weightedCost = stocks.stream()
+                .map(stock -> stock.getUnitCost().multiply(stock.getQuantity()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        return weightedCost.divide(totalQuantity, 2, RoundingMode.HALF_UP);
     }
 
     private boolean isUnusualMovement(BigDecimal currentMovement, BigDecimal averageMovement) {
@@ -720,11 +791,6 @@ public class ProductStockServiceImpl implements ProductStockService {
         return percentageChange.compareTo(new BigDecimal("50")) >= 0;
     }
 
-    private BigDecimal calculateAverageUnitCost(Long productId) {
-        // Implementation would depend on your cost tracking system
-        return BigDecimal.ZERO;
-    }
-
     private boolean isSignificantCostChange(BigDecimal currentCost, BigDecimal averageCost) {
         if (averageCost.compareTo(BigDecimal.ZERO) == 0) return false;
         
@@ -734,6 +800,84 @@ public class ProductStockServiceImpl implements ProductStockService {
                 .abs();
         
         return percentageChange.compareTo(new BigDecimal("20")) >= 0;
+    }
+
+    private InventoryAlertResponse.AlertSeverity calculateStockMovementSeverity(BigDecimal currentMovement, BigDecimal averageMovement) {
+        if (averageMovement.compareTo(BigDecimal.ZERO) == 0) {
+            return InventoryAlertResponse.AlertSeverity.INFO;
+        }
+
+        BigDecimal percentageChange = currentMovement.subtract(averageMovement)
+                .multiply(new BigDecimal("100"))
+                .divide(averageMovement, 2, RoundingMode.HALF_UP)
+                .abs();
+        
+        if (percentageChange.compareTo(new BigDecimal("200")) >= 0) {
+            return InventoryAlertResponse.AlertSeverity.CRITICAL;
+        } else if (percentageChange.compareTo(new BigDecimal("100")) >= 0) {
+            return InventoryAlertResponse.AlertSeverity.WARNING;
+        } else {
+            return InventoryAlertResponse.AlertSeverity.INFO;
+        }
+    }
+
+    private boolean isSuddenStockDepletion(ProductStock stock) {
+        // Get stock movement for the last 24 hours
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(1);
+        List<StockMovementResponse> movements = getStockMovementHistory(stock.getId(), startDate, endDate);
+        
+        if (movements.isEmpty()) {
+            return false;
+        }
+
+        // Check if more than 50% of stock was depleted in 24 hours
+        BigDecimal totalDepletion = movements.stream()
+                .filter(m -> m.getQuantity().compareTo(BigDecimal.ZERO) < 0)
+                .map(m -> m.getQuantity().abs())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        return totalDepletion.multiply(new BigDecimal("2")).compareTo(stock.getQuantity()) >= 0;
+    }
+
+    private boolean isCostTrendSignificant(Long productId) {
+        // Get cost history for the last 90 days
+        List<ProductStock> stocks = productStockRepository.findByProductId(productId);
+        if (stocks.size() < 3) {
+            return false;
+        }
+
+        // Calculate cost trend
+        BigDecimal firstCost = stocks.get(0).getUnitCost();
+        BigDecimal lastCost = stocks.get(stocks.size() - 1).getUnitCost();
+        BigDecimal percentageChange = lastCost.subtract(firstCost)
+                .multiply(new BigDecimal("100"))
+                .divide(firstCost, 2, RoundingMode.HALF_UP);
+        
+        return percentageChange.abs().compareTo(new BigDecimal("10")) >= 0;
+    }
+
+    private String generateSuddenDepletionMessage(ProductStock stock) {
+        return String.format("CRITICAL: Sudden stock depletion detected for product '%s' in depot '%s'. " +
+                "More than 50%% of stock was depleted in the last 24 hours. " +
+                "Current stock: %s units. Please investigate immediately.",
+                stock.getProductName(), stock.getDepotName(), stock.getQuantity());
+    }
+
+    private String generateCostTrendMessage(ProductStock stock) {
+        BigDecimal averageCost = calculateAverageUnitCost(stock.getProductId());
+        BigDecimal percentageChange = stock.getUnitCost().subtract(averageCost)
+                .multiply(new BigDecimal("100"))
+                .divide(averageCost, 2, RoundingMode.HALF_UP);
+        
+        String trend = percentageChange.compareTo(BigDecimal.ZERO) > 0 ? "increased" : "decreased";
+        
+        return String.format("WARNING: Significant cost trend detected for product '%s' in depot '%s'. " +
+                "Cost has %s by %.2f%% over the last 90 days. " +
+                "Current cost: %s, Average cost: %s. " +
+                "Consider reviewing pricing strategy.",
+                stock.getProductName(), stock.getDepotName(), trend, 
+                percentageChange.abs(), stock.getUnitCost(), averageCost);
     }
 
     @Override
