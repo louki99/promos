@@ -13,9 +13,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>product-service</module>
 		<module>common</module>
-	</modules>
+        <module>nvp</module>
+    </modules>
 
 	<properties>
 		<java.version>21</java.version>
@@ -45,36 +45,7 @@
 			<!-- end common dependencies -->
 
 			<!-- product dependencies -->
-			<dependency>
-				<groupId>ma.foodplus.ordering.system</groupId>
-				<artifactId>product-domain-core</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>ma.foodplus.ordering.system</groupId>
-				<artifactId>product-application-service</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>ma.foodplus.ordering.system</groupId>
-				<artifactId>product-application</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>ma.foodplus.ordering.system</groupId>
-				<artifactId>product-dataaccess</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>ma.foodplus.ordering.system</groupId>
-				<artifactId>product-messaging</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<!-- end products dependencies -->
+			<!-- end product dependencies -->
 
 			<!-- test dependencies -->
 			<dependency>
