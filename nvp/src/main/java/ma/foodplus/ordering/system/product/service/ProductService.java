@@ -9,8 +9,8 @@ import ma.foodplus.ordering.system.product.dto.update.UpdateProductCommand;
 import ma.foodplus.ordering.system.product.exception.ProductCreationException;
 import ma.foodplus.ordering.system.product.exception.ProductNotFoundException;
 import ma.foodplus.ordering.system.product.mapper.ProductPersistenceMapper;
-import ma.foodplus.ordering.system.product.model.ProductJpaEntity;
-import ma.foodplus.ordering.system.product.repository.ProductJpaRepository;
+import ma.foodplus.ordering.system.product.model.Product;
+import ma.foodplus.ordering.system.product.repository.ProductRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService implements ProductManagementUseCase {
 
-    private final ProductJpaRepository productJpaRepository;
+    private final ProductRepository productRepository;
     private final ProductPersistenceMapper mapper;
 
-    public ProductService(ProductJpaRepository productJpaRepository, ProductPersistenceMapper mapper) {
-        this.productJpaRepository = productJpaRepository;
+    public ProductService(ProductRepository productRepository,ProductPersistenceMapper mapper) {
+        this.productRepository=productRepository;
         this.mapper = mapper;
     }
 
@@ -35,7 +35,7 @@ public class ProductService implements ProductManagementUseCase {
     public ProductId createProduct(CreateProductCommand command) {
         try {
             var productEntity = mapper.createCommandToEntity(command);
-            var savedProduct = productJpaRepository.save(productEntity);
+            var savedProduct = productRepository.save(productEntity);
             return mapper.entityToProductId(savedProduct);
         } catch (Exception e) {
             log.error("Error creating product: {}", e.getMessage(), e);
@@ -46,7 +46,7 @@ public class ProductService implements ProductManagementUseCase {
     @Override
     @Cacheable(value = CacheConstants.PRODUCT_CACHE, key = "'product:' + #id.value")
     public ProductResponse getProduct(ProductId id) {
-        return productJpaRepository.findById(id.getValue())
+        return productRepository.findById(id.getValue())
                 .map(mapper::entityToResponse)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id.getValue()));
     }
@@ -54,7 +54,7 @@ public class ProductService implements ProductManagementUseCase {
     @Override
     @Cacheable(value = CacheConstants.PRODUCT_CACHE, key = "'reference:' + #reference")
     public ProductResponse getProductByReference(String reference) {
-        return productJpaRepository.findByReference(reference)
+        return productRepository.findByReference(reference)
                 .map(mapper::entityToResponse)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with reference: " + reference));
     }
@@ -62,7 +62,7 @@ public class ProductService implements ProductManagementUseCase {
     @Override
     @Cacheable(value = CacheConstants.PRODUCT_CACHE, key = "'barcode:' + #barcode")
     public ProductResponse getProductByBarcode(String barcode) {
-        return productJpaRepository.findByBarcode(barcode)
+        return productRepository.findByBarcode(barcode)
                 .map(mapper::entityToResponse)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with barcode: " + barcode));
     }
@@ -70,7 +70,7 @@ public class ProductService implements ProductManagementUseCase {
     @Override
     @Cacheable(value = CacheConstants.PRODUCTS_CACHE, key = "'family:' + #familyCode")
     public List<ProductResponse> getProductsByFamilyCode(String familyCode) {
-        return productJpaRepository.findByFamilyCode(familyCode).stream()
+        return productRepository.findByFamilyCode(familyCode).stream()
                 .map(mapper::entityToResponse)
                 .collect(Collectors.toList());
     }
@@ -78,7 +78,7 @@ public class ProductService implements ProductManagementUseCase {
     @Override
     @Cacheable(value = CacheConstants.PRODUCTS_CACHE, key = "'deliverable'")
     public List<ProductResponse> getDeliverableProducts() {
-        return productJpaRepository.findByDeliverableTrue().stream()
+        return productRepository.findByDeliverableTrue().stream()
                 .map(mapper::entityToResponse)
                 .collect(Collectors.toList());
     }
@@ -86,7 +86,7 @@ public class ProductService implements ProductManagementUseCase {
     @Override
     @Cacheable(value = CacheConstants.PRODUCTS_CACHE, key = "'active'")
     public List<ProductResponse> getActiveProducts() {
-        return productJpaRepository.findByInactiveFalse().stream()
+        return productRepository.findByInactiveFalse().stream()
                 .map(mapper::entityToResponse)
                 .collect(Collectors.toList());
     }
@@ -94,7 +94,7 @@ public class ProductService implements ProductManagementUseCase {
     @Override
     @Cacheable(value = CacheConstants.PRODUCTS_CACHE, key = "'all'")
     public List<ProductResponse> getAllProducts() {
-        return productJpaRepository.findAll().stream()
+        return productRepository.findAll().stream()
                 .map(mapper::entityToResponse)
                 .collect(Collectors.toList());
     }
@@ -102,32 +102,32 @@ public class ProductService implements ProductManagementUseCase {
     @Override
     @CacheEvict(value = {CacheConstants.PRODUCTS_CACHE, CacheConstants.PRODUCT_CACHE}, allEntries = true)
     public ProductId updateProduct(ProductId productId, UpdateProductCommand command) {
-        ProductJpaEntity existingProduct = productJpaRepository.findById(productId.getValue())
+        Product existingProduct = productRepository.findById(productId.getValue())
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId.getValue()));
         
         mapper.updateEntityFromCommand(command, existingProduct);
-        ProductJpaEntity updatedProduct = productJpaRepository.save(existingProduct);
+        Product updatedProduct = productRepository.save(existingProduct);
         return mapper.entityToProductId(updatedProduct);
     }
 
     @Override
     @CacheEvict(value = {CacheConstants.PRODUCTS_CACHE, CacheConstants.PRODUCT_CACHE}, allEntries = true)
     public void deleteProduct(ProductId id) {
-        if (!productJpaRepository.existsById(id.getValue())) {
+        if (! productRepository.existsById(id.getValue())) {
             throw new ProductNotFoundException("Product not found with id: " + id.getValue());
         }
-        productJpaRepository.deleteById(id.getValue());
+        productRepository.deleteById(id.getValue());
     }
 
     @Override
     @Cacheable(value = CacheConstants.PRODUCT_CACHE, key = "'exists:reference:' + #reference")
     public boolean existsByReference(String reference) {
-        return productJpaRepository.existsByReference(reference);
+        return productRepository.existsByReference(reference);
     }
 
     @Override
     @Cacheable(value = CacheConstants.PRODUCT_CACHE, key = "'exists:barcode:' + #barcode")
     public boolean existsByBarcode(String barcode) {
-        return productJpaRepository.existsByBarcode(barcode);
+        return productRepository.existsByBarcode(barcode);
     }
 }

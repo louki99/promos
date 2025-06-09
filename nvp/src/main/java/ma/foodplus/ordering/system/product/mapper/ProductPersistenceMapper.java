@@ -4,8 +4,7 @@ import ma.foodplus.ordering.system.domain.valueobject.ProductId;
 import ma.foodplus.ordering.system.product.dto.create.CreateProductCommand;
 import ma.foodplus.ordering.system.product.dto.response.ProductResponse;
 import ma.foodplus.ordering.system.product.dto.update.UpdateProductCommand;
-import ma.foodplus.ordering.system.product.enums.SuiviStock;
-import ma.foodplus.ordering.system.product.model.ProductJpaEntity;
+import ma.foodplus.ordering.system.product.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -37,7 +36,7 @@ public interface ProductPersistenceMapper {
     @Mapping(target = "deliverable", source = "deliverable")
     @Mapping(target = "inactive", source = "inactive")
     @Mapping(target = "stockTracking", source = "stockTracking")
-    ProductJpaEntity createCommandToEntity(CreateProductCommand command);
+    Product createCommandToEntity(CreateProductCommand command);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "reference", source = "reference")
@@ -56,7 +55,7 @@ public interface ProductPersistenceMapper {
     @Mapping(target = "deliverable", source = "deliverable")
     @Mapping(target = "inactive", source = "inactive")
     @Mapping(target = "stockTracking", source = "stockTracking")
-    ProductResponse entityToResponse(ProductJpaEntity entity);
+    ProductResponse entityToResponse(Product entity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
@@ -77,7 +76,7 @@ public interface ProductPersistenceMapper {
     @Mapping(target = "deliverable", source = "deliverable")
     @Mapping(target = "inactive", source = "inactive")
     @Mapping(target = "stockTracking", source = "stockTracking")
-    void updateEntityFromCommand(CreateProductCommand command, @MappingTarget ProductJpaEntity entity);
+    void updateEntityFromCommand(CreateProductCommand command, @MappingTarget Product entity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
@@ -98,9 +97,9 @@ public interface ProductPersistenceMapper {
     @Mapping(target = "deliverable", source = "deliverable")
     @Mapping(target = "inactive", source = "inactive")
     @Mapping(target = "stockTracking", source = "stockTracking")
-    void updateEntityFromCommand(UpdateProductCommand command, @MappingTarget ProductJpaEntity entity);
+    void updateEntityFromCommand(UpdateProductCommand command, @MappingTarget Product entity);
 
-    default ProductId entityToProductId(ProductJpaEntity entity) {
+    default ProductId entityToProductId(Product entity) {
         return entity != null ? new ProductId(entity.getId()) : null;
     }
 } 
