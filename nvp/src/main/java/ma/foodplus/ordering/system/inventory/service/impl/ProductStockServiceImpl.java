@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.time.temporal.ChronoUnit;
 
 @Slf4j
 @Service
@@ -428,33 +429,27 @@ public class ProductStockServiceImpl implements ProductStockService {
         List<InventoryAlertResponse> alerts = new ArrayList<>();
         LocalDate today = LocalDate.now();
         
+        // Generate all alerts
         switch (alertType) {
             case LOW_STOCK:
                 generateLowStockAlerts(alerts);
                 break;
-                
             case EXPIRY_WARNING:
                 generateExpiryAlerts(alerts, today);
                 break;
-                
             case QUALITY_ISSUE:
                 generateQualityAlerts(alerts);
                 break;
-
             case STOCK_MOVEMENT:
                 generateStockMovementAlerts(alerts);
                 break;
-
             case COST_ALERT:
                 generateCostAlerts(alerts);
                 break;
-
             case RESERVATION_ALERT:
                 generateReservationAlerts(alerts);
                 break;
-
             default:
-                // Generate all alerts if no specific type is requested
                 generateLowStockAlerts(alerts);
                 generateExpiryAlerts(alerts, today);
                 generateQualityAlerts(alerts);
@@ -462,8 +457,161 @@ public class ProductStockServiceImpl implements ProductStockService {
                 generateCostAlerts(alerts);
                 generateReservationAlerts(alerts);
         }
+
+        // Aggregate similar alerts
+        List<InventoryAlertResponse> aggregatedAlerts = aggregateAlerts(alerts);
         
-        return alerts;
+        // Prioritize alerts
+        return prioritizeAlerts(aggregatedAlerts);
+    }
+
+    private List<InventoryAlertResponse> aggregateAlerts(List<InventoryAlertResponse> alerts) {
+        Map<String, List<InventoryAlertResponse>> alertGroups = new HashMap<>();
+        
+        // Group alerts by type and product
+        for (InventoryAlertResponse alert : alerts) {
+            String key = String.format("%s_%d", alert.getType(), alert.getProductStockId());
+            alertGroups.computeIfAbsent(key, k -> new ArrayList<>()).add(alert);
+        }
+        
+        List<InventoryAlertResponse> aggregatedAlerts = new ArrayList<>();
+        
+        // Aggregate alerts in each group
+        for (List<InventoryAlertResponse> group : alertGroups.values()) {
+            if (group.size() == 1) {
+                aggregatedAlerts.add(group.get(0));
+            } else {
+                aggregatedAlerts.add(aggregateAlertGroup(group));
+            }
+        }
+        
+        return aggregatedAlerts;
+    }
+
+    private InventoryAlertResponse aggregateAlertGroup(List<InventoryAlertResponse> group) {
+        // Use the most severe alert as the base
+        InventoryAlertResponse baseAlert = group.stream()
+                .max(Comparator.comparing(alert -> alert.getSeverity().ordinal()))
+                .orElse(group.get(0));
+        
+        // Aggregate quantities if applicable
+        BigDecimal totalQuantity = group.stream()
+                .map(InventoryAlertResponse::getCurrentQuantity)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        // Create aggregated message
+        String aggregatedMessage = generateAggregatedMessage(group);
+        
+        return InventoryAlertResponse.builder()
+                .type(baseAlert.getType())
+                .severity(baseAlert.getSeverity())
+                .productStockId(baseAlert.getProductStockId())
+                .productName(baseAlert.getProductName())
+                .depotName(baseAlert.getDepotName())
+                .currentQuantity(totalQuantity)
+                .thresholdQuantity(baseAlert.getThresholdQuantity())
+                .expiryDate(baseAlert.getExpiryDate())
+                .message(aggregatedMessage)
+                .createdAt(baseAlert.getCreatedAt())
+                .build();
+    }
+
+    private String generateAggregatedMessage(List<InventoryAlertResponse> group) {
+        StringBuilder message = new StringBuilder();
+        message.append(String.format("Multiple %s alerts detected for product '%s' in depot '%s':\n",
+                group.get(0).getType(), group.get(0).getProductName(), group.get(0).getDepotName()));
+        
+        // Group alerts by severity
+        Map<InventoryAlertResponse.AlertSeverity, List<InventoryAlertResponse>> severityGroups = group.stream()
+                .collect(Collectors.groupingBy(InventoryAlertResponse::getSeverity));
+        
+        // Add summary for each severity level
+        severityGroups.forEach((severity, alerts) -> {
+            message.append(String.format("\n%s Alerts (%d):", severity, alerts.size()));
+            alerts.forEach(alert -> message.append(String.format("\n- %s", alert.getMessage())));
+        });
+        
+        return message.toString();
+    }
+
+    private List<InventoryAlertResponse> prioritizeAlerts(List<InventoryAlertResponse> alerts) {
+        return alerts.stream()
+                .sorted(Comparator
+                        .comparing(InventoryAlertResponse::getSeverity, Comparator.reverseOrder())
+                        .thenComparing(alert -> calculateAlertPriority(alert))
+                        .thenComparing(InventoryAlertResponse::getCreatedAt, Comparator.reverseOrder()))
+                .collect(Collectors.toList());
+    }
+
+    private int calculateAlertPriority(InventoryAlertResponse alert) {
+        int priority = 0;
+        
+        // Base priority on severity
+        switch (alert.getSeverity()) {
+            case CRITICAL:
+                priority += 100;
+                break;
+            case WARNING:
+                priority += 50;
+                break;
+            case INFO:
+                priority += 10;
+                break;
+        }
+        
+        // Additional priority factors
+        switch (alert.getType()) {
+            case QUALITY_ISSUE:
+                // Quality issues are high priority
+                priority += 30;
+                break;
+            case EXPIRY_WARNING:
+                // Expiry warnings are time-sensitive
+                priority += 25;
+                break;
+            case LOW_STOCK:
+                // Low stock affects operations
+                priority += 20;
+                break;
+            case STOCK_MOVEMENT:
+                // Stock movements might indicate issues
+                priority += 15;
+                break;
+            case COST_ALERT:
+                // Cost alerts are important but less urgent
+                priority += 10;
+                break;
+            case RESERVATION_ALERT:
+                // Reservation alerts are informational
+                priority += 5;
+                break;
+        }
+        
+        // Consider quantity impact
+        if (alert.getCurrentQuantity() != null && alert.getThresholdQuantity() != null) {
+            BigDecimal ratio = alert.getCurrentQuantity()
+                    .divide(alert.getThresholdQuantity(), 2, RoundingMode.HALF_UP);
+            if (ratio.compareTo(new BigDecimal("0.1")) <= 0) {
+                priority += 20; // Critical shortage
+            } else if (ratio.compareTo(new BigDecimal("0.3")) <= 0) {
+                priority += 10; // Significant shortage
+            }
+        }
+        
+        // Consider time sensitivity
+        if (alert.getExpiryDate() != null) {
+            long daysUntilExpiry = ChronoUnit.DAYS.between(LocalDate.now(), alert.getExpiryDate());
+            if (daysUntilExpiry <= 7) {
+                priority += 25; // Very urgent
+            } else if (daysUntilExpiry <= 14) {
+                priority += 15; // Urgent
+            } else if (daysUntilExpiry <= 30) {
+                priority += 5; // Moderate urgency
+            }
+        }
+        
+        return priority;
     }
 
     private void generateLowStockAlerts(List<InventoryAlertResponse> alerts) {
