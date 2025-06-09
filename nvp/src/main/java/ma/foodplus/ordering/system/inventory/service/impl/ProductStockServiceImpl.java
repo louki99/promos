@@ -2,6 +2,8 @@ package ma.foodplus.ordering.system.inventory.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ma.foodplus.ordering.system.customer.dto.CustomerDTO;
+import ma.foodplus.ordering.system.customer.service.CustomerService;
 import ma.foodplus.ordering.system.inventory.dto.request.BulkProductStockRequest;
 import ma.foodplus.ordering.system.inventory.dto.request.ProductStockRequest;
 import ma.foodplus.ordering.system.inventory.dto.request.StockTransferRequest;
@@ -11,8 +13,12 @@ import ma.foodplus.ordering.system.inventory.mapper.ProductStockMapper;
 import ma.foodplus.ordering.system.inventory.model.ProductStock;
 import ma.foodplus.ordering.system.inventory.repository.ProductStockRepository;
 import ma.foodplus.ordering.system.inventory.service.ProductStockService;
+import ma.foodplus.ordering.system.product.dto.response.ProductResponse;
+import ma.foodplus.ordering.system.product.service.ProductService;
+import ma.foodplus.ordering.system.promos.service.PromotionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ma.foodplus.ordering.system.domain.valueobject.ProductId;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -30,6 +36,9 @@ public class ProductStockServiceImpl implements ProductStockService {
 
     private final ProductStockRepository productStockRepository;
     private final ProductStockMapper productStockMapper;
+    private final ProductService productService;
+    private final CustomerService customerService;
+    private final PromotionService promotionService;
 
     @Override
     @Transactional
@@ -531,6 +540,38 @@ public class ProductStockServiceImpl implements ProductStockService {
             message.append(String.format("\n%s Alerts (%d):", severity, alerts.size()));
             alerts.forEach(alert -> message.append(String.format("\n- %s", alert.getMessage())));
         });
+
+        // Add cross-domain impact information
+        try {
+            Long productId = group.get(0).getProductStockId();
+            
+            // Add product information
+            ProductResponse product = productService.getProduct(new ProductId(productId));
+            if (product != null) {
+                message.append("\n\nProduct Impact:");
+                message.append(String.format("\n- Category: %s", product.category1()));
+                
+                // Add promotion information
+                if (promotionService.hasActivePromotions(Long.parseLong(product.id().toString()))) {
+                    message.append("\n- Has Active Promotions");
+                }
+            }
+
+            // Add customer impact
+            List<CustomerDTO> affectedCustomers = customerService.getCustomersByProductPreference(productId);
+            if (!affectedCustomers.isEmpty()) {
+                message.append("\n\nCustomer Impact:");
+                message.append(String.format("\n- Total Affected Customers: %d", affectedCustomers.size()));
+                long vipCount = affectedCustomers.stream()
+                        .filter(CustomerDTO::isVip)
+                        .count();
+                if (vipCount > 0) {
+                    message.append(String.format("\n- VIP Customers Affected: %d", vipCount));
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Error getting cross-domain information for message generation: {}", e.getMessage());
+        }
         
         return message.toString();
     }
@@ -547,7 +588,7 @@ public class ProductStockServiceImpl implements ProductStockService {
     private int calculateAlertPriority(InventoryAlertResponse alert) {
         int priority = 0;
         
-        // Base priority on severity
+        // Existing priority calculations
         switch (alert.getSeverity()) {
             case CRITICAL:
                 priority += 100;
@@ -563,29 +604,61 @@ public class ProductStockServiceImpl implements ProductStockService {
         // Additional priority factors
         switch (alert.getType()) {
             case QUALITY_ISSUE:
-                // Quality issues are high priority
                 priority += 30;
                 break;
             case EXPIRY_WARNING:
-                // Expiry warnings are time-sensitive
                 priority += 25;
                 break;
             case LOW_STOCK:
-                // Low stock affects operations
                 priority += 20;
                 break;
             case STOCK_MOVEMENT:
-                // Stock movements might indicate issues
                 priority += 15;
                 break;
             case COST_ALERT:
-                // Cost alerts are important but less urgent
                 priority += 10;
                 break;
             case RESERVATION_ALERT:
-                // Reservation alerts are informational
                 priority += 5;
                 break;
+        }
+
+        // Consider product impact
+        try {
+            ProductResponse product = productService.getProduct(new ProductId(alert.getProductStockId()));
+            if (product != null) {
+                // Products with active promotions get higher priority
+                if (promotionService.hasActivePromotions(Long.parseLong(product.id().toString()))) {
+                    priority += 20;
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Error getting product information for alert prioritization", e);
+        }
+
+        // Consider customer impact
+        try {
+            List<CustomerDTO> affectedCustomers = customerService.getCustomersByProductPreference(alert.getProductStockId());
+            int customerCount = affectedCustomers.size();
+            
+            // Scale priority based on number of affected customers
+            if (customerCount > 100) {
+                priority += 30;
+            } else if (customerCount > 50) {
+                priority += 20;
+            } else if (customerCount > 10) {
+                priority += 10;
+            }
+
+            // VIP customers get higher priority
+            long vipCount = affectedCustomers.stream()
+                    .filter(CustomerDTO::isVip)
+                    .count();
+            if (vipCount > 0) {
+                priority += (int) (vipCount * 5);
+            }
+        } catch (Exception e) {
+            log.warn("Error getting customer information for priority calculation: {}", e.getMessage());
         }
         
         // Consider quantity impact
@@ -593,9 +666,9 @@ public class ProductStockServiceImpl implements ProductStockService {
             BigDecimal ratio = alert.getCurrentQuantity()
                     .divide(alert.getThresholdQuantity(), 2, RoundingMode.HALF_UP);
             if (ratio.compareTo(new BigDecimal("0.1")) <= 0) {
-                priority += 20; // Critical shortage
+                priority += 20;
             } else if (ratio.compareTo(new BigDecimal("0.3")) <= 0) {
-                priority += 10; // Significant shortage
+                priority += 10;
             }
         }
         
@@ -603,11 +676,11 @@ public class ProductStockServiceImpl implements ProductStockService {
         if (alert.getExpiryDate() != null) {
             long daysUntilExpiry = ChronoUnit.DAYS.between(LocalDate.now(), alert.getExpiryDate());
             if (daysUntilExpiry <= 7) {
-                priority += 25; // Very urgent
+                priority += 25;
             } else if (daysUntilExpiry <= 14) {
-                priority += 15; // Urgent
+                priority += 15;
             } else if (daysUntilExpiry <= 30) {
-                priority += 5; // Moderate urgency
+                priority += 5;
             }
         }
         

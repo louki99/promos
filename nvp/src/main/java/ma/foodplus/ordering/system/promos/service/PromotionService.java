@@ -8,19 +8,90 @@ import java.util.Optional;
 
 public interface PromotionService {
     
-    // Basic CRUD operations
-    PromotionDTO createPromotion(PromotionDTO promotion);
-    Optional<PromotionDTO> getPromotionById(Integer id);
-    Optional<PromotionDTO> getPromotionByCode(String promoCode);
+    /**
+     * Get a promotion by ID
+     * @param id the promotion ID
+     * @return the promotion DTO
+     */
+    PromotionDTO getPromotionById(Integer id);
+
+    /**
+     * Get a promotion by code
+     * @param promoCode the promotion code
+     * @return the promotion DTO
+     */
+    PromotionDTO getPromotionByCode(String promoCode);
+
+    /**
+     * Get all promotions
+     * @return list of all promotions
+     */
     List<PromotionDTO> getAllPromotions();
-    PromotionDTO updatePromotion(PromotionDTO promotion);
+
+    /**
+     * Create a new promotion
+     * @param promotionDTO the promotion to create
+     * @return the created promotion
+     */
+    PromotionDTO createPromotion(PromotionDTO promotionDTO);
+
+    /**
+     * Update an existing promotion
+     * @param promotionDTO the updated promotion data
+     * @return the updated promotion
+     */
+    PromotionDTO updatePromotion(PromotionDTO promotionDTO);
+
+    /**
+     * Delete a promotion
+     * @param id the promotion ID
+     */
     void deletePromotion(Integer id);
-    
-    // Business logic operations
+
+    /**
+     * Get active promotions
+     * @return list of active promotions
+     */
     List<PromotionDTO> getActivePromotions();
+
+    /**
+     * Get eligible promotions for an order
+     * @param orderAmount the order amount
+     * @param itemQuantity the number of items
+     * @return list of eligible promotions
+     */
     List<PromotionDTO> getEligiblePromotions(Double orderAmount, Integer itemQuantity);
+
+    /**
+     * Check if a promotion is valid
+     * @param promotion the promotion to check
+     * @param date the date to check against
+     * @return true if the promotion is valid
+     */
     boolean isPromotionValid(PromotionDTO promotion, ZonedDateTime date);
+
+    /**
+     * Check if promotions can be combined
+     * @param promo1 the first promotion
+     * @param promo2 the second promotion
+     * @return true if the promotions can be combined
+     */
     boolean canPromotionsBeCombined(PromotionDTO promo1, PromotionDTO promo2);
+
+    /**
+     * Check if a product has active promotions
+     * @param productId the product ID
+     * @return true if the product has active promotions
+     */
+    boolean hasActivePromotions(Long productId);
+
+    /**
+     * Get the best promotion combination for an order
+     * @param orderAmount the order amount
+     * @param itemQuantity the number of items
+     * @return list of the best promotion combination
+     */
+    List<PromotionDTO> getBestPromotionCombination(Double orderAmount, Integer itemQuantity);
     
     // Rule management
     PromotionRuleDTO addRuleToPromotion(Integer promotionId, PromotionRuleDTO rule);
@@ -29,5 +100,4 @@ public interface PromotionService {
     
     // Promotion calculation
     Double calculatePromotionDiscount(PromotionDTO promotion, Double orderAmount, Integer itemQuantity);
-    List<PromotionDTO> getBestPromotionCombination(Double orderAmount, Integer itemQuantity);
 } 
