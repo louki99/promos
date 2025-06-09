@@ -110,4 +110,46 @@ public class PromotionController {
             @RequestParam Integer itemQuantity) {
         return ResponseEntity.ok(promotionService.getBestPromotionCombination(orderAmount, itemQuantity));
     }
+
+    // --- PromotionLine Endpoints ---
+    @PostMapping("/{promotionId}/lines")
+    public ResponseEntity<PromotionLineDTO> addPromotionLine(
+            @PathVariable Long promotionId,
+            @RequestBody PromotionLineDTO lineDTO) {
+        return ResponseEntity.ok(promotionService.addPromotionLine(promotionId, lineDTO));
+    }
+
+    @DeleteMapping("/{promotionId}/lines/{lineId}")
+    public ResponseEntity<Void> deletePromotionLine(
+            @PathVariable Long promotionId,
+            @PathVariable Long lineId) {
+        promotionService.deletePromotionLine(promotionId, lineId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{promotionId}/lines")
+    public ResponseEntity<List<PromotionLineDTO>> getPromotionLines(@PathVariable Long promotionId) {
+        return ResponseEntity.ok(promotionService.getPromotionLines(promotionId));
+    }
+
+    // --- PromotionCustomerFamily Endpoints ---
+    @PostMapping("/{promotionId}/customer-families")
+    public ResponseEntity<PromotionCustomerFamilyDTO> addPromotionCustomerFamily(
+            @PathVariable Long promotionId,
+            @RequestBody PromotionCustomerFamilyDTO familyDTO) {
+        return ResponseEntity.ok(promotionService.addPromotionCustomerFamily(promotionId, familyDTO));
+    }
+
+    @DeleteMapping("/{promotionId}/customer-families/{familyId}")
+    public ResponseEntity<Void> deletePromotionCustomerFamily(
+            @PathVariable Long promotionId,
+            @PathVariable Long familyId) {
+        promotionService.deletePromotionCustomerFamily(promotionId, familyId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{promotionId}/customer-families")
+    public ResponseEntity<List<PromotionCustomerFamilyDTO>> getPromotionCustomerFamilies(@PathVariable Long promotionId) {
+        return ResponseEntity.ok(promotionService.getPromotionCustomerFamilies(promotionId));
+    }
 } 

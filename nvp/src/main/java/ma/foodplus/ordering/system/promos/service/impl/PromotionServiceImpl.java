@@ -2,12 +2,16 @@ package ma.foodplus.ordering.system.promos.service.impl;
 
 import ma.foodplus.ordering.system.promos.dto.PromotionDTO;
 import ma.foodplus.ordering.system.promos.dto.PromotionRuleDTO;
+import ma.foodplus.ordering.system.promos.dto.PromotionLineDTO;
+import ma.foodplus.ordering.system.promos.dto.PromotionCustomerFamilyDTO;
 import ma.foodplus.ordering.system.promos.mapper.PromotionMapper;
 import ma.foodplus.ordering.system.promos.mapper.PromotionRuleMapper;
 import ma.foodplus.ordering.system.promos.model.Promotion;
 import ma.foodplus.ordering.system.promos.model.PromotionRule;
 import ma.foodplus.ordering.system.promos.model.PromotionTier;
 import ma.foodplus.ordering.system.promos.model.Condition;
+import ma.foodplus.ordering.system.promos.model.PromotionLine;
+import ma.foodplus.ordering.system.promos.model.PromotionCustomerFamily;
 import ma.foodplus.ordering.system.promos.repository.PromotionRepository;
 import ma.foodplus.ordering.system.promos.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -254,5 +258,91 @@ public class PromotionServiceImpl implements PromotionService {
         }
 
         return discount.doubleValue();
+    }
+
+    // --- PromotionLine management ---
+    @Override
+    public PromotionLineDTO addPromotionLine(Long promotionId, PromotionLineDTO lineDTO) {
+        Promotion promotion = promotionRepository.findById(promotionId.intValue())
+                .orElseThrow(() -> new RuntimeException("Promotion not found"));
+        PromotionLine line = new PromotionLine();
+        line.setPromotion(promotion);
+        line.setPaidFamilyCode(lineDTO.getPaidFamilyCode());
+        line.setPaidProductId(lineDTO.getPaidProductId());
+        line.setFreeFamilyCode(lineDTO.getFreeFamilyCode());
+        line.setFreeProductId(lineDTO.getFreeProductId());
+        promotion.getPromotionLines().add(line);
+        promotionRepository.save(promotion);
+        lineDTO.setId(line.getId());
+        lineDTO.setPromotionId(promotionId);
+        return lineDTO;
+    }
+
+    @Override
+    public void deletePromotionLine(Long promotionId, Long lineId) {
+        Promotion promotion = promotionRepository.findById(promotionId.intValue())
+                .orElseThrow(() -> new RuntimeException("Promotion not found"));
+        promotion.getPromotionLines().removeIf(line -> line.getId().equals(lineId));
+        promotionRepository.save(promotion);
+    }
+
+    @Override
+    public List<PromotionLineDTO> getPromotionLines(Long promotionId) {
+        Promotion promotion = promotionRepository.findById(promotionId.intValue())
+                .orElseThrow(() -> new RuntimeException("Promotion not found"));
+        List<PromotionLineDTO> dtos = new java.util.ArrayList<>();
+        for (PromotionLine line : promotion.getPromotionLines()) {
+            PromotionLineDTO dto = new PromotionLineDTO();
+            dto.setId(line.getId());
+            dto.setPromotionId(promotionId);
+            dto.setPaidFamilyCode(line.getPaidFamilyCode());
+            dto.setPaidProductId(line.getPaidProductId());
+            dto.setFreeFamilyCode(line.getFreeFamilyCode());
+            dto.setFreeProductId(line.getFreeProductId());
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+    // --- PromotionCustomerFamily management ---
+    @Override
+    public PromotionCustomerFamilyDTO addPromotionCustomerFamily(Long promotionId, PromotionCustomerFamilyDTO familyDTO) {
+        Promotion promotion = promotionRepository.findById(promotionId.intValue())
+                .orElseThrow(() -> new RuntimeException("Promotion not found"));
+        PromotionCustomerFamily family = new PromotionCustomerFamily();
+        family.setPromotion(promotion);
+        family.setCustomerFamilyCode(familyDTO.getCustomerFamilyCode());
+        family.setStartDate(familyDTO.getStartDate());
+        family.setEndDate(familyDTO.getEndDate());
+        promotion.getCustomerFamilies().add(family);
+        promotionRepository.save(promotion);
+        familyDTO.setId(family.getId());
+        familyDTO.setPromotionId(promotionId);
+        return familyDTO;
+    }
+
+    @Override
+    public void deletePromotionCustomerFamily(Long promotionId, Long familyId) {
+        Promotion promotion = promotionRepository.findById(promotionId.intValue())
+                .orElseThrow(() -> new RuntimeException("Promotion not found"));
+        promotion.getCustomerFamilies().removeIf(fam -> fam.getId().equals(familyId));
+        promotionRepository.save(promotion);
+    }
+
+    @Override
+    public List<PromotionCustomerFamilyDTO> getPromotionCustomerFamilies(Long promotionId) {
+        Promotion promotion = promotionRepository.findById(promotionId.intValue())
+                .orElseThrow(() -> new RuntimeException("Promotion not found"));
+        List<PromotionCustomerFamilyDTO> dtos = new java.util.ArrayList<>();
+        for (PromotionCustomerFamily fam : promotion.getCustomerFamilies()) {
+            PromotionCustomerFamilyDTO dto = new PromotionCustomerFamilyDTO();
+            dto.setId(fam.getId());
+            dto.setPromotionId(promotionId);
+            dto.setCustomerFamilyCode(fam.getCustomerFamilyCode());
+            dto.setStartDate(fam.getStartDate());
+            dto.setEndDate(fam.getEndDate());
+            dtos.add(dto);
+        }
+        return dtos;
     }
 } 

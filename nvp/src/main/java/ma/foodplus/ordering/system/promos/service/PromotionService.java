@@ -2,6 +2,8 @@ package ma.foodplus.ordering.system.promos.service;
 
 import ma.foodplus.ordering.system.promos.dto.PromotionDTO;
 import ma.foodplus.ordering.system.promos.dto.PromotionRuleDTO;
+import ma.foodplus.ordering.system.promos.dto.PromotionLineDTO;
+import ma.foodplus.ordering.system.promos.dto.PromotionCustomerFamilyDTO;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -100,4 +102,14 @@ public interface PromotionService {
     
     // Promotion calculation
     Double calculatePromotionDiscount(PromotionDTO promotion, Double orderAmount, Integer itemQuantity);
+
+    // PromotionLine management
+    PromotionLineDTO addPromotionLine(Long promotionId, PromotionLineDTO lineDTO);
+    void deletePromotionLine(Long promotionId, Long lineId);
+    List<PromotionLineDTO> getPromotionLines(Long promotionId);
+
+    // PromotionCustomerFamily management
+    PromotionCustomerFamilyDTO addPromotionCustomerFamily(Long promotionId, PromotionCustomerFamilyDTO familyDTO);
+    void deletePromotionCustomerFamily(Long promotionId, Long familyId);
+    List<PromotionCustomerFamilyDTO> getPromotionCustomerFamilies(Long promotionId);
 } 
