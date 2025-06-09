@@ -42,6 +42,13 @@ public class Promotion {
     @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PromotionRule> rules;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+        name = "promotion_dynamic_conditions",
+        joinColumns = @JoinColumn(name = "promotion_id"),
+        inverseJoinColumns = @JoinColumn(name = "condition_id")
+    )
+    private List<DynamicCondition> dynamicConditions;
 
     public Integer getId(){
         return id;
@@ -91,6 +98,10 @@ public class Promotion {
         return rules;
     }
 
+    public List<DynamicCondition> getDynamicConditions() {
+        return dynamicConditions;
+    }
+
     public void setId(Integer id){
         this.id=id;
     }
@@ -137,6 +148,10 @@ public class Promotion {
 
     public void setRules(List<PromotionRule> rules){
         this.rules=rules;
+    }
+
+    public void setDynamicConditions(List<DynamicCondition> dynamicConditions) {
+        this.dynamicConditions = dynamicConditions;
     }
 
     /**

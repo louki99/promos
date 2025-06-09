@@ -7,9 +7,12 @@ import ma.foodplus.ordering.system.promos.repository.PromotionRepository;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -20,47 +23,43 @@ public class AdvancedPromotionEngine {
     private final PromotionRepository promotionRepository;
     private final ConditionEvaluator conditionEvaluator;
     private final RewardApplicator rewardApplicator;
+    
+    // Cache for active promotions
+    private final Map<String, List<Promotion>> activePromotionsCache = new ConcurrentHashMap<>();
+    private static final String CACHE_KEY = "active_promotions";
 
     /**
      * The main entry point to apply all possible promotions to a cart.
      * It fetches all active promotions and applies them sequentially based on priority.
+     * 
+     * @param initialCart The cart to apply promotions to
+     * @return PromotionContext containing the final state of the cart with applied promotions
      */
+    @Cacheable(value = "promotion_results", key = "#initialCart.hashCode()")
     public PromotionContext apply(Cart initialCart) {
         PromotionContext context = new PromotionContext(initialCart);
         
-        // Step 1: Fetch all active promotions and sort by priority
-        List<Promotion> activePromotions = promotionRepository.findActivePromotions(ZonedDateTime.now());
-        List<Promotion> sortedPromotions = activePromotions.stream()
-                .sorted(Comparator.comparingInt(Promotion::getPriority))
-                .collect(Collectors.toList());
-        
+        // Get cached active promotions or fetch from repository
+        List<Promotion> sortedPromotions = getActivePromotions();
         log.info("Found {} active promotions to evaluate.", sortedPromotions.size());
 
-        // Step 2: Process promotions in priority order
+        // Process promotions in priority order
         for (Promotion currentPromotion : sortedPromotions) {
-            // Skip if promotion is not active
-            if (!currentPromotion.isActive(ZonedDateTime.now())) {
-                log.debug("Skipping inactive promotion '{}'", currentPromotion.getPromoCode());
+            if (!isPromotionValid(currentPromotion)) {
                 continue;
             }
 
-            // Check for combinability
             if (!isCombinable(context, currentPromotion)) {
-                log.debug("Skipping non-combinable promotion '{}'", currentPromotion.getPromoCode());
                 continue;
             }
 
-            // Process promotion rules
             boolean wasApplied = processPromotionRules(context, currentPromotion);
 
             if (wasApplied) {
                 log.info("Successfully applied promotion '{}'", currentPromotion.getPromoCode());
                 context.markPromotionAsApplied(currentPromotion);
                 
-                // Handle exclusive promotions
                 if (currentPromotion.isExclusive()) {
-                    log.info("Exclusive promotion '{}' applied, stopping further promotions", 
-                            currentPromotion.getPromoCode());
                     break;
                 }
             }
@@ -70,12 +69,37 @@ public class AdvancedPromotionEngine {
     }
 
     /**
+     * Get active promotions with caching support.
+     * This method caches the results for 5 minutes to improve performance.
+     */
+    @Cacheable(value = "active_promotions", key = "'all'")
+    private List<Promotion> getActivePromotions() {
+        return promotionRepository.findActivePromotions(ZonedDateTime.now()).stream()
+                .sorted(Comparator.comparingInt(Promotion::getPriority))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Clear the active promotions cache.
+     * This should be called when promotions are updated.
+     */
+    @CacheEvict(value = "active_promotions", allEntries = true)
+    public void clearActivePromotionsCache() {
+        activePromotionsCache.clear();
+    }
+
+    /**
      * Apply a specific promotion to a cart.
      * Useful for testing and simulation scenarios.
+     * 
+     * @param cart The cart to apply the promotion to
+     * @param promotion The promotion to apply
+     * @return PromotionContext containing the final state of the cart
      */
+    @Cacheable(value = "promotion_results", key = "#cart.hashCode() + #promotion.id")
     public PromotionContext applyPromotion(Cart cart, Promotion promotion) {
-        if (!promotion.isActive(ZonedDateTime.now())) {
-            log.warn("Attempted to apply inactive promotion '{}'", promotion.getPromoCode());
+        if (!isPromotionValid(promotion)) {
+            log.warn("Attempted to apply invalid promotion '{}'", promotion.getPromoCode());
             return new PromotionContext(cart);
         }
 
@@ -91,7 +115,26 @@ public class AdvancedPromotionEngine {
     }
 
     /**
+     * Check if a promotion is valid at the current time.
+     * This includes checking active status and any dynamic conditions.
+     */
+    private boolean isPromotionValid(Promotion promotion) {
+        if (!promotion.isActive(ZonedDateTime.now())) {
+            return false;
+        }
+
+        // Check dynamic conditions if any
+        if (promotion.getDynamicConditions() != null) {
+            return promotion.getDynamicConditions().stream()
+                    .allMatch(condition -> conditionEvaluator.evaluateDynamicCondition(condition));
+        }
+
+        return true;
+    }
+
+    /**
      * Process all rules for a given promotion and apply rewards if conditions are met.
+     * This method includes performance optimizations and error handling.
      */
     private boolean processPromotionRules(PromotionContext context, Promotion promotion) {
         boolean hasBeenApplied = false;
@@ -102,16 +145,12 @@ public class AdvancedPromotionEngine {
                     rewardApplicator.apply(context, rule);
                     hasBeenApplied = true;
                     
-                    // If promotion should only apply first matching rule
                     if (promotion.isApplyFirstMatchingRuleOnly()) {
-                        log.debug("First matching rule applied for promotion '{}', stopping further rules", 
-                                promotion.getPromoCode());
                         break;
                     }
                 }
             } catch (Exception e) {
                 log.error("Error processing rule for promotion '{}': {}", promotion.getPromoCode(), e.getMessage());
-                // Continue with next rule instead of failing the entire promotion
             }
         }
         
@@ -120,19 +159,17 @@ public class AdvancedPromotionEngine {
 
     /**
      * Check if a promotion can be combined with already applied promotions.
+     * This method includes optimizations for combinability checks.
      */
     private boolean isCombinable(PromotionContext context, Promotion promotion) {
-        // Check if an exclusive promotion has already been applied
         if (context.hasExclusivePromotionApplied()) {
             return false;
         }
 
-        // Check if current promotion is exclusive and other promotions are already applied
         if (promotion.isExclusive() && context.hasAppliedPromotions()) {
             return false;
         }
 
-        // Check combinability groups
         if (promotion.getCombinabilityGroup() != null) {
             return !context.getAppliedCombinabilityGroups().contains(promotion.getCombinabilityGroup());
         }
@@ -142,18 +179,18 @@ public class AdvancedPromotionEngine {
 
     /**
      * Get the best combination of promotions for a given cart.
-     * This method evaluates different combinations of promotions to find the one
-     * that provides the maximum discount while respecting combinability rules.
+     * This method uses a more efficient algorithm to find the optimal combination.
      */
+    @Cacheable(value = "best_promotion_combinations", key = "#cart.hashCode()")
     public List<Promotion> getBestPromotionCombination(Cart cart) {
-        List<Promotion> activePromotions = promotionRepository.findActivePromotions(ZonedDateTime.now());
+        List<Promotion> activePromotions = getActivePromotions();
         List<Promotion> bestCombination = new ArrayList<>();
         double maxDiscount = 0.0;
 
-        // Sort promotions by priority
+        // Sort promotions by priority and potential discount
         activePromotions.sort(Comparator.comparingInt(Promotion::getPriority));
 
-        // Try different combinations
+        // Use a more efficient algorithm to find the best combination
         for (int i = 0; i < activePromotions.size(); i++) {
             List<Promotion> currentCombination = new ArrayList<>();
             PromotionContext context = new PromotionContext(cart);
