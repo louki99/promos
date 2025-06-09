@@ -1,44 +1,82 @@
 package ma.foodplus.ordering.system.inventory.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.foodplus.ordering.system.product.model.Product;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "product_stock")
+@Table(name = "product_stocks")
 public class ProductStock {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reference_product")
-    private Product product;
+    @Column(name = "product_id", nullable = false)
+    private Long productId;
 
-    @Column(name = "de_no")
-    private String deNo;
+    @Column(name = "product_name")
+    private String productName;
 
-    @Column(name = "qte_mini")
-    private Integer qteMini;
+    @Column(name = "depot_id", nullable = false)
+    private Long depotId;
 
-    @Column(name = "qte_max")
-    private Integer qteMax;
+    @Column(name = "depot_name")
+    private String depotName;
 
-    @Column(name = "qte_sto")
-    private Integer qteSto;
+    @Column(nullable = false, precision = 24, scale = 6)
+    private BigDecimal quantity;
 
-    private boolean principal;
+    @Column(name = "reserved_quantity", nullable = false, precision = 24, scale = 6)
+    private BigDecimal reservedQuantity = BigDecimal.ZERO;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "depot_id")
-    private Depot depot;
+    @Column(name = "unit_cost", nullable = false, precision = 24, scale = 6)
+    private BigDecimal unitCost;
+
+    @Column(name = "expiry_date")
+    private LocalDate expiryDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "quality_status", nullable = false)
+    private QualityStatus qualityStatus = QualityStatus.INSPECTED;
+
+    @Column(name = "quality_notes", length = 1000)
+    private String qualityNotes;
+
+    @Column(name = "minimum_quantity", precision = 24, scale = 6)
+    private BigDecimal minimumQuantity;
+
+    @Column(name = "maximum_quantity", precision = 24, scale = 6)
+    private BigDecimal maximumQuantity;
+
+    @Column(name = "notes", length = 500)
+    private String notes;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private ZonedDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private ZonedDateTime updatedAt;
+
+    public enum QualityStatus {
+        INSPECTED,
+        INSPECTION_REQUIRED,
+        QUARANTINED,
+        DAMAGED,
+        RECALLED
+    }
 } 

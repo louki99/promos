@@ -5,7 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -21,4 +25,55 @@ public class Site {
 
     @Column(nullable = false)
     private String description;
+
+    @Column(name = "site_code", unique = true, nullable = false)
+    private String siteCode;
+
+    @Column(name = "address_line1")
+    private String addressLine1;
+
+    @Column(name = "address_line2")
+    private String addressLine2;
+
+    private String city;
+    private String state;
+    private String country;
+
+    @Column(name = "postal_code")
+    private String postalCode;
+
+    @Column(name = "contact_phone")
+    private String contactPhone;
+
+    @Column(name = "contact_email")
+    private String contactEmail;
+
+    @Column(name = "manager_name")
+    private String managerName;
+
+    @Column(name = "is_active")
+    private boolean isActive;
+
+    @Column(name = "capacity_sqm")
+    private Double capacitySqm;
+
+    @Column(name = "operating_hours")
+    private String operatingHours;
+
+    @Column(name = "timezone")
+    private String timezone;
+
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
+
+    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL)
+    private List<Depot> depots;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private ZonedDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private ZonedDateTime updatedAt;
 } 
