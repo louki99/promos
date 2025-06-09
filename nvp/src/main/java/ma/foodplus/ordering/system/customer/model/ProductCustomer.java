@@ -1,12 +1,7 @@
 package ma.foodplus.ordering.system.customer.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import ma.foodplus.ordering.system.product.model.Product;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Data
