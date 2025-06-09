@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -29,9 +30,25 @@ public class CustomerDTO {
     @Email(message = "Invalid email format")
     private String email;
 
+    private String address;
+    private String codePostal;
+    private String ville;
+    private String country;
+    private String taxId;
+    private String registrationNumber;
+    private String notes;
+
     @NotNull(message = "Category tariff ID is required")
     private Long categoryTarifId;
 
+    private BigDecimal maxCredit;
+    private BigDecimal currentCredit;
+    private Integer paymentTermDays;
+    private boolean isVip;
+    private Integer loyaltyPoints;
+    private LocalDateTime lastOrderDate;
+    private Integer totalOrders;
+    private BigDecimal totalSpent;
     private boolean active;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

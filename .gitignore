@@ -16,3 +16,6 @@
 Thumbs.db
 
 **/target/*
+
+**/.idea/*
+**/.idea/

@@ -106,6 +106,13 @@
             <artifactId>common-domain</artifactId>
         </dependency>
 
+        <!-- Hibernate Types -->
+        <dependency>
+            <groupId>io.hypersistence</groupId>
+            <artifactId>hypersistence-utils-hibernate-60</artifactId>
+            <version>3.8.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
