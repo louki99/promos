@@ -48,16 +48,22 @@ public class PromotionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PromotionDTO> getPromotionById(@PathVariable Integer id) {
-        return promotionService.getPromotionById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            PromotionDTO dto = promotionService.getPromotionById(id);
+            return ResponseEntity.ok(dto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/code/{code}")
     public ResponseEntity<PromotionDTO> getPromotionByCode(@PathVariable String code) {
-        return promotionService.getPromotionByCode(code)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            PromotionDTO dto = promotionService.getPromotionByCode(code);
+            return ResponseEntity.ok(dto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping
