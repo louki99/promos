@@ -1,13 +1,13 @@
 package ma.foodplus.ordering.system.common.service;
 
-import ma.foodplus.ordering.system.common.dto.CategoryTarifDTO;
+import ma.foodplus.ordering.system.common.model.CategoryTarif;
 import java.util.List;
+import java.util.Optional;
 
 public interface CategoryTarifService {
-    CategoryTarifDTO createCategoryTarif(CategoryTarifDTO categoryTarifDTO);
-    CategoryTarifDTO updateCategoryTarif(Long id, CategoryTarifDTO categoryTarifDTO);
-    void deleteCategoryTarif(Long id);
-    CategoryTarifDTO getCategoryTarifById(Long id);
-    List<CategoryTarifDTO> getAllCategoryTarifs();
-    CategoryTarifDTO getCategoryTarifByDescription(String description);
+    List<CategoryTarif> findAll();
+    Optional<CategoryTarif> findById(Long id);
+    CategoryTarif save(CategoryTarif categoryTarif);
+    void deleteById(Long id);
+    CategoryTarif update(Long id, CategoryTarif categoryTarif);
 } 

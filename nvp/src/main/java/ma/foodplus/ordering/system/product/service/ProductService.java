@@ -144,22 +144,17 @@ public class ProductService implements ProductManagementUseCase {
     }
 
     @Override
-    public List<String> getProductCategory(String productId){
+    public List<String> getProductCategory(String productId) {
         Product product = productRepository.findById(Long.valueOf(productId))
                 .orElseThrow(() -> new ProductNotFoundException("Product not found for id: " + productId));
 
-        List<String> categories = List.of(
-                product.getCategory1(),
-                product.getCategory2(),
-                product.getCategory3(),
-                product.getCategory4()
-        );
-
-        if (categories.stream().anyMatch(Objects::isNull)) {
+        if (product.getCategories() == null || product.getCategories().isEmpty()) {
             throw new ProductNotFoundException("Product categories not found for id: " + productId);
         }
 
-        return categories;
+        return product.getCategories().stream()
+                .map(category -> category.getName())
+                .collect(Collectors.toList());
     }
 
 

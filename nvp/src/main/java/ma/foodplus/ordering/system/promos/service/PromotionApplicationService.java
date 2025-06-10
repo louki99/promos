@@ -84,7 +84,7 @@ public class PromotionApplicationService {
     public boolean validatePromotionCode(ApplyPromotionRequest request, String promotionCode) {
         try {
             Order order = createOrderFromRequest(request);
-            Optional<Promotion> promotion = promotionRepository.findByCode(promotionCode);
+            Optional<Promotion> promotion = promotionRepository.findByPromoCode(promotionCode);
             
             if (promotion.isEmpty()) {
                 return false;
@@ -113,7 +113,7 @@ public class PromotionApplicationService {
     public PromotionBreakdownDTO getPromotionBreakdown(ApplyPromotionRequest request, String promotionCode) {
         try {
             Order order = createOrderFromRequest(request);
-            Optional<Promotion> promotion = promotionRepository.findByCode(promotionCode);
+            Optional<Promotion> promotion = promotionRepository.findByPromoCode(promotionCode);
             
             if (promotion.isEmpty()) {
                 throw new PromotionApplicationException("Promotion not found: " + promotionCode);

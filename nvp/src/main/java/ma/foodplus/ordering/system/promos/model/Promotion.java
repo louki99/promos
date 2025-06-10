@@ -35,6 +35,9 @@ public class Promotion {
     @Column(nullable = false)
     private ZonedDateTime endDate;
 
+    @Column(name = "customer_group")
+    private String customerGroup;
+
     @Min(0)
     @Column(nullable = false)
     private int priority;
@@ -85,12 +88,7 @@ public class Promotion {
     @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PromotionRule> rules;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(
-        name = "promotion_dynamic_conditions",
-        joinColumns = @JoinColumn(name = "promotion_id"),
-        inverseJoinColumns = @JoinColumn(name = "condition_id")
-    )
+    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DynamicCondition> dynamicConditions;
 
     @Column(name = "skip_to_sequence")

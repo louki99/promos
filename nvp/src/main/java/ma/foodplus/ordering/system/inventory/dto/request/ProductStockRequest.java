@@ -2,6 +2,7 @@ package ma.foodplus.ordering.system.inventory.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import ma.foodplus.ordering.system.inventory.dto.DepotDTO;
 import ma.foodplus.ordering.system.inventory.model.ProductStock.QualityStatus;
 
 import java.math.BigDecimal;
@@ -12,8 +13,8 @@ public class ProductStockRequest {
     @NotNull(message = "Product ID is required")
     private Long productId;
 
-    @NotNull(message = "Depot ID is required")
-    private Long depotId;
+    @NotNull(message = "Depot is required")
+    private DepotDTO depot;
 
     @NotNull(message = "Quantity is required")
     @Positive(message = "Quantity must be positive")

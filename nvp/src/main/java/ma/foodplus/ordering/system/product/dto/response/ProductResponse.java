@@ -1,13 +1,11 @@
 package ma.foodplus.ordering.system.product.dto.response;
 
-
 import ma.foodplus.ordering.system.product.enums.SuiviStock;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public record ProductResponse(
-    UUID id,
+    Long id,
     String reference,
     String title,
     String description,

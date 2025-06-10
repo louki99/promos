@@ -16,16 +16,16 @@ import java.util.Optional;
 @Repository
 public interface ProductStockRepository extends JpaRepository<ProductStock, Long> {
     
-    @Query("SELECT ps FROM ProductStock ps WHERE ps.product.id = :productId")
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.productId = :productId")
     List<ProductStock> findByProductId(Long productId);
     
     @Query("SELECT ps FROM ProductStock ps WHERE ps.depot.id = :depotId")
     List<ProductStock> findByDepotId(Long depotId);
     
-    @Query("SELECT ps FROM ProductStock ps WHERE ps.product.id = :productId AND ps.depot.id = :depotId")
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.productId = :productId AND ps.depot.id = :depotId")
     Optional<ProductStock> findByProductIdAndDepotId(Long productId, Long depotId);
     
-    @Query("SELECT ps FROM ProductStock ps WHERE ps.qteAvailable <= ps.qteMini AND ps.isActive = true")
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.quantity <= ps.minimumQuantity")
     List<ProductStock> findLowStockItems();
     
     @Query("SELECT ps FROM ProductStock ps WHERE ps.expiryDate <= :date AND ps.qualityStatus != 'EXPIRED'")
@@ -40,13 +40,13 @@ public interface ProductStockRepository extends JpaRepository<ProductStock, Long
     @Query("SELECT ps FROM ProductStock ps WHERE ps.locationCode = :locationCode")
     List<ProductStock> findByLocationCode(String locationCode);
     
-    @Query("SELECT ps FROM ProductStock ps WHERE ps.daysOfStock <= :days AND ps.isActive = true")
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.daysOfStock <= :days")
     List<ProductStock> findItemsWithLowDaysOfStock(Integer days);
     
-    @Query("SELECT ps FROM ProductStock ps WHERE ps.totalValue >= :minValue")
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.quantity * ps.unitCost >= :minValue")
     List<ProductStock> findItemsByMinValue(BigDecimal minValue);
     
-    @Query("SELECT SUM(ps.totalValue) FROM ProductStock ps WHERE ps.depot.id = :depotId")
+    @Query("SELECT SUM(ps.quantity * ps.unitCost) FROM ProductStock ps WHERE ps.depot.id = :depotId")
     BigDecimal calculateTotalValueByDepot(Long depotId);
     
     @Query("SELECT COUNT(ps) FROM ProductStock ps WHERE ps.qualityStatus = :status")
@@ -58,10 +58,10 @@ public interface ProductStockRepository extends JpaRepository<ProductStock, Long
     @Query("SELECT ps FROM ProductStock ps WHERE ps.lastSaleDate <= :date")
     List<ProductStock> findItemsNotSoldSince(ZonedDateTime date);
     
-    @Query("SELECT ps FROM ProductStock ps WHERE ps.qteAvailable > 0 AND ps.qualityStatus = 'GOOD'")
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.quantity > 0 AND ps.qualityStatus = 'GOOD'")
     List<ProductStock> findAvailableGoodQualityItems();
     
-    @Query("SELECT ps FROM ProductStock ps WHERE ps.qteReserved > 0")
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.reservedQuantity > 0")
     List<ProductStock> findReservedItems();
     
     @Query("SELECT ps FROM ProductStock ps WHERE ps.storageCondition = :condition")
@@ -70,7 +70,7 @@ public interface ProductStockRepository extends JpaRepository<ProductStock, Long
     @Query("SELECT ps FROM ProductStock ps WHERE ps.qualityStatus = :status AND ps.depot.id = :depotId")
     List<ProductStock> findByQualityStatusAndDepotId(@Param("status") QualityStatus status, @Param("depotId") Long depotId);
     
-    @Query("SELECT ps FROM ProductStock ps WHERE ps.qualityStatus = :status AND ps.product.id = :productId")
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.qualityStatus = :status AND ps.productId = :productId")
     List<ProductStock> findByQualityStatusAndProductId(@Param("status") QualityStatus status, @Param("productId") Long productId);
     
     @Query("SELECT ps FROM ProductStock ps WHERE ps.expiryDate < :date")
@@ -80,4 +80,19 @@ public interface ProductStockRepository extends JpaRepository<ProductStock, Long
            "LOWER(ps.notes) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
            "LOWER(ps.qualityNotes) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     List<ProductStock> searchProductStocks(@Param("searchTerm") String searchTerm);
+
+    /**
+     * Find all stock entries for a product with quantity greater than the specified value
+     */
+    List<ProductStock> findByProductIdAndQuantityGreaterThan(Long productId, BigDecimal minQuantity);
+
+    /**
+     * Find the first stock entry for a product ordered by quantity ascending
+     */
+    ProductStock findFirstByProductIdOrderByQuantityAsc(Long productId);
+
+    /**
+     * Find the first stock entry for a product ordered by last updated descending
+     */
+    ProductStock findFirstByProductIdOrderByLastUpdatedDesc(Long productId);
 } 

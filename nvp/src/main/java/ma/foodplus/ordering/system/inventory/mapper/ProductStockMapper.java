@@ -7,24 +7,26 @@ import ma.foodplus.ordering.system.inventory.model.ProductStock;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, uses = {DepotMapper.class})
 public interface ProductStockMapper {
     
-    @Mapping(target = "product.id", source = "productId")
-    @Mapping(target = "depot.id", source = "depotId")
+    @Mapping(target = "productId", source = "productId")
     ProductStock toEntity(ProductStockDTO dto);
     
-    @Mapping(target = "productId", source = "product.id")
-    @Mapping(target = "depotId", source = "depot.id")
+    @Mapping(target = "productId", source = "productId")
+    @Mapping(target = "expiryDate", source = "expiryDate", qualifiedByName = "localDateToZonedDateTime")
     ProductStockDTO toDTO(ProductStock entity);
     
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "product.id", source = "productId")
-    @Mapping(target = "depot.id", source = "depotId")
+    @Mapping(target = "productId", source = "productId")
     void updateEntityFromDTO(ProductStockDTO dto, @MappingTarget ProductStock entity);
 
     @Mapping(target = "id", ignore = true)
@@ -42,7 +44,12 @@ public interface ProductStockMapper {
     @Mapping(target = "depotName", ignore = true)
     @Mapping(target = "totalValue", expression = "java(entity.getQuantity().multiply(entity.getUnitCost()))")
     @Mapping(target = "availableQuantity", expression = "java(entity.getQuantity().subtract(entity.getReservedQuantity()))")
-    @Mapping(target = "isLowStock", expression = "java(entity.getMinimumQuantity() != null && entity.getQuantity().compareTo(entity.getMinimumQuantity()) <= 0)")
-    @Mapping(target = "isExpired", expression = "java(entity.getExpiryDate() != null && entity.getExpiryDate().isBefore(java.time.LocalDate.now()))")
+    @Mapping(target = "lowStock", expression = "java(entity.getMinimumQuantity() != null && entity.getQuantity().compareTo(entity.getMinimumQuantity()) <= 0)")
+    @Mapping(target = "expired", expression = "java(entity.getExpiryDate() != null && entity.getExpiryDate().isBefore(java.time.LocalDate.now()))")
     ProductStockResponse toResponse(ProductStock entity);
+
+    @Named("localDateToZonedDateTime")
+    default ZonedDateTime localDateToZonedDateTime(LocalDate date) {
+        return date != null ? date.atStartOfDay(ZoneId.systemDefault()) : null;
+    }
 } 

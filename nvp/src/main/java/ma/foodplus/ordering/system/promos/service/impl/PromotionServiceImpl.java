@@ -52,7 +52,7 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public PromotionDTO getPromotionByCode(String promoCode) {
-        return promotionRepository.findByCode(promoCode)
+        return promotionRepository.findByPromoCode(promoCode)
                 .map(promotionMapper::toDTO)
                 .orElseThrow(() -> new RuntimeException("Promotion not found"));
     }

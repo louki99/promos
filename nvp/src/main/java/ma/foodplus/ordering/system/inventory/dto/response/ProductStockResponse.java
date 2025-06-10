@@ -2,6 +2,7 @@ package ma.foodplus.ordering.system.inventory.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import ma.foodplus.ordering.system.inventory.dto.DepotDTO;
 import ma.foodplus.ordering.system.inventory.model.ProductStock.QualityStatus;
 
 import java.math.BigDecimal;
@@ -20,8 +21,8 @@ public class ProductStockResponse {
     @Schema(description = "Product name")
     private String productName;
 
-    @Schema(description = "Depot identifier")
-    private Long depotId;
+    @Schema(description = "Depot information")
+    private DepotDTO depot;
 
     @Schema(description = "Depot name")
     private String depotName;

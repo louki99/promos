@@ -7,7 +7,7 @@ import ma.foodplus.ordering.system.order.model.Order;
 import java.util.Objects;
 
 @Entity
-@Table(name = "dynamic_conditions")
+@Table(name = "promotion_dynamic_conditions")
 public class DynamicCondition {
 
     @Id
@@ -15,24 +15,27 @@ public class DynamicCondition {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(name = "condition_type", nullable = false)
     private String conditionType;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(name = "condition_value", nullable = false)
     private String conditionValue;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(name = "operator", nullable = false)
     private String operator;
 
+    @Column(name = "entity_type")
     private String entityType;
 
+    @Column(name = "entity_id")
     private String entityId;
 
-    @Column(nullable = false)
+    @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
+    @Column(name = "description")
     private String description;
 
     @Column(name = "threshold")
@@ -41,7 +44,6 @@ public class DynamicCondition {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
-
 
     @Transient // We don't want to persist this
     private Order order;

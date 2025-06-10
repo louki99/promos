@@ -22,8 +22,8 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
     /**
      * Finds a promotion by its code.
      */
-    Optional<Promotion> findByCode(String code);
-
+    Optional<Promotion> findByPromoCode(String promoCode);
+    
     /**
      * Finds all active promotions that are eligible for a given customer.
      */

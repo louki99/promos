@@ -30,8 +30,9 @@ public class ProductStock {
     @Column(name = "product_name")
     private String productName;
 
-    @Column(name = "depot_id", nullable = false)
-    private Long depotId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "depot_id", nullable = false)
+    private Depot depot;
 
     @Column(name = "depot_name")
     private String depotName;
@@ -55,11 +56,39 @@ public class ProductStock {
     @Column(name = "quality_notes", length = 1000)
     private String qualityNotes;
 
-    @Column(name = "minimum_quantity", precision = 24, scale = 6)
-    private BigDecimal minimumQuantity;
+    // Stock level management
+    @Column(name = "min_stock_level", precision = 24, scale = 6)
+    private BigDecimal minStockLevel;
 
-    @Column(name = "maximum_quantity", precision = 24, scale = 6)
-    private BigDecimal maximumQuantity;
+    @Column(name = "max_stock_level", precision = 24, scale = 6)
+    private BigDecimal maxStockLevel;
+
+    @Column(name = "reorder_point", precision = 24, scale = 6)
+    private BigDecimal reorderPoint;
+
+    @Column(name = "reorder_quantity", precision = 24, scale = 6)
+    private BigDecimal reorderQuantity;
+
+    @Column(name = "shelf_life_days")
+    private Integer shelfLifeDays;
+
+    @Column(name = "storage_conditions", length = 100)
+    private String storageConditions;
+
+    @Column(name = "days_of_stock")
+    private Integer daysOfStock;
+
+    @Column(name = "batch_number")
+    private String batchNumber;
+
+    @Column(name = "location_code")
+    private String locationCode;
+
+    @Column(name = "last_purchase_date")
+    private ZonedDateTime lastPurchaseDate;
+
+    @Column(name = "last_sale_date")
+    private ZonedDateTime lastSaleDate;
 
     @Column(name = "notes", length = 500)
     private String notes;

@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 public class CategoryTarifDTO {
     private Long id;
     private String description;
-    private BigDecimal priceTTC;
+    private BigDecimal priceTtc;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
 } 

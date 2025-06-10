@@ -19,9 +19,7 @@ public class SiteDTO {
     private String siteCode;
 
     private String addressLine1;
-    private String addressLine2;
     private String city;
-    private String state;
     private String country;
     private String postalCode;
 
@@ -31,12 +29,7 @@ public class SiteDTO {
     @Email(message = "Invalid email format")
     private String contactEmail;
 
-    private String managerName;
     private boolean isActive;
-    private Double capacitySqm;
-    private String operatingHours;
-    private String timezone;
-    private String notes;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
 } 

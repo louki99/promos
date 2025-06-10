@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import ma.foodplus.ordering.system.common.dto.CategoryTarifDTO;
+import ma.foodplus.ordering.system.common.mapper.CategoryTarifMapper;
+import ma.foodplus.ordering.system.common.model.CategoryTarif;
 import ma.foodplus.ordering.system.common.service.CategoryTarifService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/category-tarifs")
@@ -19,11 +22,14 @@ import java.util.List;
 public class CategoryTarifController {
 
     private final CategoryTarifService categoryTarifService;
+    private final CategoryTarifMapper categoryTarifMapper;
 
     @PostMapping
     @Operation(summary = "Create a new category tariff")
     public ResponseEntity<CategoryTarifDTO> createCategoryTarif(@Valid @RequestBody CategoryTarifDTO categoryTarifDTO) {
-        return new ResponseEntity<>(categoryTarifService.createCategoryTarif(categoryTarifDTO), HttpStatus.CREATED);
+        CategoryTarif categoryTarif = categoryTarifMapper.toEntity(categoryTarifDTO);
+        CategoryTarif savedCategoryTarif = categoryTarifService.save(categoryTarif);
+        return new ResponseEntity<>(categoryTarifMapper.toDTO(savedCategoryTarif), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -31,31 +37,44 @@ public class CategoryTarifController {
     public ResponseEntity<CategoryTarifDTO> updateCategoryTarif(
             @PathVariable Long id,
             @Valid @RequestBody CategoryTarifDTO categoryTarifDTO) {
-        return ResponseEntity.ok(categoryTarifService.updateCategoryTarif(id, categoryTarifDTO));
+        CategoryTarif categoryTarif = categoryTarifMapper.toEntity(categoryTarifDTO);
+        CategoryTarif updatedCategoryTarif = categoryTarifService.update(id, categoryTarif);
+        return ResponseEntity.ok(categoryTarifMapper.toDTO(updatedCategoryTarif));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a category tariff")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryTarif(@PathVariable Long id) {
-        categoryTarifService.deleteCategoryTarif(id);
+        categoryTarifService.deleteById(id);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a category tariff by ID")
     public ResponseEntity<CategoryTarifDTO> getCategoryTarifById(@PathVariable Long id) {
-        return ResponseEntity.ok(categoryTarifService.getCategoryTarifById(id));
+        return categoryTarifService.findById(id)
+                .map(categoryTarifMapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
     @Operation(summary = "Get all category tariffs")
     public ResponseEntity<List<CategoryTarifDTO>> getAllCategoryTarifs() {
-        return ResponseEntity.ok(categoryTarifService.getAllCategoryTarifs());
+        List<CategoryTarifDTO> dtos = categoryTarifService.findAll().stream()
+                .map(categoryTarifMapper::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/by-description/{description}")
     @Operation(summary = "Get a category tariff by description")
     public ResponseEntity<CategoryTarifDTO> getCategoryTarifByDescription(@PathVariable String description) {
-        return ResponseEntity.ok(categoryTarifService.getCategoryTarifByDescription(description));
+        return categoryTarifService.findAll().stream()
+                .filter(ct -> ct.getDescription().equals(description))
+                .findFirst()
+                .map(categoryTarifMapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 } 

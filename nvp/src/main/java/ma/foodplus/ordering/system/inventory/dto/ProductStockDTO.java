@@ -14,8 +14,8 @@ public class ProductStockDTO {
     @NotNull(message = "Product ID is required")
     private Long productId;
 
-    @NotNull(message = "Depot ID is required")
-    private Long depotId;
+    @NotNull(message = "Depot is required")
+    private DepotDTO depot;
 
     private String deNo;
     private Integer qteMini;

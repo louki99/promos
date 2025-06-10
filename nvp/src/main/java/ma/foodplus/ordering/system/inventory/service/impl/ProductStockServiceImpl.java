@@ -10,7 +10,9 @@ import ma.foodplus.ordering.system.inventory.dto.request.StockTransferRequest;
 import ma.foodplus.ordering.system.inventory.dto.response.*;
 import ma.foodplus.ordering.system.inventory.exception.ResourceNotFoundException;
 import ma.foodplus.ordering.system.inventory.mapper.ProductStockMapper;
+import ma.foodplus.ordering.system.inventory.model.Depot;
 import ma.foodplus.ordering.system.inventory.model.ProductStock;
+import ma.foodplus.ordering.system.inventory.repository.DepotRepository;
 import ma.foodplus.ordering.system.inventory.repository.ProductStockRepository;
 import ma.foodplus.ordering.system.inventory.service.ProductStockService;
 import ma.foodplus.ordering.system.product.dto.response.ProductResponse;
@@ -39,6 +41,7 @@ public class ProductStockServiceImpl implements ProductStockService {
     private final ProductService productService;
     private final CustomerService customerService;
     private final PromotionService promotionService;
+    private final DepotRepository depotRepository;
 
     @Override
     @Transactional
@@ -121,7 +124,7 @@ public class ProductStockServiceImpl implements ProductStockService {
                 log.error("Failed to process stock request: {}", stockRequest, e);
                 BulkProductStockResponse.FailedOperation failedOp = new BulkProductStockResponse.FailedOperation();
                 failedOp.setProductId(stockRequest.getProductId());
-                failedOp.setDepotId(stockRequest.getDepotId());
+                failedOp.setDepotId(stockRequest.getDepot().getId());
                 failedOp.setErrorMessage(e.getMessage());
                 failedOperations.add(failedOp);
             }
@@ -146,13 +149,17 @@ public class ProductStockServiceImpl implements ProductStockService {
             throw new RuntimeException("Insufficient stock for transfer");
         }
 
+        // Fetch destination depot
+        Depot destinationDepot = depotRepository.findById(request.getDestinationDepotId())
+                .orElseThrow(() -> new RuntimeException("Destination depot not found"));
+
         // Create or update destination stock
         ProductStock destinationStock = productStockRepository
                 .findByProductIdAndDepotId(sourceStock.getProductId(), request.getDestinationDepotId())
                 .orElseGet(() -> {
                     ProductStock newStock = new ProductStock();
                     newStock.setProductId(sourceStock.getProductId());
-                    newStock.setDepotId(request.getDestinationDepotId());
+                    newStock.setDepot(destinationDepot);
                     newStock.setQuantity(BigDecimal.ZERO);
                     newStock.setUnitCost(sourceStock.getUnitCost());
                     return newStock;
@@ -170,7 +177,7 @@ public class ProductStockServiceImpl implements ProductStockService {
         StockTransferResponse response = new StockTransferResponse();
         response.setSourceProductStockId(id);
         response.setDestinationProductStockId(destinationStock.getId());
-        response.setSourceDepotId(sourceStock.getDepotId());
+        response.setSourceDepotId(sourceStock.getDepot().getId());
         response.setDestinationDepotId(request.getDestinationDepotId());
         response.setQuantity(request.getQuantity());
         response.setStatus(StockTransferResponse.TransferStatus.COMPLETED);
@@ -344,8 +351,8 @@ public class ProductStockServiceImpl implements ProductStockService {
     public List<ProductStockResponse> getLowStockProducts() {
         log.info("Getting low stock products");
         return productStockRepository.findAll().stream()
-                .filter(stock -> stock.getMinimumQuantity() != null && 
-                        stock.getQuantity().compareTo(stock.getMinimumQuantity()) <= 0)
+                .filter(stock -> stock.getMinStockLevel() != null && 
+                        stock.getQuantity().compareTo(stock.getMinStockLevel()) <= 0)
                 .map(productStockMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -689,11 +696,10 @@ public class ProductStockServiceImpl implements ProductStockService {
 
     private void generateLowStockAlerts(List<InventoryAlertResponse> alerts) {
         productStockRepository.findAll().stream()
-                .filter(stock -> stock.getMinimumQuantity() != null)
+                .filter(stock -> stock.getMinStockLevel() != null)
                 .forEach(stock -> {
                     BigDecimal currentQuantity = stock.getQuantity();
-                    BigDecimal minimumQuantity = stock.getMinimumQuantity();
-                    BigDecimal threshold = minimumQuantity.multiply(new BigDecimal("0.2")); // 20% threshold
+                    BigDecimal minimumQuantity = stock.getMinStockLevel();
 
                     if (currentQuantity.compareTo(minimumQuantity) <= 0) {
                         InventoryAlertResponse.AlertSeverity severity = calculateLowStockSeverity(currentQuantity, minimumQuantity);
@@ -1111,8 +1117,8 @@ public class ProductStockServiceImpl implements ProductStockService {
     public long countLowStockProducts() {
         log.info("Counting low stock products");
         return productStockRepository.findAll().stream()
-                .filter(stock -> stock.getMinimumQuantity() != null && 
-                        stock.getQuantity().compareTo(stock.getMinimumQuantity()) <= 0)
+                .filter(stock -> stock.getMinStockLevel() != null && 
+                        stock.getQuantity().compareTo(stock.getMinStockLevel()) <= 0)
                 .count();
     }
 

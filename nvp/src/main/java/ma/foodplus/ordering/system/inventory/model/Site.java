@@ -32,11 +32,7 @@ public class Site {
     @Column(name = "address_line1")
     private String addressLine1;
 
-    @Column(name = "address_line2")
-    private String addressLine2;
-
     private String city;
-    private String state;
     private String country;
 
     @Column(name = "postal_code")
@@ -48,23 +44,11 @@ public class Site {
     @Column(name = "contact_email")
     private String contactEmail;
 
-    @Column(name = "manager_name")
-    private String managerName;
-
     @Column(name = "is_active")
     private boolean isActive;
 
     @Column(name = "capacity_sqm")
     private Double capacitySqm;
-
-    @Column(name = "operating_hours")
-    private String operatingHours;
-
-    @Column(name = "timezone")
-    private String timezone;
-
-    @Column(name = "notes", columnDefinition = "TEXT")
-    private String notes;
 
     @OneToMany(mappedBy = "site", cascade = CascadeType.ALL)
     private List<Depot> depots;
