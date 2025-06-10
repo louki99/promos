@@ -35,7 +35,7 @@ public class OrderItemContext {
     }
 
     public BigDecimal getFinalPrice() {
-        return originalItem.getPrice()
+        return originalItem.getUnitPrice()
                 .multiply(new BigDecimal(originalItem.getQuantity()))
                 .subtract(discountAmount);
     }
@@ -44,7 +44,7 @@ public class OrderItemContext {
         if (discount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Discount cannot be negative");
         }
-        BigDecimal originalTotal = originalItem.getPrice().multiply(new BigDecimal(originalItem.getQuantity()));
+        BigDecimal originalTotal = originalItem.getUnitPrice().multiply(new BigDecimal(originalItem.getQuantity()));
         if (discount.compareTo(originalTotal) > 0) {
             throw new IllegalArgumentException("Discount cannot exceed original price");
         }

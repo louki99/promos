@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import ma.foodplus.ordering.system.promos.dto.OrdertemDto;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,60 +40,88 @@ public class OrderItem {
     @Column(name = "product_name", nullable = false)
     private String productName;
 
-    @Column(name = "price", nullable = false)
-    private BigDecimal price;
-
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
-
     @Column(name = "sku")
     private String sku;
 
     @Column(name = "sku_points")
     private BigDecimal skuPoints;
 
-    @Column(name = "notes")
-    private String notes;
+    // Pricing
+    @Column(name = "unit_price", nullable = false)
+    private BigDecimal unitPrice;
 
-    @Column(name = "discount_amount")
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
+    @Column(name = "discount_amount", nullable = false)
     private BigDecimal discountAmount = BigDecimal.ZERO;
 
+    @Column(name = "tax_amount", nullable = false)
+    private BigDecimal taxAmount = BigDecimal.ZERO;
+
+    @Column(name = "total_price", nullable = false)
+    private BigDecimal totalPrice;
+
+    // B2B Specific
+    @Column(name = "wholesale_price")
+    private BigDecimal wholesalePrice;
+
+    @Column(name = "bulk_quantity_threshold")
+    private Integer bulkQuantityThreshold;
+
+    @Column(name = "special_pricing")
+    private boolean specialPricing = false;
+
+    // Promotion
     @Column(name = "applied_promotion_code")
     private String appliedPromotionCode;
+
+    @Column(name = "consumed_quantity", nullable = false)
+    private Integer consumedQuantity = 0;
 
     @ElementCollection
     @CollectionTable(name = "order_item_applied_promotions", 
         joinColumns = @JoinColumn(name = "order_item_id"))
     private List<String> appliedPromotions = new ArrayList<>();
 
-    @Column(name = "consumed_quantity")
-    private Integer consumedQuantity = 0;
+    // Additional Info
+    @Column(name = "notes")
+    private String notes;
+
+    @Column(name = "created_at", nullable = false)
+    private ZonedDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private ZonedDateTime updatedAt;
 
     // Constructors
     public OrderItem() {
     }
 
-    public OrderItem(Long productId, Long productFamilyId, String productName, BigDecimal price, Integer quantity, String sku, BigDecimal skuPoints) {
+    public OrderItem(Long productId, Long productFamilyId, String productName, BigDecimal unitPrice, Integer quantity, String sku, BigDecimal skuPoints) {
         if (productId == null) {
             throw new IllegalArgumentException("Product ID cannot be null.");
         }
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
-        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
+        if (unitPrice == null || unitPrice.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Price must be non-negative.");
         }
 
         this.productId = productId;
         this.productFamilyId = productFamilyId;
         this.productName = productName;
-        this.price = price;
+        this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.sku = sku;
         this.skuPoints = Objects.requireNonNullElse(skuPoints, BigDecimal.ZERO);
+        this.createdAt = ZonedDateTime.now();
+        this.updatedAt = ZonedDateTime.now();
+        calculateTotalPrice();
     }
 
-    public OrderItem(OrdertemDto item){
+    public OrderItem(OrdertemDto item) {
         if (item == null) {
             throw new IllegalArgumentException("OrdertemDto cannot be null.");
         }
@@ -105,11 +134,22 @@ public class OrderItem {
         if (item.getUnitPrice() == null || item.getUnitPrice().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Price must be non-negative.");
         }
+
+        this.productId = item.getProductId();
+        this.productFamilyId = item.getProductFamilyId();
+        this.productName = item.getProductName();
+        this.unitPrice = item.getUnitPrice();
+        this.quantity = item.getQuantity();
+        this.sku = item.getSku();
+        this.skuPoints = Objects.requireNonNullElse(item.getSkuPoints(), BigDecimal.ZERO);
+        this.createdAt = ZonedDateTime.now();
+        this.updatedAt = ZonedDateTime.now();
+        calculateTotalPrice();
     }
 
     // Business Logic Methods
     public BigDecimal getOriginalTotalPrice() {
-        return this.price.multiply(BigDecimal.valueOf(this.quantity));
+        return this.unitPrice.multiply(BigDecimal.valueOf(this.quantity));
     }
 
     public BigDecimal getTotalSkuPoints() {
@@ -117,7 +157,9 @@ public class OrderItem {
     }
 
     public BigDecimal getFinalPrice() {
-        return getOriginalTotalPrice().subtract(discountAmount);
+        return getOriginalTotalPrice()
+                .subtract(discountAmount)
+                .add(taxAmount);
     }
 
     public void applyDiscount(BigDecimal discount) {
@@ -129,6 +171,21 @@ public class OrderItem {
             throw new IllegalArgumentException("Discount cannot exceed original price");
         }
         this.discountAmount = this.discountAmount.add(discount);
+        calculateTotalPrice();
+    }
+
+    public void applyTax(BigDecimal tax) {
+        if (tax.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Tax cannot be negative");
+        }
+        this.taxAmount = this.taxAmount.add(tax);
+        calculateTotalPrice();
+    }
+
+    public void calculateTotalPrice() {
+        this.totalPrice = getOriginalTotalPrice()
+                .subtract(discountAmount)
+                .add(taxAmount);
     }
 
     public int getRemainingQuantityForRewards() {
@@ -186,12 +243,13 @@ public class OrderItem {
         this.productName = productName;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+        calculateTotalPrice();
     }
 
     public Integer getQuantity() {
@@ -203,6 +261,7 @@ public class OrderItem {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
         this.quantity = quantity;
+        calculateTotalPrice();
     }
 
     public String getSku() {
@@ -221,20 +280,54 @@ public class OrderItem {
         this.skuPoints = skuPoints;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
     public BigDecimal getDiscountAmount() {
         return discountAmount;
     }
 
     public void setDiscountAmount(BigDecimal discountAmount) {
         this.discountAmount = discountAmount;
+        calculateTotalPrice();
+    }
+
+    public BigDecimal getTaxAmount() {
+        return taxAmount;
+    }
+
+    public void setTaxAmount(BigDecimal taxAmount) {
+        this.taxAmount = taxAmount;
+        calculateTotalPrice();
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getWholesalePrice() {
+        return wholesalePrice;
+    }
+
+    public void setWholesalePrice(BigDecimal wholesalePrice) {
+        this.wholesalePrice = wholesalePrice;
+    }
+
+    public Integer getBulkQuantityThreshold() {
+        return bulkQuantityThreshold;
+    }
+
+    public void setBulkQuantityThreshold(Integer bulkQuantityThreshold) {
+        this.bulkQuantityThreshold = bulkQuantityThreshold;
+    }
+
+    public boolean isSpecialPricing() {
+        return specialPricing;
+    }
+
+    public void setSpecialPricing(boolean specialPricing) {
+        this.specialPricing = specialPricing;
     }
 
     public String getAppliedPromotionCode() {
@@ -261,8 +354,28 @@ public class OrderItem {
         this.appliedPromotions = appliedPromotions;
     }
 
-    public OrderItem getOriginalItem() {
-        return this;
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public ZonedDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -272,7 +385,7 @@ public class OrderItem {
                 ", productId=" + productId +
                 ", productFamilyId=" + productFamilyId +
                 ", productName='" + productName + '\'' +
-                ", price=" + price +
+                ", unitPrice=" + unitPrice +
                 ", quantity=" + quantity +
                 ", sku='" + sku + '\'' +
                 '}';
