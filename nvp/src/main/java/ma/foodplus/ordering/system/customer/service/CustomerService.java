@@ -1,9 +1,14 @@
 package ma.foodplus.ordering.system.customer.service;
 
 import ma.foodplus.ordering.system.customer.dto.CustomerDTO;
+import ma.foodplus.ordering.system.customer.model.CustomerType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public interface CustomerService {
@@ -98,4 +103,37 @@ public interface CustomerService {
      * @return the total amount spent by the customer
      */
     BigDecimal getCustomerTotalSpent(Long customerId);
+
+    // Search and filter operations
+    Page<CustomerDTO> searchCustomers(String searchTerm, Pageable pageable);
+    List<CustomerDTO> getCustomersByType(CustomerType type);
+    List<CustomerDTO> getCustomersByGroup(Long groupId);
+    List<CustomerDTO> getCustomersByCreditRating(String creditRating);
+    
+    // B2B specific operations
+    List<CustomerDTO> getCustomersWithExpiringContracts(int daysThreshold);
+    List<CustomerDTO> getCustomersWithOverduePayments();
+    List<CustomerDTO> getCustomersByAnnualTurnoverRange(BigDecimal min, BigDecimal max);
+    List<CustomerDTO> getCustomersByBusinessActivity(String activity);
+    
+    // Business operations
+    void updateCustomerCreditLimit(Long id, BigDecimal newLimit);
+    void updateCustomerCreditScore(Long id, Integer newScore);
+    void addCustomerToGroup(Long customerId, Long groupId);
+    void removeCustomerFromGroup(Long customerId, Long groupId);
+    void updateCustomerLoyaltyPoints(Long id, Integer points);
+    void updateCustomerVipStatus(Long id, boolean isVip);
+    
+    // Validation operations
+    boolean validateCustomerContract(Long id);
+    boolean validateCustomerCredit(Long id, BigDecimal amount);
+    boolean isCustomerActive(Long id);
+    
+    // Statistics and reporting
+    Map<String, Object> getCustomerStatistics();
+    List<CustomerDTO> getTopCustomersBySpending(int limit);
+    Map<String, Integer> getCustomerDistributionByType();
+    Map<String, BigDecimal> getAverageOrderValueByCustomerType();
+
+    Page<CustomerDTO> getAllCustomers(Pageable pageable);
 }
