@@ -13,7 +13,8 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(
     componentModel = "spring",
     unmappedTargetPolicy = ReportingPolicy.IGNORE,
-    unmappedSourcePolicy = ReportingPolicy.IGNORE
+    unmappedSourcePolicy = ReportingPolicy.IGNORE,
+    uses = {ProductId.class}
 )
 public interface ProductPersistenceMapper {
 
