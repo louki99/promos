@@ -1,5 +1,0 @@
-/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/dataaccess/entity/StoreEntity.java
-/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/dataaccess/entity/StoreEntityId.java
-/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/dataaccess/exception/StoreDataAccessException.java
-/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/dataaccess/repository/StoreJpaRepository.java
-/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/common/common-dataaccess/src/main/java/ma/foodplus/ordering/system/dataaccess/utils/SlugUtil.java
