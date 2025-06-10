@@ -5,8 +5,91 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add more complex promo">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-application/target/classes/ma/foodplus/ordering/system/application/handler/ErrorDTO$ErrorDTOBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-application/target/classes/ma/foodplus/ordering/system/application/handler/ErrorDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-application/target/classes/ma/foodplus/ordering/system/application/handler/GlobalExceptionHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-application/target/common-application-0.0.1-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-application/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-application/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-application/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/classes/ma/foodplus/ordering/system/dataaccess/entity/StoreEntity$StoreEntityBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/classes/ma/foodplus/ordering/system/dataaccess/entity/StoreEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/classes/ma/foodplus/ordering/system/dataaccess/entity/StoreEntityId$StoreEntityIdBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/classes/ma/foodplus/ordering/system/dataaccess/entity/StoreEntityId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/classes/ma/foodplus/ordering/system/dataaccess/exception/StoreDataAccessException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/classes/ma/foodplus/ordering/system/dataaccess/repository/StoreJpaRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/classes/ma/foodplus/ordering/system/dataaccess/utils/SlugUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/common-dataaccess-0.0.1-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-dataaccess/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/DomainConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/DomainConstants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/entity/BaseEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/entity/BaseEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/DomainEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/DomainEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/publisher/DomainEventPublisher.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/publisher/DomainEventPublisher.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/exception/DomainException.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/exception/DomainException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/BaseId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/BaseId.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CategoryId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CategoryId.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CustomerId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CustomerId.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/Money.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/Money.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderApprovalStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderApprovalStatus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderId.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderStatus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentOrderStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentOrderStatus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentStatus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/ProductId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/ProductId.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreId.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreOrderStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreOrderStatus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/common-domain-0.0.1-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common-domain/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/foodplus-ordering.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/foodplus-ordering.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/FoodPlusOrderingApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/FoodPlusOrderingApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/controller/CategoryTarifController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/controller/CategoryTarifController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/dto/CategoryTarifDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/dto/CategoryTarifDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/mapper/CategoryTarifMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/mapper/CategoryTarifMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/model/CategoryTarif.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/model/CategoryTarif.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/service/CategoryTarifService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/service/CategoryTarifService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/service/impl/CategoryTarifServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/common/service/impl/CategoryTarifServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/controller/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/controller/CustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/dto/CustomerDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/dto/CustomerDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/mapper/CustomerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/mapper/CustomerMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/model/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/model/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/repository/CustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/repository/CustomerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/service/CustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/service/CustomerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/service/impl/CustomerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/service/impl/CustomerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/dto/ProductStockDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/dto/ProductStockDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/dto/SiteDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/dto/SiteDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/dto/request/ProductStockRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/dto/request/ProductStockRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/dto/response/ProductStockResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/dto/response/ProductStockResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/mapper/ProductStockMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/mapper/ProductStockMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/model/ProductStock.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/model/ProductStock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/model/Site.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/model/Site.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/repository/ProductStockRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/repository/ProductStockRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/service/impl/ProductStockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/service/impl/ProductStockServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/configuration/ProductConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/configuration/ProductConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/dto/response/ProductResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/dto/response/ProductResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/controller/CartController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/controller/PromotionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/controller/PromotionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/OrdertemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/OrdertemDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/DynamicCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/DynamicCondition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Promotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Promotion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/repository/PromotionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/repository/PromotionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/impl/PromotionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/impl/PromotionServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/V1__Create_products_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/V2__Add_indexes_to_products.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/V3__Add_audit_fields_to_products.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,8 +208,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ProductServiceApplication" />
         <item itemvalue="Application.FoodPlusOrderingApplication" />
+        <item itemvalue="Application.ProductServiceApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -210,7 +293,23 @@
       <option name="project" value="LOCAL" />
       <updated>1749500201906</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="add more complex promo">
+      <option name="closed" value="true" />
+      <created>1749500585485</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1749500585485</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add more complex promo">
+      <option name="closed" value="true" />
+      <created>1749500637537</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1749500637537</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
