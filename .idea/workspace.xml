@@ -4,30 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="fix dumy data">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/DomainConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/DomainConstants.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/entity/BaseEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/entity/BaseEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/DomainEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/DomainEvent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/publisher/DomainEventPublisher.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/publisher/DomainEventPublisher.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/exception/DomainException.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/exception/DomainException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/BaseId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/BaseId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CategoryId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CategoryId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CustomerId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CustomerId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/Money.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/Money.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderApprovalStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderApprovalStatus.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderStatus.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentOrderStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentOrderStatus.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentStatus.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/ProductId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/ProductId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreOrderStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreOrderStatus.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/foodplus-ordering.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/foodplus-ordering.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/mapper/OrderMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/mapper/OrderMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/repository/ProductRepository.java" afterDir="false" />
-    </list>
+    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="change reo" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -70,32 +47,33 @@
     <option name="showMembers" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.FoodPlusOrderingApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ProductServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.foodplus-ordering-system [clean].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ChatTagsLlmMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ClientConfigCleanupMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyAccountHistoryMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyAccountsIdsRefresh&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyAssignOrphanedChatsToActiveAccount&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyConvertUrlToCodebaseName&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyHistoryLlmMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyMigrateChatHistory-v2&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyProjectSettingsMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.DeprecatedChatLlmMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ToggleCodyToolWindowAfterMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/build-product-ms&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/nvp/src/main/java/ma/foodplus/ordering/system/products&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Application.FoodPlusOrderingApplication.executor": "Run",
+    "Application.ProductServiceApplication.executor": "Run",
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "Maven.foodplus-ordering-system [clean].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ChatTagsLlmMigration": "true",
+    "RunOnceActivity.ClientConfigCleanupMigration": "true",
+    "RunOnceActivity.CodyAccountHistoryMigration": "true",
+    "RunOnceActivity.CodyAccountsIdsRefresh": "true",
+    "RunOnceActivity.CodyAssignOrphanedChatsToActiveAccount": "true",
+    "RunOnceActivity.CodyConvertUrlToCodebaseName": "true",
+    "RunOnceActivity.CodyHistoryLlmMigration": "true",
+    "RunOnceActivity.CodyMigrateChatHistory-v2": "true",
+    "RunOnceActivity.CodyProjectSettingsMigration": "true",
+    "RunOnceActivity.DeprecatedChatLlmMigration": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.ToggleCodyToolWindowAfterMigration": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "feature/build-product-ms",
+    "last_opened_file_path": "/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/nvp/src/main/java/ma/foodplus/ordering/system/products",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="ma.foodplus.ordering.system.promos.dto" />
@@ -262,7 +240,23 @@
       <option name="project" value="LOCAL" />
       <updated>1749909737881</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="add ignore files">
+      <option name="closed" value="true" />
+      <created>1749918509880</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1749918509880</updated>
+    </task>
+    <task id="LOCAL-00015" summary="change reo">
+      <option name="closed" value="true" />
+      <created>1749918661640</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1749918661640</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -271,6 +265,8 @@
     <MESSAGE value="add customer" />
     <MESSAGE value="add more complex promo" />
     <MESSAGE value="fix dumy data" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix dumy data" />
+    <MESSAGE value="add ignore files" />
+    <MESSAGE value="change reo" />
+    <option name="LAST_COMMIT_MESSAGE" value="change reo" />
   </component>
 </project>
