@@ -10,7 +10,11 @@ import ma.foodplus.ordering.system.product.dto.response.ProductResponse;
 import ma.foodplus.ordering.system.product.dto.update.UpdateProductCommand;
 import ma.foodplus.ordering.system.product.service.ProductManagementUseCase;
 import ma.foodplus.ordering.system.product.service.ProductService;
+import ma.foodplus.ordering.system.product.service.ProductValidationService;
+import ma.foodplus.ordering.system.product.mapper.ProductResponseMapper;
+import ma.foodplus.ordering.system.product.model.Product;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +24,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.Parameter;
 import ma.foodplus.ordering.system.common.dto.ErrorResponse;
 
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/products")
@@ -31,6 +36,8 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductManagementUseCase productManagementUseCase;
+    private final ProductValidationService productValidationService;
+    private final ProductResponseMapper productResponseMapper;
 
     @GetMapping
     @Operation(summary = "Get all products", description = "Retrieves all products in the system.")
@@ -123,5 +130,30 @@ public class ProductController {
     @Operation(summary = "Check if a product exists by barcode")
     public ResponseEntity<Boolean> existsByBarcode(@PathVariable String barcode) {
         return ResponseEntity.ok(productManagementUseCase.existsByBarcode(barcode));
+    }
+
+    @GetMapping("/{productId}/validate-b2b")
+    @Operation(summary = "Validate if a product is valid for B2B sale")
+    public ResponseEntity<Boolean> validateB2BSale(@PathVariable Long productId) {
+        Product product = productResponseMapper.toProduct(productService.getProduct(new ProductId(productId)));
+        return ResponseEntity.ok(productValidationService.isValidForB2BSale(product));
+    }
+
+    @GetMapping("/{productId}/validate-b2c")
+    @Operation(summary = "Validate if a product is valid for B2C sale")
+    public ResponseEntity<Boolean> validateB2CSale(@PathVariable Long productId) {
+        Product product = productResponseMapper.toProduct(productService.getProduct(new ProductId(productId)));
+        return ResponseEntity.ok(productValidationService.isValidForB2CSale(product));
+    }
+
+    @PostMapping("/{productId}/validate-promotion")
+    @Operation(summary = "Validate if a product is valid for promotion")
+    public ResponseEntity<Boolean> validatePromotion(
+            @PathVariable Long productId,
+            @RequestParam BigDecimal promoPrice,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime endDate) {
+        Product product = productResponseMapper.toProduct(productService.getProduct(new ProductId(productId)));
+        return ResponseEntity.ok(productValidationService.isValidForPromotion(product, promoPrice, startDate, endDate));
     }
 } 
