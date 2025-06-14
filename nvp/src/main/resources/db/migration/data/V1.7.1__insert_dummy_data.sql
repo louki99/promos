@@ -1,258 +1,259 @@
--- Insert dummy data for testing
+-- Insert dummy data for testing and development
 
 -- Insert sites
-INSERT INTO sites (description, site_code, address_line1, city, country, postal_code, contact_phone, contact_email)
+INSERT INTO sites (id, created_at, updated_at, is_active, site_code, description, address_line1, city, country, postal_code, contact_email, contact_phone)
 VALUES 
-('Main Warehouse', 'WH001', '123 Industrial Zone', 'Casablanca', 'Morocco', '20000', '+212522000001', 'warehouse@foodplus.ma'),
-('Branch Office', 'BR001', '45 Business District', 'Rabat', 'Morocco', '10000', '+212537000001', 'branch@foodplus.ma')
-ON CONFLICT (site_code) DO NOTHING;
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 'SITE001', 'Main Warehouse', '123 Warehouse Ave', 'New York', 'USA', '10001', 'warehouse1@foodplus.com', '+1234567890'),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 'SITE002', 'North Branch', '456 North St', 'Chicago', 'USA', '60601', 'warehouse2@foodplus.com', '+1987654321'),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 'SITE003', 'South Branch', '789 South Blvd', 'Los Angeles', 'USA', '90001', 'warehouse3@foodplus.com', '+1122334455');
 
--- Insert depots using subqueries to get site_id
-INSERT INTO depots (description, depot_code, site_id, depot_type, capacity_cubic_meters, temperature_range, is_refrigerated)
+-- Insert cat_tarif
+INSERT INTO cat_tarif (id, created_at, updated_at, price_ttc, description)
 VALUES 
-('Main Storage', 'DEP001', (SELECT id FROM sites WHERE site_code = 'WH001'), 'MAIN', 1000.0, '15-25°C', false),
-('Cold Storage', 'DEP002', (SELECT id FROM sites WHERE site_code = 'WH001'), 'MAIN', 500.0, '2-8°C', true),
-('Branch Storage', 'DEP003', (SELECT id FROM sites WHERE site_code = 'BR001'), 'SECONDARY', 300.0, '15-25°C', false)
-ON CONFLICT (depot_code) DO NOTHING;
-
--- Insert customer tariffs
-INSERT INTO cat_tarif (description, price_ttc)
-VALUES 
-('Standard', 100.00),
-('Premium', 150.00),
-('VIP', 200.00);
-
--- Insert customer groups
-INSERT INTO customer_groups (name, description)
-VALUES 
-('Regular Customers', 'Standard customer group'),
-('Premium Customers', 'High-value customers'),
-('VIP Customers', 'Very important customers');
-
--- Insert customers
-INSERT INTO customers (
-    ct_num, ice, description, telephone, email, address, postal_code, city, country, 
-    cate_tarif_id, is_vip, loyalty_points, total_orders, total_spent, average_order_value,
-    last_order_date, credit_score, credit_limit, outstanding_balance, business_activity,
-    annual_turnover, contract_start_date, contract_end_date, active, created_at, updated_at
-)
-VALUES 
-('CUST001', 'ICE001', 'Restaurant Al Fassia', '+212522111111', 'contact@alfassia.ma', 
- '123 Avenue Hassan II', '20000', 'Casablanca', 'Morocco', 1, false,
- 150, 45, 67500.00, 1500.00, CURRENT_TIMESTAMP - INTERVAL '2 days',
- 750, 50000.00, 12500.00, 'Restaurant', 250000.00,
- CURRENT_TIMESTAMP - INTERVAL '1 year', CURRENT_TIMESTAMP + INTERVAL '2 years',
- true, CURRENT_TIMESTAMP - INTERVAL '1 year', CURRENT_TIMESTAMP),
-
-('CUST002', 'ICE002', 'Hotel Royal Mansour', '+212522222222', 'contact@royalmansour.ma', 
- '45 Rue Mohammed V', '10000', 'Rabat', 'Morocco', 2, true,
- 500, 120, 180000.00, 1500.00, CURRENT_TIMESTAMP - INTERVAL '1 day',
- 850, 200000.00, 45000.00, 'Luxury Hotel', 800000.00,
- CURRENT_TIMESTAMP - INTERVAL '2 years', CURRENT_TIMESTAMP + INTERVAL '3 years',
- true, CURRENT_TIMESTAMP - INTERVAL '2 years', CURRENT_TIMESTAMP),
-
-('CUST003', 'ICE003', 'Cafe Clock', '+212522333333', 'contact@cafeclock.ma', 
- '78 Rue Tariq Ibn Ziad', '40000', 'Marrakech', 'Morocco', 1, false,
- 75, 30, 22500.00, 750.00, CURRENT_TIMESTAMP - INTERVAL '5 days',
- 650, 25000.00, 5000.00, 'Cafe & Restaurant', 120000.00,
- CURRENT_TIMESTAMP - INTERVAL '6 months', CURRENT_TIMESTAMP + INTERVAL '1 year',
- true, CURRENT_TIMESTAMP - INTERVAL '6 months', CURRENT_TIMESTAMP),
-
-('CUST004', 'ICE004', 'Supermarket Marjane', '+212522444444', 'contact@marjane.ma',
- '90 Boulevard Anfa', '20000', 'Casablanca', 'Morocco', 2, true,
- 1000, 500, 750000.00, 1500.00, CURRENT_TIMESTAMP - INTERVAL '1 week',
- 900, 1000000.00, 150000.00, 'Retail', 5000000.00,
- CURRENT_TIMESTAMP - INTERVAL '3 years', CURRENT_TIMESTAMP + INTERVAL '5 years',
- true, CURRENT_TIMESTAMP - INTERVAL '3 years', CURRENT_TIMESTAMP),
-
-('CUST005', 'ICE005', 'Bakery La Brioche', '+212522555555', 'contact@labrioche.ma',
- '15 Rue Mohammed V', '40000', 'Marrakech', 'Morocco', 1, false,
- 50, 25, 12500.00, 500.00, CURRENT_TIMESTAMP - INTERVAL '10 days',
- 600, 15000.00, 2000.00, 'Bakery', 80000.00,
- CURRENT_TIMESTAMP - INTERVAL '3 months', CURRENT_TIMESTAMP + INTERVAL '9 months',
- true, CURRENT_TIMESTAMP - INTERVAL '3 months', CURRENT_TIMESTAMP);
-
--- Insert customer group members
-INSERT INTO customer_group_members (customer_id, group_id)
-VALUES 
-(1, 1), -- Al Fassia in Regular Customers
-(2, 3), -- Royal Mansour in VIP Customers
-(3, 1); -- Cafe Clock in Regular Customers
-
--- Insert product families
-INSERT INTO product_families (description, family_code, parent_id)
-VALUES 
-('Fresh Produce', 'FP001', NULL),
-('Dairy Products', 'DP001', NULL),
-('Meat & Poultry', 'MP001', NULL),
-('Bakery', 'BK001', NULL),
-('Frozen Foods', 'FF001', NULL),
-('Beverages', 'BV001', NULL),
-('Snacks & Confectionery', 'SC001', NULL),
-('Canned Goods', 'CG001', NULL),
-('Dry Goods', 'DG001', NULL),
-('Spices & Condiments', 'SP001', NULL)
-ON CONFLICT (family_code) DO NOTHING;
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0.00, 'Standard Pricing'),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0.00, 'Premium Pricing'),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0.00, 'Wholesale Pricing');
 
 -- Insert categories
-INSERT INTO categories (description, category_code, parent_id)
+INSERT INTO categories (id, created_at, updated_at, is_active, parent_id, level, code, description, name)
 VALUES 
-('Fruits', 'FR001', (SELECT id FROM product_families WHERE family_code = 'FP001')),
-('Vegetables', 'VG001', (SELECT id FROM product_families WHERE family_code = 'FP001')),
-('Milk', 'ML001', (SELECT id FROM product_families WHERE family_code = 'DP001')),
-('Cheese', 'CH001', (SELECT id FROM product_families WHERE family_code = 'DP001')),
-('Beef', 'BF001', (SELECT id FROM product_families WHERE family_code = 'MP001')),
-('Chicken', 'CK001', (SELECT id FROM product_families WHERE family_code = 'MP001')),
-('Bread', 'BR001', (SELECT id FROM product_families WHERE family_code = 'BK001')),
-('Pastries', 'PS001', (SELECT id FROM product_families WHERE family_code = 'BK001')),
-('Frozen Vegetables', 'FV001', (SELECT id FROM product_families WHERE family_code = 'FF001')),
-('Frozen Meat', 'FM001', (SELECT id FROM product_families WHERE family_code = 'FF001')),
-('Soft Drinks', 'SD001', (SELECT id FROM product_families WHERE family_code = 'BV001')),
-('Water', 'WT001', (SELECT id FROM product_families WHERE family_code = 'BV001')),
-('Chips', 'CP001', (SELECT id FROM product_families WHERE family_code = 'SC001')),
-('Chocolate', 'CL001', (SELECT id FROM product_families WHERE family_code = 'SC001')),
-('Canned Vegetables', 'CV001', (SELECT id FROM product_families WHERE family_code = 'CG001')),
-('Canned Fruits', 'CF001', (SELECT id FROM product_families WHERE family_code = 'CG001')),
-('Rice', 'RC001', (SELECT id FROM product_families WHERE family_code = 'DG001')),
-('Pasta', 'PA001', (SELECT id FROM product_families WHERE family_code = 'DG001')),
-('Spices', 'SP001', (SELECT id FROM product_families WHERE family_code = 'SP001')),
-('Sauces', 'SC001', (SELECT id FROM product_families WHERE family_code = 'SP001'))
-ON CONFLICT (category_code) DO NOTHING;
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, null, 1, 'CAT001', 'Fresh Food', 'Fresh Food'),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 1, 2, 'CAT002', 'Fruits', 'Fruits'),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 1, 2, 'CAT003', 'Vegetables', 'Vegetables'),
+(4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, null, 1, 'CAT004', 'Dairy', 'Dairy Products'),
+(5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, null, 1, 'CAT005', 'Beverages', 'Beverages');
+
+-- Insert customer_groups
+INSERT INTO customer_groups (id, created_at, updated_at, description, name)
+VALUES 
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Regular Customers', 'Regular'),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'VIP Customers', 'VIP'),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Wholesale Customers', 'Wholesale');
+
+-- Insert customers
+INSERT INTO customers (id, created_at, updated_at, is_active, category_tarif_id, address, city, country, email, company_name, telephone, postal_code, customer_type, ct_num, ice, description)
+VALUES 
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 1, '123 Main St', 'New York', 'USA', 'john.doe@email.com', 'John Doe Company', '+1234567890', '10001', 'B2B', 'CT001', 'ICE001', 'Regular B2B Customer'),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 2, '456 Park Ave', 'Los Angeles', 'USA', 'jane.smith@email.com', 'Jane Smith Corp', '+1987654321', '90001', 'B2B', 'CT002', 'ICE002', 'Premium B2B Customer'),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 3, '789 Market St', 'Chicago', 'USA', 'bob.wilson@email.com', 'Bob Wilson Inc', '+1122334455', '60601', 'B2B', 'CT003', 'ICE003', 'Wholesale B2B Customer');
+
+-- Insert customer_group_members
+INSERT INTO customer_group_members (customer_id, group_id)
+VALUES 
+(1, 1),
+(2, 2),
+(3, 3);
+
+-- Insert depots
+INSERT INTO depots (id, created_at, updated_at, is_active, site_id, depot_code, description, depot_type, capacity_cubic_meters, is_refrigerated, security_level)
+VALUES 
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 1, 'DEPOT001', 'Main Storage', 'MAIN_WAREHOUSE', 1000.0, false, 1),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 2, 'DEPOT002', 'North Storage', 'DISTRIBUTION_CENTER', 800.0, true, 2),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 3, 'DEPOT003', 'South Storage', 'COLD_STORAGE', 600.0, true, 3);
+
+-- Insert product_families
+INSERT INTO product_families (id, created_at, updated_at, is_active, code, description, name)
+VALUES 
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 'FAM001', 'Fresh Produce', 'Fresh Produce'),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 'FAM002', 'Dairy Products', 'Dairy'),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 'FAM003', 'Beverages', 'Beverages');
 
 -- Insert products
 INSERT INTO products (
-    reference, title, description, barcode, sale_price, sale_unit, price_including_tax,
-    photo, deliverable, inactive, stock_tracking, product_family_id, category_id,
-    supplier_id, supplier_reference, supplier_price, supplier_currency, supplier_min_order_qty,
-    supplier_lead_time_days, supplier_payment_terms, supplier_delivery_terms,
-    bulk_pack_size, bulk_pack_unit, bulk_min_order_qty, bulk_price_break_1_qty,
-    bulk_price_break_1_discount, bulk_price_break_2_qty, bulk_price_break_2_discount,
-    bulk_price_break_3_qty, bulk_price_break_3_discount, is_bulk_only, is_wholesale_only,
-    is_featured, is_seasonal, season_start_month, season_end_month, is_perishable,
-    shelf_life_days, storage_conditions, requires_cold_chain, temperature_range,
-    is_organic, is_gluten_free, is_halal, is_kosher, certification_ids,
-    allergens, nutritional_info, ingredients, country_of_origin, brand,
-    weight_kg, dimensions_cm, customs_tariff_code, customs_description,
-    customs_value_usd, customs_value_eur, customs_value_mad, customs_duty_rate,
-    customs_vat_rate, customs_excise_rate, customs_other_charges, customs_notes
+    id, created_at, updated_at, family_code, reference, title, description, 
+    sale_price, price_including_tax, barcode, sku, deliverable, inactive, 
+    visible, is_bulk_item, is_perishable, is_wholesale_only, requires_cold_storage, 
+    b2c_display_in_catalog, b2c_featured, promo_sku_points, requires_approval, 
+    requires_contract, unit_price, vendable, stock_tracking
 )
 VALUES 
-('APP001', 'Fresh Apples', 'Premium quality fresh apples', '1234567890123', 2.50, 'KG', true,
-'apple.jpg', true, false, true, 
-(SELECT id FROM product_families WHERE family_code = 'FP001'),
-(SELECT id FROM categories WHERE category_code = 'FR001'),
-'SUP001', 'SUP-APP-001', 1.80, 'MAD', 100,
-7, 'Net 30', 'FOB',
-10, 'KG', 50, 100, 5, 200, 7, 500, 10,
-false, false, true, true, 9, 2, true,
-30, 'Cool, dry place', false, '2-8°C',
-true, true, true, false, '{1,2}',
-'{}', '{"calories": 52, "protein": "0.3g", "carbs": "14g", "fat": "0.2g"}',
-'Apples, preservatives', 'Morocco', 'Local Farms',
-0.2, '{10,10,10}', '080810', 'Fresh apples',
-0.5, 0.45, 5.0, 0, 20, 0, 0, 'Standard import'
-),
-('MIL001', 'Fresh Milk', 'Whole milk from local farms', '2345678901234', 1.20, 'L', true,
-'milk.jpg', true, false, true,
-(SELECT id FROM product_families WHERE family_code = 'DP001'),
-(SELECT id FROM categories WHERE category_code = 'ML001'),
-'SUP002', 'SUP-MIL-001', 0.90, 'MAD', 50,
-3, 'Net 15', 'FOB',
-5, 'L', 20, 100, 5, 200, 7, 500, 10,
-false, false, true, false, NULL, NULL, true,
-7, 'Refrigerated', true, '2-6°C',
-true, true, true, false, '{1,3}',
-'{"milk"}', '{"calories": 66, "protein": "3.3g", "carbs": "4.8g", "fat": "3.6g"}',
-'Whole milk, vitamin D', 'Morocco', 'Local Dairy',
-1.0, '{10,10,20}', '040110', 'Fresh milk',
-0.3, 0.27, 3.0, 0, 20, 0, 0, 'Standard import'
-)
-ON CONFLICT (reference) DO NOTHING;
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'FAM001', 'PROD001', 'Fresh Apples', 'Fresh Red Delicious Apples', 
+2.99, 3.59, 'BAR001', 'SKU001', true, false, true, false, true, false, true, 
+true, false, 0.00, false, false, 2.99, true, 'FIFO'),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'FAM001', 'PROD002', 'Fresh Bananas', 'Fresh Yellow Bananas', 
+1.99, 2.39, 'BAR002', 'SKU002', true, false, true, false, true, false, true, 
+true, false, 0.00, false, false, 1.99, true, 'FIFO'),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'FAM002', 'PROD003', 'Whole Milk', 'Fresh Whole Milk 1L', 
+3.49, 4.19, 'BAR003', 'SKU003', true, false, true, false, true, true, true, 
+true, false, 0.00, false, false, 3.49, true, 'FIFO'),
+(4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'FAM003', 'PROD004', 'Orange Juice', 'Fresh Orange Juice 1L', 
+4.99, 5.99, 'BAR004', 'SKU004', true, false, true, false, true, true, true, 
+true, false, 0.00, false, false, 4.99, true, 'FIFO');
 
--- Insert product stocks
+-- Insert product_categories
+INSERT INTO product_categories (category_id, product_id)
+VALUES 
+(1, 1),  -- Fresh Apples in Fresh Produce category
+(1, 2),  -- Fresh Bananas in Fresh Produce category
+(2, 3),  -- Whole Milk in Dairy Products category
+(3, 4);  -- Orange Juice in Beverages category
+
+-- Insert product_stocks
 INSERT INTO product_stocks (
-    product_id, product_name, depot_id, depot_name, quantity, unit_cost,
-    expiry_date, quality_status, min_stock_level, max_stock_level,
-    reorder_point, reorder_quantity, shelf_life_days, storage_conditions,
-    batch_number, location_code
+    id, created_at, updated_at, depot_id, product_id, quantity, reserved_quantity,
+    unit_cost, quality_status, product_name, depot_name, location_code, batch_number,
+    storage_conditions, notes, quality_notes, min_stock_level, max_stock_level,
+    reorder_point, reorder_quantity, days_of_stock, shelf_life_days
 )
 VALUES 
-(
-    (SELECT id FROM products WHERE reference = 'APP001'),
-    'Fresh Apples',
-    (SELECT id FROM depots WHERE depot_code = 'DEP001'),
-    'Main Storage',
-    1000.0, 1.80,
-    CURRENT_DATE + INTERVAL '30 days',
-    'INSPECTED',
-    100.0, 2000.0,
-    200.0, 500.0,
-    30, 'Cool, dry place',
-    'BATCH001',
-    'A-01-01'
-),
-(
-    (SELECT id FROM products WHERE reference = 'MIL001'),
-    'Fresh Milk',
-    (SELECT id FROM depots WHERE depot_code = 'DEP002'),
-    'Cold Storage',
-    500.0, 0.90,
-    CURRENT_DATE + INTERVAL '7 days',
-    'INSPECTED',
-    50.0, 1000.0,
-    100.0, 200.0,
-    7, 'Refrigerated',
-    'BATCH002',
-    'B-02-01'
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 100.00, 0.00, 2.50, 'INSPECTED', 'Fresh Apples', 'Main Storage', 'LOC001', 'BATCH001', 'Room Temperature', 'Regular stock', 'Good quality', 20.00, 200.00, 50.00, 100.00, 30, 14),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 2, 150.00, 0.00, 1.50, 'INSPECTED', 'Fresh Bananas', 'Main Storage', 'LOC002', 'BATCH002', 'Room Temperature', 'Regular stock', 'Good quality', 30.00, 300.00, 75.00, 150.00, 30, 7),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 3, 50.00, 0.00, 3.00, 'INSPECTED', 'Whole Milk', 'North Storage', 'LOC003', 'BATCH003', 'Refrigerated', 'Cold storage required', 'Fresh batch', 10.00, 100.00, 25.00, 50.00, 7, 7),
+(4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 4, 75.00, 0.00, 4.50, 'INSPECTED', 'Orange Juice', 'North Storage', 'LOC004', 'BATCH004', 'Refrigerated', 'Cold storage required', 'Fresh batch', 15.00, 150.00, 37.50, 75.00, 7, 14);
+
+-- Insert products_customer
+INSERT INTO products_customer (
+    id, created_at, updated_at, is_active, reference_product, reference_customer, 
+    category, prix_ttc, coef, qte_mont, remise, prix_ven_nouv, remise_nouv
 )
-ON CONFLICT (product_id, depot_id, batch_number) DO NOTHING;
-
--- Insert product-customer relations
-INSERT INTO products_customer (reference_product, reference_customer, category, coef, prix_ttc)
 VALUES 
-(1, 1, 'Vegetables', 1.0, 15.00),
-(2, 1, 'Dairy', 1.0, 12.00),
-(3, 2, 'Meat', 1.2, 144.00);
-
--- Insert rewards
-INSERT INTO rewards (reward_type, value, target_entity_type)
-VALUES 
-('PERCENTAGE', 10.00, 'PRODUCT'),
-('FIXED_AMOUNT', 50.00, 'CART'),
-('LOYALTY_POINTS', 100.00, 'CART');
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 1, 1, 'FRUITS', 2.99, 1.0, 1, 0.00, null, null),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 2, 1, 'FRUITS', 1.99, 1.0, 1, 0.00, null, null),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 3, 2, 'DAIRY', 3.49, 1.0, 1, 0.00, null, null),
+(4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, 4, 2, 'BEVERAGES', 4.99, 1.0, 1, 0.00, null, null);
 
 -- Insert promotions
-INSERT INTO promotions (promo_code, name, description, start_date, end_date, priority, is_active, min_purchase_amount)
+INSERT INTO promotions (
+    id, name, promo_code, description, start_date, end_date, 
+    customer_group, priority, is_exclusive, is_active, 
+    apply_first_matching_rule_only, max_usage_count, current_usage_count,
+    max_usage_per_customer, min_purchase_amount
+)
 VALUES 
-('SUMMER10', 'Summer Sale 10%', '10% off on all products', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '30 days', 1, true, 100.00),
-('WELCOME50', 'Welcome Discount', '50 MAD off on first order', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '90 days', 2, true, 200.00);
+(1, 'Summer Sale 2024', 'SUMMER2024', 'Summer Sale 2024', 
+    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '30 days', 
+    'REGULAR', 1, false, true, false, 1000, 0, 1, 50.00),
+(2, 'Welcome Discount', 'WELCOME10', 'Welcome Discount for New Customers', 
+    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '90 days', 
+    'NEW', 2, true, true, true, 500, 0, 1, 25.00),
+(3, 'Bulk Purchase Discount', 'BULK20', 'Bulk Purchase Discount', 
+    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '60 days', 
+    'WHOLESALE', 3, false, true, false, 200, 0, 2, 100.00);
 
--- Insert promotion rules
-INSERT INTO promotion_rules (name, condition_logic, calculation_method, breakpoint_type, promotion_id)
+-- Insert promotion_rules
+INSERT INTO promotion_rules (
+    id, name, condition_logic, calculation_method, breakpoint_type, 
+    promotion_id, repetition
+)
 VALUES 
-('Summer Sale Rule', 'ALL', 'BRACKET', 'AMOUNT', 1),
-('Welcome Discount Rule', 'ALL', 'BRACKET', 'AMOUNT', 2);
+(1, 'Summer Sale Tier 1', 'ALL', 'BRACKET', 'QUANTITY', 1, 1),
+(2, 'Summer Sale Tier 2', 'ALL', 'BRACKET', 'QUANTITY', 1, 1),
+(3, 'Welcome Discount Rule', 'ALL', 'BRACKET', 'AMOUNT', 2, 1),
+(4, 'Bulk Discount Rule', 'ALL', 'CUMULATIVE', 'QUANTITY', 3, 1);
 
--- Insert promotion conditions
-INSERT INTO promotion_conditions (condition_type, attribute, operator, value, rule_id)
+-- Insert rewards
+INSERT INTO rewards (
+    id, reward_type, value, target_entity_id, target_entity_type
+)
 VALUES 
-('CART_SUBTOTAL', 'amount', 'GREATER_THAN_OR_EQUAL', '100', 1),
-('CUSTOMER_IN_GROUP', 'group_id', 'EQUAL', '1', 2);
+(1, 'PERCENT_DISCOUNT_ON_ITEM', 10.00, null, null),
+(2, 'FIXED_DISCOUNT_ON_CART', 5.00, null, null),
+(3, 'FREE_PRODUCT', 1.00, 1, 'PRODUCT');
 
--- Insert promotion tiers
-INSERT INTO promotion_tiers (minimum_threshold, rule_id, reward_id)
+-- Insert promotion_tiers
+INSERT INTO promotion_tiers (
+    id, minimum_threshold, rule_id, reward_id
+)
 VALUES 
-(100.00, 1, 1),
-(200.00, 2, 2);
+(1, 5.00, 1, 1),
+(2, 10.00, 2, 2),
+(3, 20.00, 3, 3);
+
+-- Insert promotion_customer_families
+INSERT INTO promotion_customer_families (
+    id, promotion_id, customer_family_code, start_date, end_date
+)
+VALUES 
+(1, 1, 'REGULAR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '30 days'),
+(2, 1, 'PREMIUM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '30 days'),
+(3, 2, 'NEW', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '90 days'),
+(4, 3, 'WHOLESALE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '60 days');
+
+-- Insert promotion_customer_usage
+INSERT INTO promotion_customer_usage (
+    customer_id, promotion_id, usage_count
+)
+VALUES 
+(1, 1, 2),
+(2, 1, 1),
+(1, 2, 1),
+(3, 3, 3);
+
+-- Insert promotion_lines
+INSERT INTO promotion_lines (
+    id, promotion_id, paid_family_code, free_family_code,
+    paid_product_id, free_product_id
+)
+VALUES 
+(1, 1, 'FAM001', 'FAM001', 1, 2),
+(2, 1, 'FAM002', 'FAM002', 3, 4),
+(3, 2, 'FAM002', 'FAM002', 2, 3),
+(4, 3, 'FAM003', 'FAM003', 4, 1);
+
+-- Insert promotion_excluded_categories
+INSERT INTO promotion_excluded_categories (
+    promotion_id, category_id
+)
+VALUES 
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 1);
+
+-- Insert promotion_excluded_products
+INSERT INTO promotion_excluded_products (
+    promotion_id, product_id
+)
+VALUES 
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 4);
 
 -- Insert orders
-INSERT INTO orders (customer_id, subtotal, total, total_discount, status, payment_method, payment_status)
+INSERT INTO orders (
+    id, created_at, updated_at, customer_id, order_number, 
+    status, payment_status, shipping_address, shipping_city, 
+    shipping_country, shipping_postal_code, subtotal, total, 
+    total_discount, total_tax, shipping_cost, order_type, is_wholesale
+)
 VALUES 
-(1, 150.00, 135.00, 15.00, 'COMPLETED', 'CASH', 'PAID'),
-(2, 300.00, 250.00, 50.00, 'COMPLETED', 'CREDIT_CARD', 'PAID');
+(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 'ORD001', 
+    'PENDING', 'PENDING', '123 Main St', 'New York', 
+    'USA', '10001', 150.00, 150.00, 0.00, 0.00, 0.00, 'B2B', false),
+(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 'ORD002', 
+    'CONFIRMED', 'PAID', '456 Oak Ave', 'Los Angeles', 
+    'USA', '90001', 75.50, 75.50, 0.00, 0.00, 0.00, 'B2B', false),
+(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3, 'ORD003', 
+    'DELIVERED', 'PAID', '789 Pine Rd', 'Chicago', 
+    'USA', '60601', 200.00, 200.00, 0.00, 0.00, 0.00, 'B2B', true);
 
--- Insert order items
-INSERT INTO order_items (order_id, product_id, product_name, price, quantity, sku, discount_amount)
+-- Insert order_items
+INSERT INTO order_items (
+    id, order_id, product_id, product_family_id, product_name,
+    sku, unit_price, quantity, discount_amount, tax_amount,
+    total_price, consumed_quantity, created_at
+)
 VALUES 
-(1, 1, 'Fresh Apples', 2.50, 10, 'APP001', 0.50),
-(2, 2, 'Fresh Milk', 1.20, 5, 'MIL001', 0.30); 
+(1, 1, 1, 1, 'Fresh Apples',
+    'SKU001', 2.99, 10, 0.00, 0.00,
+    29.90, 0, CURRENT_TIMESTAMP),
+(2, 1, 2, 1, 'Fresh Oranges',
+    'SKU002', 3.99, 5, 0.00, 0.00,
+    19.95, 0, CURRENT_TIMESTAMP),
+(3, 2, 3, 2, 'Fresh Milk',
+    'SKU003', 4.99, 3, 0.00, 0.00,
+    14.97, 0, CURRENT_TIMESTAMP),
+(4, 3, 4, 3, 'Orange Juice',
+    'SKU004', 5.99, 8, 0.00, 0.00,
+    47.92, 0, CURRENT_TIMESTAMP);
+
+-- Insert order_item_applied_promotions
+INSERT INTO order_item_applied_promotions (
+    order_item_id, promotion_code
+)
+VALUES 
+(1, 'SUMMER2024'),  -- Fresh Apples with Summer Sale
+(2, 'SUMMER2024'),  -- Fresh Oranges with Summer Sale
+(3, 'WELCOME10'),   -- Fresh Milk with Welcome Discount
+(4, 'BULK20');      -- Orange Juice with Bulk Purchase Discount 

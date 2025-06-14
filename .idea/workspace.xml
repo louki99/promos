@@ -5,53 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add more complex promo">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/DomainConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/DomainConstants.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/entity/BaseEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/entity/BaseEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/DomainEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/DomainEvent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/publisher/DomainEventPublisher.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/event/publisher/DomainEventPublisher.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/exception/DomainException.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/exception/DomainException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/BaseId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/BaseId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CategoryId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CategoryId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CustomerId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/CustomerId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/Money.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/Money.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderApprovalStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderApprovalStatus.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/OrderStatus.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentOrderStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentOrderStatus.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/PaymentStatus.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/ProductId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/ProductId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreId.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreId.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreOrderStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/common/common-domain/target/classes/ma/foodplus/ordering/system/domain/valueobject/StoreOrderStatus.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/foodplus-ordering.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/foodplus-ordering.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/dto/CustomerDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/dto/CustomerDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/model/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/model/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/repository/CustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/repository/CustomerRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/mapper/ProductStockMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/mapper/ProductStockMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/repository/ProductStockRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/repository/ProductStockRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/mapper/OrderMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/mapper/OrderMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/OrderItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/repository/ProductRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/component/OrderItemContext.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/controller/CartController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Promotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Promotion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/ConditionEvaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/ConditionEvaluator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/OrderItemContext.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/OrdertemContext.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/RewardApplicator.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/RewardApplicator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.1__create_customer_tables.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.2__create_customer_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.2__create_customer_tables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.3__add_b2b_fields.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.3__create_product_customer_price_history.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/common/V1.1.1__create_enums.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/common/V1.1.2__create_common_tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.1__create_customer_tariff.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.2__create_customer_tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.4__add_category_tarif_to_customers.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.4__add_customer_additional_fields.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.7__add_b2b_fields.sql" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/data/V1.7.1__insert_dummy_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/data/V1.7.1__insert_dummy_data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/inventory/V1.4.1__create_inventory_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/inventory/V1.4.1__create_inventory_tables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/order/V1.5.1__create_order_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/order/V1.5.1__create_order_tables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.2__create_product_customer_relations.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/inventory/V1.4.1__create_inventory_tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/order/V1.5.1__create_order_tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.1__create_product_tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.2__add_wholesale_and_bulk_fields.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.3__add_b2b_b2c_fields.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.4__create_product_customer_relations.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.5__create_product_customer_price_history.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/promos/V1.6.1__create_promo_tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/static/api-docs/openapi.yml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -271,7 +244,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749500637537</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="add more complex promo">
+      <option name="closed" value="true" />
+      <created>1749904178293</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1749904178293</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
