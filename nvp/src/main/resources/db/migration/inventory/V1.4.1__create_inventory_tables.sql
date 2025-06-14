@@ -1,19 +1,3 @@
--- Create depots table
-CREATE TABLE depots (
-    id BIGSERIAL PRIMARY KEY,
-    code VARCHAR(50) NOT NULL UNIQUE,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
-    type depot_type NOT NULL,
-    address TEXT,
-    phone VARCHAR(20),
-    email VARCHAR(100),
-    manager_name VARCHAR(100),
-    is_active BOOLEAN NOT NULL DEFAULT true,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
 -- Create product stocks table
 CREATE TABLE product_stocks (
     id BIGSERIAL PRIMARY KEY,
@@ -55,6 +39,4 @@ CREATE INDEX idx_product_stocks_depot_id ON product_stocks(depot_id);
 CREATE INDEX idx_product_stocks_expiry_date ON product_stocks(expiry_date);
 CREATE INDEX idx_product_stocks_quality_status ON product_stocks(quality_status);
 CREATE INDEX idx_product_stocks_batch_number ON product_stocks(batch_number);
-CREATE INDEX idx_product_stocks_location_code ON product_stocks(location_code);
-CREATE INDEX idx_depots_code ON depots(code);
-CREATE INDEX idx_depots_type ON depots(type); 
+CREATE INDEX idx_product_stocks_location_code ON product_stocks(location_code); 

@@ -1,10 +1,16 @@
 package ma.foodplus.ordering.system.promos.service;
 
+import ma.foodplus.ordering.system.customer.dto.CustomerDTO;
+import ma.foodplus.ordering.system.customer.service.CustomerService;
+import ma.foodplus.ordering.system.domain.valueobject.ProductId;
 import ma.foodplus.ordering.system.order.model.Order;
+import ma.foodplus.ordering.system.product.dto.response.ProductResponse;
+import ma.foodplus.ordering.system.product.enums.SuiviStock;
 import ma.foodplus.ordering.system.product.service.ProductService;
 import ma.foodplus.ordering.system.promos.dto.*;
 import ma.foodplus.ordering.system.promos.exception.PromotionApplicationException;
 import ma.foodplus.ordering.system.promos.model.Promotion;
+import ma.foodplus.ordering.system.promos.model.PromotionCustomerFamily;
 import ma.foodplus.ordering.system.promos.repository.PromotionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +36,7 @@ public class PromotionApplicationService {
     private final ProductService productService;
     private final PromotionRepository promotionRepository;
     private final ConditionEvaluator conditionEvaluator;
+    private final CustomerService customerService;
 
     /**
      * Calculates all applicable promotions for a given cart.
@@ -169,6 +176,18 @@ public class PromotionApplicationService {
             return false;
         }
 
+        // Validate stock availability for all items
+        if (!validateStockAvailability(order)) {
+            log.debug("Insufficient stock for promotion {}", promotion.getPromoCode());
+            return false;
+        }
+
+        // Validate customer eligibility
+        if (!validateCustomerEligibility(order.getCustomerId(), promotion)) {
+            log.debug("Customer {} is not eligible for promotion {}", order.getCustomerId(), promotion.getPromoCode());
+            return false;
+        }
+
         // Check usage limits
         if (promotion.getMaxUsageCount() != null && 
             promotion.getCurrentUsageCount() >= promotion.getMaxUsageCount()) {
@@ -218,6 +237,50 @@ public class PromotionApplicationService {
                 .anyMatch(rule -> conditionEvaluator.evaluate(order, rule.getConditions(), rule.getConditionLogic()));
     }
 
+    private boolean validateStockAvailability(Order order) {
+        return order.getItems().stream()
+                .allMatch(item -> {
+                    try {
+                        ProductResponse product = productService.getProduct(new ProductId(item.getProductId()));
+                        return product != null && product.stockTracking() != SuiviStock.Aucun;
+                    } catch (Exception e) {
+                        log.error("Error validating stock for product {}: {}", item.getProductId(), e.getMessage());
+                        return false;
+                    }
+                });
+    }
+
+    private boolean validateCustomerEligibility(Long customerId, Promotion promotion) {
+        // Check customer family restrictions
+        if (!promotion.getCustomerFamilies().isEmpty()) {
+            try {
+                CustomerDTO customer = customerService.getCustomerById(customerId);
+                if (!promotion.getCustomerFamilies().stream()
+                        .anyMatch(family -> family.getCustomerFamilyCode().equals(customer.getCategoryTarifId().toString()))) {
+                    return false;
+                }
+            } catch (Exception e) {
+                log.error("Error validating customer family: {}", e.getMessage());
+                return false;
+            }
+        }
+
+        // Check customer type restrictions
+        if (promotion.getCustomerGroup() != null) {
+            try {
+                CustomerDTO customer = customerService.getCustomerById(customerId);
+                if (!promotion.getCustomerGroup().equals(customer.getCustomerType().toString())) {
+                    return false;
+                }
+            } catch (Exception e) {
+                log.error("Error validating customer type: {}", e.getMessage());
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private PromotionDTO convertToPromotionDTO(Promotion promotion) {
         return PromotionDTO.builder()
                 .id(promotion.getId().intValue())
@@ -238,9 +301,9 @@ public class PromotionApplicationService {
                         item.getProductId(),
                         item.getProductName(),
                         item.getQuantity(),
-                        item.getPrice().multiply(new BigDecimal(item.getQuantity())),
+                        item.getUnitPrice().multiply(new BigDecimal(item.getQuantity())),
                         item.getDiscountAmount(),
-                        item.getAppliedPromotions() // Add applied promotions to response
+                        item.getAppliedPromotions()
                 ))
                 .collect(Collectors.toList());
 
@@ -279,7 +342,7 @@ public class PromotionApplicationService {
         Map<Long, BigDecimal> itemDiscounts = new HashMap<>();
         
         orderWithPromotion.getItems().forEach(item -> {
-            BigDecimal originalPrice = item.getPrice().multiply(new BigDecimal(item.getQuantity()));
+            BigDecimal originalPrice = item.getUnitPrice().multiply(new BigDecimal(item.getQuantity()));
             BigDecimal finalPrice = originalPrice.subtract(item.getDiscountAmount());
             BigDecimal discount = originalPrice.subtract(finalPrice);
             if (discount.compareTo(BigDecimal.ZERO) > 0) {

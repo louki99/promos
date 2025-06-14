@@ -227,4 +227,8 @@ public class Customer {
     @Column(name = "customer_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private CustomerType customerType = CustomerType.B2C;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_tarif_id")
+    private CategoryTarif cateTarif;
 } 

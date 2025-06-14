@@ -44,55 +44,55 @@ public class CustomerDTO {
     private String companyName;
     private String legalForm;
     private String registrationNumber;
-    private String taxId;
-    private String vatNumber;
-    private String businessActivity;
-    private BigDecimal annualTurnover;
-    private Integer numberOfEmployees;
+    private String taxId; //identifiant fiscal
+    private String vatNumber; //numéro de TVA
+    private String businessActivity; //activité commerciale
+    private BigDecimal annualTurnover; //chiffre d'affaires annuel
+    private Integer numberOfEmployees; //nombre d'employés
 
     // B2B Contract Information
-    private String contractNumber;
-    private ZonedDateTime contractStartDate;
-    private ZonedDateTime contractEndDate;
-    private String contractType;
-    private String contractTerms;
-    private String paymentTerms;
-    private String deliveryTerms;
-    private String specialConditions;
+    private String contractNumber; //numéro de contrat
+    private ZonedDateTime contractStartDate; //date de début du contrat
+    private ZonedDateTime contractEndDate; //date de fin du contrat
+    private String contractType; //type de contrat (e.g., standard, custom)
+    private String contractTerms; //conditions du contrat
+    private String paymentTerms; //conditions de paiement
+    private String deliveryTerms; //conditions de livraison
+    private String specialConditions; //conditions spéciales
 
     // Financial Information
     @NotNull(message = "Category tariff ID is required")
     private Long categoryTarifId;
 
-    private BigDecimal creditLimit;
-    private BigDecimal currentCredit;
-    private Integer paymentTermDays;
-    private String creditRating;
-    private Integer creditScore;
-    private String paymentHistory;
-    private BigDecimal outstandingBalance;
-    private ZonedDateTime lastPaymentDate;
-    private String preferredPaymentMethod;
-    private String bankAccountInfo;
+    private BigDecimal creditLimit; //limite de crédit
+    private BigDecimal currentCredit; //crédit actuel
+    private Integer paymentTermDays; //délai de paiement en jours
+    private String creditRating; //évaluation de crédit (e.g., A, B, C)
+    private Integer creditScore; //score de crédit (0-100)
+    private String paymentHistory; //historique de paiement (e.g., good, average, poor)
+    private BigDecimal outstandingBalance; //solde impayé
+    private ZonedDateTime lastPaymentDate; //date du dernier paiement
+    private String preferredPaymentMethod; //méthode de paiement préférée (e.g., bank transfer, cheque)
+    private String bankAccountInfo; //informations sur le compte bancaire
 
     // Business Status
-    private boolean isVip;
-    private Integer loyaltyPoints;
-    private ZonedDateTime lastOrderDate;
-    private Integer totalOrders;
-    private BigDecimal totalSpent;
-    private BigDecimal averageOrderValue;
-    private ZonedDateTime customerSince;
-    private String preferredDeliveryTime;
-    private String preferredDeliveryDays;
-    private String specialHandlingInstructions;
+    private boolean isVip; //indique si le client est un VIP
+    private Integer loyaltyPoints; //points de fidélité
+    private ZonedDateTime lastOrderDate; //date de la dernière commande
+    private Integer totalOrders; //nombre total de commandes
+    private BigDecimal totalSpent; //montant total dépensé
+    private BigDecimal averageOrderValue; //valeur moyenne des commandes
+    private ZonedDateTime customerSince; //date depuis laquelle le client est actif
+    private String preferredDeliveryTime; //heure de livraison préférée
+    private String preferredDeliveryDays; //jours de livraison préférés
+    private String specialHandlingInstructions; //instructions spéciales de manipulation
 
     // Audit
-    private String notes;
-    private boolean active;
-    private ZonedDateTime lastActivityDate;
-    private String createdBy;
-    private String updatedBy;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private String notes; //notes ou commentaires sur le client
+    private boolean active; //indique si le client est actif
+    private ZonedDateTime lastActivityDate; //date de la dernière activité du client
+    private String createdBy; //utilisateur qui a créé l'enregistrement
+    private String updatedBy; //utilisateur qui a mis à jour l'enregistrement
+    private ZonedDateTime createdAt; // date de création de l'enregistrement
+    private ZonedDateTime updatedAt; // date de mise à jour de l'enregistrement
 } 

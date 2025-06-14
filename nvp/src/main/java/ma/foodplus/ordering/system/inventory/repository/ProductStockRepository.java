@@ -25,7 +25,7 @@ public interface ProductStockRepository extends JpaRepository<ProductStock, Long
     @Query("SELECT ps FROM ProductStock ps WHERE ps.productId = :productId AND ps.depot.id = :depotId")
     Optional<ProductStock> findByProductIdAndDepotId(Long productId, Long depotId);
     
-    @Query("SELECT ps FROM ProductStock ps WHERE ps.quantity <= ps.minimumQuantity")
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.quantity <= ps.minStockLevel")
     List<ProductStock> findLowStockItems();
     
     @Query("SELECT ps FROM ProductStock ps WHERE ps.expiryDate <= :date AND ps.qualityStatus != 'EXPIRED'")
@@ -64,7 +64,7 @@ public interface ProductStockRepository extends JpaRepository<ProductStock, Long
     @Query("SELECT ps FROM ProductStock ps WHERE ps.reservedQuantity > 0")
     List<ProductStock> findReservedItems();
     
-    @Query("SELECT ps FROM ProductStock ps WHERE ps.storageCondition = :condition")
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.storageConditions = :condition")
     List<ProductStock> findByStorageCondition(String condition);
     
     @Query("SELECT ps FROM ProductStock ps WHERE ps.qualityStatus = :status AND ps.depot.id = :depotId")
@@ -94,5 +94,5 @@ public interface ProductStockRepository extends JpaRepository<ProductStock, Long
     /**
      * Find the first stock entry for a product ordered by last updated descending
      */
-    ProductStock findFirstByProductIdOrderByLastUpdatedDesc(Long productId);
+    ProductStock findFirstByProductIdOrderByUpdatedAtDesc(Long productId);
 } 

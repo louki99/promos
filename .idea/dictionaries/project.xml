@@ -2,17 +2,46 @@
   <dictionary name="project">
     <words>
       <w>acks</w>
+      <w>actif</w>
+      <w>activité</w>
+      <w>actuel</w>
       <w>aucun</w>
+      <w>bancaire</w>
       <w>cmup</w>
+      <w>commande</w>
+      <w>commandes</w>
+      <w>commentaires</w>
+      <w>compte</w>
+      <w>depuis</w>
+      <w>dernière</w>
+      <w>délai</w>
+      <w>dépensé</w>
+      <w>fidélité</w>
       <w>foodplus</w>
+      <w>heure</w>
+      <w>historique</w>
+      <w>impayé</w>
+      <w>indique</w>
+      <w>informations</w>
       <w>intitule</w>
+      <w>l'enregistrement</w>
+      <w>laquelle</w>
+      <w>limite</w>
+      <w>montant</w>
+      <w>moyenne</w>
+      <w>paiement</w>
       <w>plpgsql</w>
       <w>prix</w>
+      <w>préférés</w>
+      <w>solde</w>
       <w>sommeil</w>
+      <w>spéciales</w>
       <w>suivi</w>
       <w>tarif</w>
       <w>tarifs</w>
       <w>telecopie</w>
+      <w>utilisateur</w>
+      <w>valeur</w>
       <w>vendable</w>
     </words>
   </dictionary>

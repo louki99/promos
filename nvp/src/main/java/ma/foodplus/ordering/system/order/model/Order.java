@@ -391,6 +391,14 @@ public class Order {
         this.orderType = orderType;
     }
 
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
     public String getShippingAddress() {
         return shippingAddress;
     }

@@ -82,6 +82,7 @@ public class OrderItem {
     @ElementCollection
     @CollectionTable(name = "order_item_applied_promotions", 
         joinColumns = @JoinColumn(name = "order_item_id"))
+    @Column(name = "promotion_code")
     private List<String> appliedPromotions = new ArrayList<>();
 
     // Additional Info
@@ -298,12 +299,12 @@ public class OrderItem {
         calculateTotalPrice();
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
     public BigDecimal getWholesalePrice() {

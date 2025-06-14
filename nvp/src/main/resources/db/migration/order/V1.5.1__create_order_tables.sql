@@ -8,6 +8,7 @@ CREATE TABLE orders (
     
     -- Order Status
     status VARCHAR(20) NOT NULL DEFAULT 'DRAFT',
+    order_type VARCHAR(20) NOT NULL DEFAULT 'DINE_IN',
     payment_status VARCHAR(20),
     payment_method VARCHAR(20),
     

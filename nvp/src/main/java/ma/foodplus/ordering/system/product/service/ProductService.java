@@ -73,7 +73,7 @@ public class ProductService implements ProductManagementUseCase {
     @Override
     @Cacheable(value = CacheConstants.PRODUCTS_CACHE, key = "'family:' + #familyCode")
     public List<ProductResponse> getProductsByFamilyCode(String familyCode) {
-        return productRepository.findByFamilyCode(familyCode).stream()
+        return productRepository.findByProductFamilyCode(familyCode).stream()
                 .map(mapper::entityToResponse)
                 .collect(Collectors.toList());
     }

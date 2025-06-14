@@ -9,13 +9,12 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByReference(String reference);
     Optional<Product> findByBarcode(String barcode);
-    List<Product> findByFamilyCode(String familyCode);
+    List<Product> findByProductFamilyCode(String familyCode);
     List<Product> findByDeliverableTrue();
     List<Product> findByInactiveFalse();
     boolean existsByReference(String reference);

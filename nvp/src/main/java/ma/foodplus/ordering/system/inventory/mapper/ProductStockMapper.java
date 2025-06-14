@@ -44,7 +44,7 @@ public interface ProductStockMapper {
     @Mapping(target = "depotName", ignore = true)
     @Mapping(target = "totalValue", expression = "java(entity.getQuantity().multiply(entity.getUnitCost()))")
     @Mapping(target = "availableQuantity", expression = "java(entity.getQuantity().subtract(entity.getReservedQuantity()))")
-    @Mapping(target = "lowStock", expression = "java(entity.getMinimumQuantity() != null && entity.getQuantity().compareTo(entity.getMinimumQuantity()) <= 0)")
+    @Mapping(target = "lowStock", expression = "java(entity.getMinStockLevel() != null && entity.getQuantity().compareTo(entity.getMinStockLevel()) <= 0)")
     @Mapping(target = "expired", expression = "java(entity.getExpiryDate() != null && entity.getExpiryDate().isBefore(java.time.LocalDate.now()))")
     ProductStockResponse toResponse(ProductStock entity);
 

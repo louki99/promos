@@ -3,6 +3,8 @@ package ma.foodplus.ordering.system.promos.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.foodplus.ordering.system.order.model.Order;
+import ma.foodplus.ordering.system.order.model.OrderItem;
+import ma.foodplus.ordering.system.order.model.OrderItemContext;
 import ma.foodplus.ordering.system.promos.model.Condition;
 import ma.foodplus.ordering.system.promos.model.DynamicCondition;
 import ma.foodplus.ordering.system.promos.model.PromotionRule;
@@ -118,10 +120,11 @@ public class ConditionEvaluator {
         }
 
         // The condition's value represents the required quantity.
-        int totalQuantity = matchingItems.stream().mapToInt(item -> item.getOriginalItem().getQuantity()).sum();
+        int totalQuantity = matchingItems.stream()
+                .mapToInt(item -> item.getOriginalItem().getQuantity())
+                .sum();
         int requiredQuantity = Integer.parseInt(condition.getValue());
 
-        // Use a BigDecimal for comparison to be consistent, even with integers.
         return checkValue(new BigDecimal(totalQuantity), condition.getOperator(), new BigDecimal(requiredQuantity));
     }
 
@@ -323,11 +326,12 @@ public class ConditionEvaluator {
         try {
             int requiredItems = Integer.parseInt(condition.getConditionValue());
             int totalItems = condition.getOrder().getItems().stream()
+                    .map(OrderItemContext::new)
                     .mapToInt(item -> item.getOriginalItem().getQuantity())
                     .sum();
             return totalItems >= requiredItems;
         } catch (Exception e) {
-            log.error("Error evaluating cart total items: {}", e.getMessage());
+            log.error("Error evaluating order total items: {}", e.getMessage());
             return false;
         }
     }
@@ -335,10 +339,10 @@ public class ConditionEvaluator {
     private boolean evaluateCartTotalAmount(DynamicCondition condition) {
         try {
             double requiredAmount = Double.parseDouble(condition.getConditionValue());
-            double cartTotal = condition.getOrder().getFinalTotalPrice().doubleValue();
-            return cartTotal >= requiredAmount;
+            double orderTotal = condition.getOrder().getFinalTotalPrice().doubleValue();
+            return orderTotal >= requiredAmount;
         } catch (Exception e) {
-            log.error("Error evaluating cart total amount: {}", e.getMessage());
+            log.error("Error evaluating order total amount: {}", e.getMessage());
             return false;
         }
     }
@@ -350,12 +354,15 @@ public class ConditionEvaluator {
                     .collect(Collectors.toSet());
 
             Set<String> orderCategories = condition.getOrder().getItems().stream()
+                    .map(OrderItemContext::new)
                     .map(item -> {
                         try {
-                            List<String> path = productService.getProductCategory(item.getOriginalItem().getProductId().toString());
-                            return path.get(0); // أو path.get(n) أو path كاملة لو بغيت
+                            List<String> path = productService.getProductCategory(
+                                item.getOriginalItem().getProductId().toString());
+                            return path.get(0); // Get the first category in the path
                         } catch (Exception e) {
-                            log.warn("Failed to get product category for item {}: {}", item.getId(), e.getMessage());
+                            log.warn("Failed to get product category for item {}: {}", 
+                                item.getOriginalItem().getId(), e.getMessage());
                             return null;
                         }
                     })
@@ -364,7 +371,7 @@ public class ConditionEvaluator {
 
             return requiredCategories.stream().allMatch(orderCategories::contains);
         } catch (Exception e) {
-            log.error("Error evaluating cart item categories: {}", e.getMessage());
+            log.error("Error evaluating order item categories: {}", e.getMessage());
             return false;
         }
     }

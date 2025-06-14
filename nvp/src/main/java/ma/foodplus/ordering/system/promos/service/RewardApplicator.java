@@ -1,6 +1,7 @@
 package ma.foodplus.ordering.system.promos.service;
 
 import lombok.RequiredArgsConstructor;
+import ma.foodplus.ordering.system.order.model.OrderItemContext;
 import ma.foodplus.ordering.system.promos.model.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,7 @@ public class RewardApplicator {
         switch (breakpointType) {
             case AMOUNT:
                 return eligibleItems.stream()
-                        .map(item -> item.getOriginalItem().getPrice().multiply(new BigDecimal(item.getOriginalItem().getQuantity())))
+                        .map(item -> item.getOriginalItem().getUnitPrice().multiply(new BigDecimal(item.getOriginalItem().getQuantity())))
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
             case QUANTITY:
                 int totalQuantity = eligibleItems.stream()
@@ -250,7 +251,7 @@ public class RewardApplicator {
                 break;
             }
             int quantityFromThisItem = Math.min(quantityToAccountFor, item.getRemainingQuantityForRewards());
-            BigDecimal pricePerUnit = item.getOriginalItem().getPrice();
+            BigDecimal pricePerUnit = item.getOriginalItem().getUnitPrice();
             price = price.add(pricePerUnit.multiply(new BigDecimal(quantityFromThisItem)));
             item.consumeQuantity(quantityFromThisItem);
             quantityToAccountFor -= quantityFromThisItem;

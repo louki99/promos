@@ -62,8 +62,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     
     // Product preferences query
     @Query("SELECT DISTINCT c FROM Customer c " +
-           "JOIN c.orders o " +
-           "JOIN o.items i " +
-           "WHERE i.productId = :productId")
+           "JOIN ProductCustomer pc ON pc.customer = c " +
+           "WHERE pc.product.id = :productId")
     List<Customer> findByProductPreferences(@Param("productId") Long productId);
 } 

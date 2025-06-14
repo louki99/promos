@@ -24,10 +24,16 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
-    show-sql: false
+      ddl-auto: create  # ✅ توليد أوتوماتيكي للـ schema
+    show-sql: true #change it
     properties:
       hibernate:
+        javax:
+          persistence:
+            schema-generation:
+              scripts:
+                action: create
+                create-target: schema.sql
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         jdbc:
@@ -36,7 +42,7 @@ spring:
         order_updates: true
 
   flyway:
-    enabled: true
+    enabled: false # 🚫 عطل Flyway مؤقتاً
     locations: classpath:db/migration
     baseline-on-migrate: true
     out-of-order: true

@@ -351,6 +351,14 @@ public class Promotion {
         this.promotionLines = promotionLines;
     }
 
+    public String getCustomerGroup() {
+        return customerGroup;
+    }
+
+    public void setCustomerGroup(String customerGroup) {
+        this.customerGroup = customerGroup;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
