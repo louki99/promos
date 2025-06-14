@@ -4,27 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add more complex promo">
+    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="fix dumy data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/foodplus-ordering.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/foodplus-ordering.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/common/V1.1.1__create_enums.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/common/V1.1.2__create_common_tables.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.1__create_customer_tariff.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.2__create_customer_tables.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.4__add_category_tarif_to_customers.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.4__add_customer_additional_fields.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/customer/V1.2.7__add_b2b_fields.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/data/V1.7.1__insert_dummy_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/data/V1.7.1__insert_dummy_data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/inventory/V1.4.1__create_inventory_tables.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/order/V1.5.1__create_order_tables.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.1__create_product_tables.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.2__add_wholesale_and_bulk_fields.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.3__add_b2b_b2c_fields.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.4__create_product_customer_relations.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.5__create_product_customer_price_history.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/promos/V1.6.1__create_promo_tables.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/static/api-docs/openapi.yml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -252,7 +234,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749904178293</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="fix dumy data">
+      <option name="closed" value="true" />
+      <created>1749909737881</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1749909737881</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -260,6 +250,7 @@
     <MESSAGE value="build promos" />
     <MESSAGE value="add customer" />
     <MESSAGE value="add more complex promo" />
-    <option name="LAST_COMMIT_MESSAGE" value="add more complex promo" />
+    <MESSAGE value="fix dumy data" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix dumy data" />
   </component>
 </project>
