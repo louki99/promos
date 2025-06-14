@@ -25,3 +25,8 @@ Thumbs.db
 logs/*
 **/logs/*
 **/logs
+
+
+common/common-domain/target/*
+common/common-dataaccess/target/*
+common/common-application/target/*
