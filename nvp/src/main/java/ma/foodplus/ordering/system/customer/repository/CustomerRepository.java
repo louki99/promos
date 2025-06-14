@@ -5,6 +5,7 @@ import ma.foodplus.ordering.system.customer.model.CustomerType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -65,4 +66,23 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
            "JOIN ProductCustomer pc ON pc.customer = c " +
            "WHERE pc.product.id = :productId")
     List<Customer> findByProductPreferences(@Param("productId") Long productId);
+
+    List<Customer> findByCustomerGroupsId(Long groupId);
+
+    // Group management queries
+    @Modifying
+    @Query(value = "INSERT INTO customer_group_members (customer_id, group_id) " +
+           "SELECT :customerId, :groupId " +
+           "WHERE NOT EXISTS (SELECT 1 FROM customer_group_members " +
+           "WHERE customer_id = :customerId AND group_id = :groupId)", nativeQuery = true)
+    void addCustomerToGroup(@Param("customerId") Long customerId, @Param("groupId") Long groupId);
+
+    @Query(value = "SELECT COUNT(*) > 0 FROM customer_group_members " +
+           "WHERE customer_id = :customerId AND group_id = :groupId", nativeQuery = true)
+    boolean isCustomerInGroup(@Param("customerId") Long customerId, @Param("groupId") Long groupId);
+
+    @Modifying
+    @Query(value = "DELETE FROM customer_group_members " +
+           "WHERE customer_id = :customerId AND group_id = :groupId", nativeQuery = true)
+    void removeCustomerFromGroup(@Param("customerId") Long customerId, @Param("groupId") Long groupId);
 } 

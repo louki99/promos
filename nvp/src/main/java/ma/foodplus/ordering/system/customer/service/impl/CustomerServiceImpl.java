@@ -102,9 +102,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(readOnly = true)
     public List<CustomerDTO> getCustomersByGroup(Long groupId) {
         log.info("Getting customers by group id: {}", groupId);
-        CustomerGroup group = customerGroupRepository.findById(groupId)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer group not found with id: " + groupId));
-        return group.getCustomers().stream()
+        if (!customerGroupRepository.existsById(groupId)) {
+            throw new CustomerNotFoundException("Customer group not found with id: " + groupId);
+        }
+        return customerRepository.findByCustomerGroupsId(groupId).stream()
                 .map(customerMapper::toDTO)
                 .collect(Collectors.toList());
     }
@@ -183,27 +184,53 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public void addCustomerToGroup(Long customerId, Long groupId) {
         log.info("Adding customer {} to group {}", customerId, groupId);
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + customerId));
-        CustomerGroup group = customerGroupRepository.findById(groupId)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer group not found with id: " + groupId));
         
-        customer.getCustomerGroups().add(group);
-        customerRepository.save(customer);
+        // Verify customer and group exist
+        if (!customerRepository.existsById(customerId)) {
+            throw new CustomerNotFoundException("Customer not found with id: " + customerId);
+        }
+        if (!customerGroupRepository.existsById(groupId)) {
+            throw new CustomerNotFoundException("Customer group not found with id: " + groupId);
+        }
+        
+        // Check if customer is already in the group
+        if (customerRepository.isCustomerInGroup(customerId, groupId)) {
+            log.info("Customer {} is already in group {}", customerId, groupId);
+            return;
+        }
+        
+        // Add customer to group using native query
+        customerRepository.addCustomerToGroup(customerId, groupId);
+        
+        log.info("Successfully added customer {} to group {}", customerId, groupId);
     }
 
     @Override
+    @Transactional
     public void removeCustomerFromGroup(Long customerId, Long groupId) {
         log.info("Removing customer {} from group {}", customerId, groupId);
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + customerId));
-        CustomerGroup group = customerGroupRepository.findById(groupId)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer group not found with id: " + groupId));
         
-        customer.getCustomerGroups().remove(group);
-        customerRepository.save(customer);
+        // Verify customer and group exist
+        if (!customerRepository.existsById(customerId)) {
+            throw new CustomerNotFoundException("Customer not found with id: " + customerId);
+        }
+        if (!customerGroupRepository.existsById(groupId)) {
+            throw new CustomerNotFoundException("Customer group not found with id: " + groupId);
+        }
+        
+        // Check if customer is in the group
+        if (!customerRepository.isCustomerInGroup(customerId, groupId)) {
+            log.info("Customer {} is not in group {}", customerId, groupId);
+            return;
+        }
+        
+        // Remove customer from group using native query
+        customerRepository.removeCustomerFromGroup(customerId, groupId);
+        
+        log.info("Successfully removed customer {} from group {}", customerId, groupId);
     }
 
     @Override
@@ -309,17 +336,27 @@ public class CustomerServiceImpl implements CustomerService {
     public Map<String, BigDecimal> getAverageOrderValueByCustomerType() {
         Map<String, BigDecimal> averages = new HashMap<>();
         
-        BigDecimal b2bAvg = customerRepository.findByCustomerType(CustomerType.B2B).stream()
-                .map(Customer::getAverageOrderValue)
-                .filter(Objects::nonNull)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .divide(BigDecimal.valueOf(customerRepository.countByCustomerType(CustomerType.B2B)), 2, RoundingMode.HALF_UP);
+        long b2bCount = customerRepository.countByCustomerType(CustomerType.B2B);
+        long b2cCount = customerRepository.countByCustomerType(CustomerType.B2C);
         
-        BigDecimal b2cAvg = customerRepository.findByCustomerType(CustomerType.B2C).stream()
-                .map(Customer::getAverageOrderValue)
-                .filter(Objects::nonNull)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .divide(BigDecimal.valueOf(customerRepository.countByCustomerType(CustomerType.B2C)), 2, RoundingMode.HALF_UP);
+        BigDecimal b2bAvg = BigDecimal.ZERO;
+        BigDecimal b2cAvg = BigDecimal.ZERO;
+        
+        if (b2bCount > 0) {
+            b2bAvg = customerRepository.findByCustomerType(CustomerType.B2B).stream()
+                    .map(Customer::getAverageOrderValue)
+                    .filter(Objects::nonNull)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add)
+                    .divide(BigDecimal.valueOf(b2bCount), 2, RoundingMode.HALF_UP);
+        }
+        
+        if (b2cCount > 0) {
+            b2cAvg = customerRepository.findByCustomerType(CustomerType.B2C).stream()
+                    .map(Customer::getAverageOrderValue)
+                    .filter(Objects::nonNull)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add)
+                    .divide(BigDecimal.valueOf(b2cCount), 2, RoundingMode.HALF_UP);
+        }
         
         averages.put("B2B", b2bAvg);
         averages.put("B2C", b2cAvg);

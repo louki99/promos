@@ -158,7 +158,7 @@ public class Customer {
     private String specialHandlingInstructions;
 
     // Relationships
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "customer_group_members",
         joinColumns = @JoinColumn(name = "customer_id"),

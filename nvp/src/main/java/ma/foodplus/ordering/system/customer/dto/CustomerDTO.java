@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import ma.foodplus.ordering.system.customer.model.CustomerType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -76,6 +77,7 @@ public class CustomerDTO {
     private String bankAccountInfo; //informations sur le compte bancaire
 
     // Business Status
+    @JsonProperty("isVip")
     private boolean isVip; //indique si le client est un VIP
     private Integer loyaltyPoints; //points de fidélité
     private ZonedDateTime lastOrderDate; //date de la dernière commande
