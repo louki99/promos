@@ -16690,3 +16690,8 @@ Consider defining a bean of type 'ma.foodplus.ordering.system.order.mapper.Order
         pf1_0.code=?
 2025-06-14 17:31:35 [main] INFO  m.f.o.s.p.s.CacheWarmingService - Warmed up active products cache
 2025-06-14 17:31:35 [main] INFO  m.f.o.s.p.s.CacheWarmingService - Cache warm-up completed
+2025-06-14 17:33:29 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-14 17:33:29 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-14 17:33:30 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-14 17:33:30 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-14 17:33:30 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
