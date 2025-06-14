@@ -35,6 +35,11 @@ public class ProductValidationService {
             errors.add("Sale price must be greater than zero");
         }
 
+        // Operational flags validation
+        if (command.requiresApproval() == null) {
+            errors.add("Requires approval flag must be specified");
+        }
+
         // Business rules validation
         if (command.reference() != null && productRepository.existsByReference(command.reference())) {
             errors.add("Product reference already exists");
@@ -70,6 +75,11 @@ public class ProductValidationService {
             errors.add("Sale price must be greater than zero");
         }
 
+        // Operational flags validation
+        if (command.requiresApproval() == null) {
+            errors.add("Requires approval flag must be specified");
+        }
+
         // Business rules validation
         if (command.reference() != null && !command.reference().equals(existingProduct.getReference()) 
             && productRepository.existsByReference(command.reference())) {
@@ -85,58 +95,6 @@ public class ProductValidationService {
             if (command.priceIncludingTax().compareTo(command.salePrice()) < 0) {
                 errors.add("Price including tax cannot be less than sale price");
             }
-        }
-
-        return errors;
-    }
-
-    public List<String> validateProduct(Product product) {
-        List<String> errors = new ArrayList<>();
-
-        // Basic validation
-        if (product.getReference() == null || product.getReference().trim().isEmpty()) {
-            errors.add("Product reference is required");
-        }
-        if (product.getTitle() == null || product.getTitle().trim().isEmpty()) {
-            errors.add("Product title is required");
-        }
-        if (product.getDescription() == null || product.getDescription().trim().isEmpty()) {
-            errors.add("Product description is required");
-        }
-        if (product.getSalePrice() == null || product.getSalePrice().compareTo(BigDecimal.ZERO) <= 0) {
-            errors.add("Sale price must be greater than zero");
-        }
-
-        // Business rules validation
-        if (product.getIsWholesaleOnly() && product.getWholesalePrice() == null) {
-            errors.add("Wholesale price is required for wholesale-only products");
-        }
-        if (product.getIsPerishable() && !product.getRequiresColdStorage()) {
-            errors.add("Perishable products must require cold storage");
-        }
-        if (product.getB2bMinimumOrderValue() != null && product.getB2bMinimumOrderValue().compareTo(BigDecimal.ZERO) <= 0) {
-            errors.add("B2B minimum order value must be greater than zero");
-        }
-
-        // Price validation
-        if (product.getWholesalePrice() != null && product.getSalePrice() != null 
-            && product.getWholesalePrice().compareTo(product.getSalePrice()) >= 0) {
-            errors.add("Wholesale price must be less than sale price");
-        }
-        if (product.getB2cPromoPrice() != null && product.getB2cRetailPrice() != null 
-            && product.getB2cPromoPrice().compareTo(product.getB2cRetailPrice()) >= 0) {
-            errors.add("Promotional price must be less than retail price");
-        }
-
-        // Date validation
-        if (product.getB2cPromoStartDate() != null && product.getB2cPromoEndDate() != null 
-            && product.getB2cPromoEndDate().isBefore(product.getB2cPromoStartDate())) {
-            errors.add("Promotion end date must be after start date");
-        }
-
-        // Stock validation
-        if (product.getIsBulkItem() && (product.getBulkPackageSize() == null || product.getBulkPackageSize() <= 0)) {
-            errors.add("Bulk package size is required for bulk items");
         }
 
         return errors;
@@ -183,4 +141,4 @@ public class ProductValidationService {
         }
         return true;
     }
-} 
+}

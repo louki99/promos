@@ -89,7 +89,7 @@ logging:
     ma.foodplus.ordering.system: DEBUG
     org.springframework.web: INFO
     org.springframework.security: INFO
-    org.hibernate.SQL: DEBUG
+    org.hibernate.SQL: INFO
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.springframework.cache: DEBUG
   pattern:

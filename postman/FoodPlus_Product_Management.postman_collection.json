@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "FoodPlus Product Management",
+		"description": "Collection for managing products in the FoodPlus Ordering System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Product Management",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reference\": \"PROD-001\",\n    \"sku\": \"SKU-001\",\n    \"title\": \"Premium Olive Oil\",\n    \"description\": \"Extra virgin olive oil from Mediterranean region\",\n    \"barcode\": \"123456789012\",\n    \"familyCode\": \"OILS\",\n    \"categoryIds\": [1, 2],\n    \"salePrice\": 29.99,\n    \"unitPrice\": 25.99,\n    \"saleUnit\": \"BOTTLE\",\n    \"priceIncludingTax\": 35.99,\n    \"promoSkuPoints\": 10.00,\n    \"taxRate\": 20.00,\n    \"wholesalePrice\": 20.00,\n    \"wholesaleMinimumQuantity\": 10,\n    \"wholesaleDiscountPercentage\": 15.00,\n    \"minimumOrderQuantity\": 1,\n    \"maximumOrderQuantity\": 100,\n    \"deliverable\": true,\n    \"vendable\": true,\n    \"visible\": true,\n    \"inactive\": false,\n    \"stockTracking\": \"ENABLED\",\n    \"weight\": 1.0,\n    \"weightUnit\": \"KG\",\n    \"dimensions\": \"10x5x5\",\n    \"packageSize\": \"750ml\",\n    \"packageQuantity\": 12,\n    \"supplierCode\": \"SUP-001\",\n    \"supplierName\": \"Mediterranean Suppliers Ltd\",\n    \"countryOfOrigin\": \"Spain\",\n    \"photo\": \"https://example.com/olive-oil.jpg\",\n    \"b2bMinimumOrderValue\": 1000.00,\n    \"b2bContractRequired\": true,\n    \"b2cRetailPrice\": 29.99,\n    \"b2cDisplayInCatalog\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"]
+						},
+						"description": "Create a new product in the system"
+					}
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "1"]
+						},
+						"description": "Retrieve a product by its ID"
+					}
+				},
+				{
+					"name": "Get Product by Reference",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/reference/PROD-001",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "reference", "PROD-001"]
+						},
+						"description": "Retrieve a product by its reference"
+					}
+				},
+				{
+					"name": "Get Product by Barcode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/barcode/123456789012",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "barcode", "123456789012"]
+						},
+						"description": "Retrieve a product by its barcode"
+					}
+				},
+				{
+					"name": "Get Products by Family Code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/family/OILS",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "family", "OILS"]
+						},
+						"description": "Retrieve products by family code"
+					}
+				},
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"]
+						},
+						"description": "Retrieve all products"
+					}
+				},
+				{
+					"name": "Get Deliverable Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/deliverable",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "deliverable"]
+						},
+						"description": "Retrieve all deliverable products"
+					}
+				},
+				{
+					"name": "Get Active Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/active",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "active"]
+						},
+						"description": "Retrieve all active products"
+					}
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated Premium Olive Oil\",\n    \"description\": \"Updated description for premium olive oil\",\n    \"salePrice\": 34.99,\n    \"priceIncludingTax\": 41.99,\n    \"deliverable\": true,\n    \"visible\": true,\n    \"inactive\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "1"]
+						},
+						"description": "Update an existing product"
+					}
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "1"]
+						},
+						"description": "Delete a product"
+					}
+				},
+				{
+					"name": "Check Product Exists by Reference",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/check/reference/PROD-001",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "check", "reference", "PROD-001"]
+						},
+						"description": "Check if a product exists by reference"
+					}
+				},
+				{
+					"name": "Check Product Exists by Barcode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/check/barcode/123456789012",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "check", "barcode", "123456789012"]
+						},
+						"description": "Check if a product exists by barcode"
+					}
+				},
+				{
+					"name": "Validate B2B Sale",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/1/validate-b2b",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "1", "validate-b2b"]
+						},
+						"description": "Validate if a product is valid for B2B sale"
+					}
+				},
+				{
+					"name": "Validate B2C Sale",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/1/validate-b2c",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "1", "validate-b2c"]
+						},
+						"description": "Validate if a product is valid for B2C sale"
+					}
+				},
+				{
+					"name": "Validate Promotion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/1/validate-promotion?promoPrice=24.99&startDate=2024-03-14T00:00:00Z&endDate=2024-04-14T23:59:59Z",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "1", "validate-promotion"],
+							"query": [
+								{
+									"key": "promoPrice",
+									"value": "24.99"
+								},
+								{
+									"key": "startDate",
+									"value": "2024-03-14T00:00:00Z"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-04-14T23:59:59Z"
+								}
+							]
+						},
+						"description": "Validate if a product is valid for promotion"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8087",
+			"type": "string"
+		}
+	]
+} 

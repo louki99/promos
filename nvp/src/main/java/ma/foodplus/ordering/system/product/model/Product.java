@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import ma.foodplus.ordering.system.product.enums.SuiviStock;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -263,10 +266,12 @@ public class Product {
     private String seasonality;
 
     @Column(name = "availability_schedule", columnDefinition = "jsonb")
-    private String availabilitySchedule;
+    @Type(JsonBinaryType.class)
+    private JsonNode availabilitySchedule;
 
     @Column(name = "custom_attributes", columnDefinition = "jsonb")
-    private String customAttributes;
+    @Type(JsonBinaryType.class)
+    private JsonNode customAttributes;
 
     // Business Logic Methods
 

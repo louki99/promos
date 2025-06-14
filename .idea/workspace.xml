@@ -4,7 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="change reo" />
+    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add ignore log">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/foodplus-ordering.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/foodplus-ordering.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/service/impl/ProductStockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/inventory/service/impl/ProductStockServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/configuration/CacheConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/configuration/CacheConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/dto/create/CreateProductCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/dto/create/CreateProductCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/dto/response/ProductResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/dto/response/ProductResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/dto/update/UpdateProductCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/dto/update/UpdateProductCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/mapper/ProductPersistenceMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/mapper/ProductPersistenceMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/mapper/ProductResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/mapper/ProductResponseMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductValidationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductValidationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/application.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,6 +101,9 @@
       <recent name="$PROJECT_DIR$/nvp/src/main/resources" />
       <recent name="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/tarif" />
       <recent name="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/nvp/src/main/resources/db/migration" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ma.foodplus.ordering.system.products.exception" />
@@ -256,7 +275,23 @@
       <option name="project" value="LOCAL" />
       <updated>1749918661640</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="add audit product">
+      <option name="closed" value="true" />
+      <created>1749918740931</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1749918740931</updated>
+    </task>
+    <task id="LOCAL-00017" summary="add ignore log">
+      <option name="closed" value="true" />
+      <created>1749918842041</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1749918842041</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -267,6 +302,8 @@
     <MESSAGE value="fix dumy data" />
     <MESSAGE value="add ignore files" />
     <MESSAGE value="change reo" />
-    <option name="LAST_COMMIT_MESSAGE" value="change reo" />
+    <MESSAGE value="add audit product" />
+    <MESSAGE value="add ignore log" />
+    <option name="LAST_COMMIT_MESSAGE" value="add ignore log" />
   </component>
 </project>

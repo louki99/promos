@@ -556,7 +556,7 @@ public class ProductStockServiceImpl implements ProductStockService {
             ProductResponse product = productService.getProduct(new ProductId(productId));
             if (product != null) {
                 message.append("\n\nProduct Impact:");
-                message.append(String.format("\n- Category: %s", product.category1()));
+                //message.append(String.format("\n- Category: %s", product.getCategory()));
                 
                 // Add promotion information
                 if (promotionService.hasActivePromotions(Long.parseLong(product.id().toString()))) {

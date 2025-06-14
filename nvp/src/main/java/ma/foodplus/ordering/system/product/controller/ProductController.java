@@ -23,6 +23,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.Parameter;
 import ma.foodplus.ordering.system.common.dto.ErrorResponse;
+import ma.foodplus.ordering.system.product.exception.ProductNotFoundException;
+import ma.foodplus.ordering.system.product.repository.ProductRepository;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -38,6 +40,7 @@ public class ProductController {
     private final ProductManagementUseCase productManagementUseCase;
     private final ProductValidationService productValidationService;
     private final ProductResponseMapper productResponseMapper;
+    private final ProductRepository productRepository;
 
     @GetMapping
     @Operation(summary = "Get all products", description = "Retrieves all products in the system.")
@@ -135,14 +138,16 @@ public class ProductController {
     @GetMapping("/{productId}/validate-b2b")
     @Operation(summary = "Validate if a product is valid for B2B sale")
     public ResponseEntity<Boolean> validateB2BSale(@PathVariable Long productId) {
-        Product product = productResponseMapper.toProduct(productService.getProduct(new ProductId(productId)));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
         return ResponseEntity.ok(productValidationService.isValidForB2BSale(product));
     }
 
     @GetMapping("/{productId}/validate-b2c")
     @Operation(summary = "Validate if a product is valid for B2C sale")
     public ResponseEntity<Boolean> validateB2CSale(@PathVariable Long productId) {
-        Product product = productResponseMapper.toProduct(productService.getProduct(new ProductId(productId)));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
         return ResponseEntity.ok(productValidationService.isValidForB2CSale(product));
     }
 
@@ -153,7 +158,8 @@ public class ProductController {
             @RequestParam BigDecimal promoPrice,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime endDate) {
-        Product product = productResponseMapper.toProduct(productService.getProduct(new ProductId(productId)));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
         return ResponseEntity.ok(productValidationService.isValidForPromotion(product, promoPrice, startDate, endDate));
     }
 } 

@@ -1,0 +1,708 @@
+{
+	"info": {
+		"_postman_id": "f8d9e3c2-5b6a-4d8c-9f1e-7d8b4a2e1f0d",
+		"name": "FoodPlus API Collection",
+		"description": "API collection for FoodPlus Ordering System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Product Management",
+			"item": [
+				{
+					"name": "Basic Product Operations",
+					"item": [
+						{
+							"name": "Create Product",
+							"request": {
+								"method": "POST",
+								"url": "{{base_url}}/api/products",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": {
+										"reference": "PROD-001",
+										"sku": "SKU001",
+										"title": "Test Product",
+										"description": "Test product description",
+										"barcode": "123456789",
+										"familyCode": "FAM001",
+										"categoryIds": [1, 2],
+										"salePrice": 100.00,
+										"unitPrice": 80.00,
+										"saleUnit": "PIECE",
+										"priceIncludingTax": 120.00,
+										"promoSkuPoints": 10.00,
+										"taxRate": 20.00,
+										"wholesalePrice": 70.00,
+										"wholesaleMinimumQuantity": 50,
+										"wholesaleDiscountPercentage": 15.00,
+										"wholesaleTier1Price": 65.00,
+										"wholesaleTier1Quantity": 100,
+										"wholesaleTier2Price": 60.00,
+										"wholesaleTier2Quantity": 200,
+										"wholesaleTier3Price": 55.00,
+										"wholesaleTier3Quantity": 500,
+										"minimumOrderQuantity": 1,
+										"maximumOrderQuantity": 1000,
+										"bulkDiscountThreshold": 50,
+										"bulkDiscountPercentage": 10.00,
+										"bulkPackageSize": 5,
+										"bulkPackageUnit": "BOX",
+										"deliverable": true,
+										"vendable": true,
+										"visible": true,
+										"inactive": false,
+										"requiresApproval": false,
+										"isBulkItem": true,
+										"isPerishable": false,
+										"requiresColdStorage": false,
+										"isWholesaleOnly": false,
+										"requiresContract": false,
+										"stockTracking": "AUCUN",
+										"weight": 1.5,
+										"weightUnit": "KG",
+										"dimensions": "30x20x10",
+										"packageSize": "MEDIUM",
+										"packageQuantity": 1,
+										"supplierCode": "SUP001",
+										"supplierName": "Main Supplier",
+										"countryOfOrigin": "Morocco",
+										"certification": "ISO9001",
+										"photo": "main-photo-url",
+										"additionalPhotos": ["photo-url-1", "photo-url-2"],
+										"b2bMinimumOrderValue": 1000.00,
+										"b2bContractRequired": false,
+										"b2bCreditTerms": 30,
+										"b2bPaymentMethods": "CREDIT,BANK_TRANSFER",
+										"b2bDeliveryLeadTime": 5,
+										"b2bCustomPricingEnabled": true,
+										"b2bVolumeDiscountEnabled": true,
+										"b2bContractDiscountPercentage": 10.00,
+										"b2cRetailPrice": 120.00,
+										"b2cPromoPrice": 99.99,
+										"b2cPromoStartDate": "2024-03-01T00:00:00Z",
+										"b2cPromoEndDate": "2024-03-31T23:59:59Z",
+										"b2cLoyaltyPointsMultiplier": 1.5,
+										"b2cDisplayInCatalog": true,
+										"b2cFeatured": false,
+										"targetMarket": "BOTH",
+										"customerSegments": "RETAIL,WHOLESALE",
+										"seasonality": "ALL_YEAR",
+										"availabilitySchedule": "{}",
+										"customAttributes": "{}"
+									}
+								}
+							}
+						},
+						{
+							"name": "Update Product",
+							"request": {
+								"method": "PUT",
+								"url": "{{base_url}}/api/products/{{productId}}",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": {
+										"title": "Updated Product",
+										"description": "Updated description",
+										"salePrice": 110.00,
+										"b2cRetailPrice": 130.00,
+										"b2cPromoPrice": 89.99,
+										"stockTracking": "AUCUN",
+										"visible": true,
+										"inactive": false
+									}
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Product Settings",
+					"item": [
+						{
+							"name": "Update B2B Settings",
+							"request": {
+								"method": "PATCH",
+								"url": "{{base_url}}/api/products/{{productId}}/b2b-settings",
+								"body": {
+									"mode": "raw",
+									"raw": {
+										"b2bMinimumOrderValue": 1000.00,
+										"b2bContractRequired": true,
+										"b2bCreditTerms": 30,
+										"b2bPaymentMethods": "CREDIT,BANK_TRANSFER",
+										"b2bDeliveryLeadTime": 5,
+										"b2bCustomPricingEnabled": true,
+										"b2bVolumeDiscountEnabled": true,
+										"b2bContractDiscountPercentage": 10.00
+									}
+								}
+							}
+						},
+						{
+							"name": "Update B2C Settings",
+							"request": {
+								"method": "PATCH",
+								"url": "{{base_url}}/api/products/{{productId}}/b2c-settings",
+								"body": {
+									"mode": "raw",
+									"raw": {
+										"b2cRetailPrice": 120.00,
+										"b2cPromoPrice": 99.99,
+										"b2cPromoStartDate": "2024-03-01T00:00:00Z",
+										"b2cPromoEndDate": "2024-03-31T23:59:59Z",
+										"b2cLoyaltyPointsMultiplier": 1.5,
+										"b2cDisplayInCatalog": true,
+										"b2cFeatured": true
+									}
+								}
+							}
+						},
+						{
+							"name": "Update Wholesale Settings",
+							"request": {
+								"method": "PATCH",
+								"url": "{{base_url}}/api/products/{{productId}}/wholesale-settings",
+								"body": {
+									"mode": "raw",
+									"raw": {
+										"wholesalePrice": 70.00,
+										"wholesaleMinimumQuantity": 50,
+										"wholesaleDiscountPercentage": 15.00,
+										"wholesaleTier1Price": 65.00,
+										"wholesaleTier1Quantity": 100,
+										"wholesaleTier2Price": 60.00,
+										"wholesaleTier2Quantity": 200,
+										"wholesaleTier3Price": 55.00,
+										"wholesaleTier3Quantity": 500
+									}
+								}
+							}
+						},
+						{
+							"name": "Update Bulk Settings",
+							"request": {
+								"method": "PATCH",
+								"url": "{{base_url}}/api/products/{{productId}}/bulk-settings",
+								"body": {
+									"mode": "raw",
+									"raw": {
+										"minimumOrderQuantity": 10,
+										"maximumOrderQuantity": 1000,
+										"bulkDiscountThreshold": 50,
+										"bulkDiscountPercentage": 10.00,
+										"bulkPackageSize": 5,
+										"bulkPackageUnit": "BOX"
+									}
+								}
+							}
+						},
+						{
+							"name": "Update Product Attributes",
+							"request": {
+								"method": "PATCH",
+								"url": "{{base_url}}/api/products/{{productId}}/attributes",
+								"body": {
+									"mode": "raw",
+									"raw": {
+										"weight": 1.5,
+										"weightUnit": "KG",
+										"dimensions": "30x20x10",
+										"packageSize": "MEDIUM",
+										"packageQuantity": 1,
+										"supplierCode": "SUP001",
+										"supplierName": "Main Supplier",
+										"countryOfOrigin": "Morocco",
+										"certification": "ISO9001"
+									}
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Product Validation",
+					"item": [
+						{
+							"name": "Validate B2B Sale",
+							"request": {
+								"method": "GET",
+								"url": "{{base_url}}/api/products/{{productId}}/validate-b2b"
+							}
+						},
+						{
+							"name": "Validate B2C Sale",
+							"request": {
+								"method": "GET",
+								"url": "{{base_url}}/api/products/{{productId}}/validate-b2c"
+							}
+						},
+						{
+							"name": "Validate Promotion",
+							"request": {
+								"method": "POST",
+								"url": "{{base_url}}/api/products/{{productId}}/validate-promotion",
+								"query": [
+									{
+										"key": "promoPrice",
+										"value": "89.99"
+									},
+									{
+										"key": "startDate",
+										"value": "2024-03-01T00:00:00Z"
+									},
+									{
+										"key": "endDate",
+										"value": "2024-03-31T23:59:59Z"
+									}
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Product Lookups",
+					"item": [
+						{
+							"name": "Get All Products",
+							"request": {
+								"method": "GET",
+								"url": "{{base_url}}/api/products"
+							}
+						},
+						{
+							"name": "Get Product by ID",
+							"request": {
+								"method": "GET",
+								"url": "{{base_url}}/api/products/{{productId}}"
+							}
+						},
+						{
+							"name": "Get Product by Reference",
+							"request": {
+								"method": "GET",
+								"url": "{{base_url}}/api/products/reference/{{reference}}"
+							}
+						},
+						{
+							"name": "Check Seasonal Status",
+							"request": {
+								"method": "GET",
+								"url": "{{base_url}}/api/v1/products/{{productId}}/seasonal-status"
+							}
+						}
+					]
+				},
+				{
+					"name": "Product Audit",
+					"item": [
+						{
+							"name": "Get Audit History",
+							"request": {
+								"method": "GET",
+								"url": "{{base_url}}/api/products/audit/{{productId}}"
+							}
+						},
+						{
+							"name": "Get Audit by Date Range",
+							"request": {
+								"method": "GET",
+								"url": "{{base_url}}/api/products/audit/{{productId}}/date-range",
+								"query": [
+									{
+										"key": "startDate",
+										"value": "{{startDate}}"
+									},
+									{
+										"key": "endDate",
+										"value": "{{endDate}}"
+									}
+								]
+							}
+						},
+						{
+							"name": "Get Audit by Action",
+							"request": {
+								"method": "GET",
+								"url": "{{base_url}}/api/products/audit/{{productId}}/action/{{action}}"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Customer Management",
+			"item": [
+				{
+					"name": "Create Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test Customer\",\n    \"email\": \"test@example.com\",\n    \"phone\": \"+212600000000\",\n    \"address\": \"123 Test Street\",\n    \"type\": \"INDIVIDUAL\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/customers",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "customers"]
+						}
+					}
+				},
+				{
+					"name": "Update Customer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Customer\",\n    \"email\": \"updated@example.com\",\n    \"phone\": \"+212600000001\",\n    \"address\": \"124 Updated Street\",\n    \"type\": \"BUSINESS\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/customers/{{customerId}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "customers", "{{customerId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Customer by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/customers/{{customerId}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "customers", "{{customerId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Customer by CT Number",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/customers/ct-num/{{ctNum}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "customers", "ct-num", "{{ctNum}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All Customers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/customers?page=0&size=10&sort=name,asc",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "customers"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "name,asc"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Active Customers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/customers/active",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "customers", "active"]
+						}
+					}
+				},
+				{
+					"name": "Search Customers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/customers/search?searchTerm={{searchTerm}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "customers", "search"],
+							"query": [
+								{
+									"key": "searchTerm",
+									"value": "{{searchTerm}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get VIP Customers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/customers/vip",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "customers", "vip"]
+						}
+					}
+				},
+				{
+					"name": "Get Customer Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/customers/statistics",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "customers", "statistics"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Inventory Management",
+			"item": [
+				{
+					"name": "Product Stock",
+					"item": [
+						{
+							"name": "Create Product Stock",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"productId\": {{productId}},\n    \"depotId\": {{depotId}},\n    \"quantity\": 100,\n    \"unitCost\": 50.00,\n    \"expiryDate\": \"2024-12-31\",\n    \"qualityStatus\": \"INSPECTED\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/inventory/stock",
+									"host": ["{{base_url}}"],
+									"path": ["api", "inventory", "stock"]
+								}
+							}
+						},
+						{
+							"name": "Update Product Stock",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"quantity\": 150,\n    \"unitCost\": 45.00,\n    \"expiryDate\": \"2024-12-31\",\n    \"qualityStatus\": \"INSPECTED\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/inventory/stock/{{stockId}}",
+									"host": ["{{base_url}}"],
+									"path": ["api", "inventory", "stock", "{{stockId}}"]
+								}
+							}
+						},
+						{
+							"name": "Get Stock By ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/inventory/stock/{{stockId}}",
+									"host": ["{{base_url}}"],
+									"path": ["api", "inventory", "stock", "{{stockId}}"]
+								}
+							}
+						},
+						{
+							"name": "Get Low Stock Products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/inventory/stock/low-stock",
+									"host": ["{{base_url}}"],
+									"path": ["api", "inventory", "stock", "low-stock"]
+								}
+							}
+						},
+						{
+							"name": "Get Expired Products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/inventory/stock/expired",
+									"host": ["{{base_url}}"],
+									"path": ["api", "inventory", "stock", "expired"]
+								}
+							}
+						},
+						{
+							"name": "Get Inventory Summary",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/inventory/stock/summary",
+									"host": ["{{base_url}}"],
+									"path": ["api", "inventory", "stock", "summary"]
+								}
+							}
+						},
+						{
+							"name": "Get Inventory Alerts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/inventory/stock/alerts?alertType=LOW_STOCK",
+									"host": ["{{base_url}}"],
+									"path": ["api", "inventory", "stock", "alerts"],
+									"query": [
+										{
+											"key": "alertType",
+											"value": "LOW_STOCK"
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "productId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "customerId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "depotId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "stockId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "ctNum",
+			"value": "CT001",
+			"type": "string"
+		},
+		{
+			"key": "searchTerm",
+			"value": "test",
+			"type": "string"
+		},
+		{
+			"key": "startDate",
+			"value": "2024-01-01T00:00:00Z",
+			"type": "string"
+		},
+		{
+			"key": "endDate",
+			"value": "2024-12-31T23:59:59Z",
+			"type": "string"
+		},
+		{
+			"key": "reference",
+			"value": "PROD-001",
+			"type": "string"
+		},
+		{
+			"key": "barcode",
+			"value": "123456789",
+			"type": "string"
+		},
+		{
+			"key": "familyCode",
+			"value": "FAM-001",
+			"type": "string"
+		},
+		{
+			"key": "quantity",
+			"value": "100",
+			"type": "string"
+		}
+	]
+} 
