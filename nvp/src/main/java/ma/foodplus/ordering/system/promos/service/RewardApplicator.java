@@ -110,47 +110,49 @@ public class RewardApplicator {
             throw new IllegalArgumentException("Reward cannot be null");
         }
 
-        BigDecimal rewardValue = reward.getValue();
-        if (rewardValue.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Reward value must be greater than zero");
-        }
-
         BigDecimal totalDiscount = BigDecimal.ZERO;
 
-        switch (reward.getRewardType()) {
-            case DISCOUNT_PERCENTAGE:
-                BigDecimal basePrice = itemsToReward.stream()
-                        .map(OrderItemContext::getRemainingPrice)
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-                totalDiscount = basePrice.multiply(rewardValue.divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP));
-                distributeDiscountProportionally(itemsToReward, totalDiscount);
-                break;
-
-            case DISCOUNT_AMOUNT:
+        switch (reward.getType()) {
+            case FIXED_AMOUNT:
                 BigDecimal availablePrice = itemsToReward.stream()
                         .map(OrderItemContext::getRemainingPrice)
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
-                totalDiscount = rewardValue.min(availablePrice);
+                totalDiscount = reward.getDiscountAmount().min(availablePrice);
+                distributeDiscountProportionally(itemsToReward, totalDiscount);
+                break;
+
+            case PERCENTAGE:
+                BigDecimal basePrice = itemsToReward.stream()
+                        .map(OrderItemContext::getRemainingPrice)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                totalDiscount = basePrice.multiply(reward.getDiscountPercentage().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP));
                 distributeDiscountProportionally(itemsToReward, totalDiscount);
                 break;
 
             case FREE_PRODUCT:
-                if (reward.getProductId() == null) {
-                    throw new IllegalArgumentException("Product ID is required for free product reward");
+                if (reward.getTargetEntityId() == null) {
+                    throw new IllegalArgumentException("Target entity ID is required for free product reward");
                 }
-                int quantity = rewardValue.intValue();
+                if (reward.getTargetEntityType() != Reward.TargetEntityType.PRODUCT) {
+                    throw new IllegalArgumentException("Target entity type must be PRODUCT for free product reward");
+                }
+                int quantity = reward.getDiscountAmount().intValue();
                 if (quantity <= 0) {
                     throw new IllegalArgumentException("Free product quantity must be greater than zero");
                 }
-                context.logFreeItem(Long.valueOf(reward.getProductId()), quantity, promotion.getPromoCode());
+                context.logFreeItem(Long.valueOf(reward.getTargetEntityId()), quantity, promotion.getPromoCode());
+                break;
+
+            case POINTS_MULTIPLIER:
+                // Handle points multiplier logic here
                 break;
 
             default:
-                throw new IllegalArgumentException("Unsupported reward type: " + reward.getRewardType());
+                throw new IllegalArgumentException("Unsupported reward type: " + reward.getType());
         }
 
         if (totalDiscount.compareTo(BigDecimal.ZERO) > 0) {
-            context.logAppliedDiscount(promotion.getPromoCode(), "Bracket Discount: " + reward.getRewardType(), totalDiscount);
+            context.logAppliedDiscount(promotion.getPromoCode(), "Bracket Discount: " + reward.getType(), totalDiscount);
         }
     }
 
@@ -190,13 +192,13 @@ public class RewardApplicator {
 
         BigDecimal totalDiscountForSlice = BigDecimal.ZERO;
 
-        if (reward.getRewardType() == Reward.RewardType.DISCOUNT_PERCENTAGE) {
+        if (reward.getType() == Reward.RewardType.PERCENTAGE) {
             if (breakpointType == PromotionRule.BreakpointType.AMOUNT) {
-                totalDiscountForSlice = valueSlice.multiply(reward.getValue().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP));
+                totalDiscountForSlice = valueSlice.multiply(reward.getDiscountPercentage().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP));
                 distributeDiscountProportionally(allEligibleItems, totalDiscountForSlice);
             } else if (breakpointType == PromotionRule.BreakpointType.QUANTITY) {
                 BigDecimal priceOfSlice = calculatePriceForQuantitySlice(allEligibleItems, valueSlice.intValue());
-                totalDiscountForSlice = priceOfSlice.multiply(reward.getValue().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP));
+                totalDiscountForSlice = priceOfSlice.multiply(reward.getDiscountPercentage().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP));
                 distributeDiscountProportionally(allEligibleItems, totalDiscountForSlice);
             }
         }
@@ -283,8 +285,6 @@ public class RewardApplicator {
             for (OrderItemContext item : items) {
                 int qty = item.getOriginalItem().getQuantity();
                 if (total + qty > repetition) {
-                    // Only take part of this item
-                    // (Assume we can clone or partially use the item, or just break)
                     break;
                 }
                 result.add(item);
@@ -293,7 +293,6 @@ public class RewardApplicator {
             }
             return result;
         }
-        // For amount or SKU_POINTS, similar logic can be added if needed
         return items;
     }
 }
