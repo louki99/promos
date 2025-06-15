@@ -32,6 +32,11 @@ public class PromotionRule {
     @Column(nullable = false)
     private BreakpointType breakpointType;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BreakpointCalculationBasis breakpointCalculationBasis = BreakpointCalculationBasis.ORIGINAL_PRICE;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
@@ -49,6 +54,10 @@ public class PromotionRule {
     public enum ConditionLogic { ALL, ANY }
     public enum CalculationMethod { BRACKET, CUMULATIVE }
     public enum BreakpointType { AMOUNT, QUANTITY, SKU_POINTS }
+    public enum BreakpointCalculationBasis {
+        ORIGINAL_PRICE,  // Use the original price before any discounts
+        CURRENT_PRICE    // Use the current price after higher priority discounts
+    }
 
     // Constructors
     public PromotionRule() {
@@ -132,6 +141,14 @@ public class PromotionRule {
 
     public void setBreakpointType(BreakpointType breakpointType) {
         this.breakpointType = breakpointType;
+    }
+
+    public BreakpointCalculationBasis getBreakpointCalculationBasis() {
+        return breakpointCalculationBasis;
+    }
+
+    public void setBreakpointCalculationBasis(BreakpointCalculationBasis breakpointCalculationBasis) {
+        this.breakpointCalculationBasis = breakpointCalculationBasis;
     }
 
     public Promotion getPromotion() {

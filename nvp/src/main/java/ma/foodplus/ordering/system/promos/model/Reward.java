@@ -1,67 +1,126 @@
 package ma.foodplus.ordering.system.promos.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Data
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "rewards")
 public class Reward {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private RewardType rewardType;
+    private RewardType type;
 
-    @Column(nullable = false)
-    private BigDecimal value;
+    @Column(name = "discount_amount")
+    private BigDecimal discountAmount;
 
-    @Column(nullable = false)
-    private String description;
+    @Column(name = "discount_percentage")
+    private BigDecimal discountPercentage;
 
-    private String productId;
-    private String categoryId;
-    private String familyCode;
-    private Integer quantity;
-    private Boolean isPercentage;
-    private Boolean isActive;
+    @Column(name = "target_entity_id")
+    private String targetEntityId;
+
+    @Column(name = "target_entity_type")
+    @Enumerated(EnumType.STRING)
+    private TargetEntityType targetEntityType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
 
     public enum RewardType {
-        DISCOUNT_PERCENTAGE,
-        DISCOUNT_AMOUNT,
+        FIXED_AMOUNT,
+        PERCENTAGE,
         FREE_PRODUCT,
-        FREE_SHIPPING,
-        LOYALTY_POINTS,
-        GIFT_CARD,
-        CASHBACK
+        POINTS_MULTIPLIER
+    }
+
+    public enum TargetEntityType {
+        PRODUCT,
+        PRODUCT_FAMILY,
+        CATEGORY,
+        CART
+    }
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public RewardType getType() {
+        return type;
+    }
+
+    public void setType(RewardType type) {
+        this.type = type;
+    }
+
+    public BigDecimal getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(BigDecimal discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public BigDecimal getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(BigDecimal discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    public String getTargetEntityId() {
+        return targetEntityId;
+    }
+
+    public void setTargetEntityId(String targetEntityId) {
+        this.targetEntityId = targetEntityId;
+    }
+
+    public TargetEntityType getTargetEntityType() {
+        return targetEntityType;
+    }
+
+    public void setTargetEntityType(TargetEntityType targetEntityType) {
+        this.targetEntityType = targetEntityType;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
     }
 
     public BigDecimal calculateDiscount(BigDecimal value) {
-        if (value == null || value.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Value must be non-negative");
+        if (value == null) {
+            return BigDecimal.ZERO;
         }
 
-        switch (rewardType) {
-            case DISCOUNT_PERCENTAGE:
-                return value.multiply(this.value).divide(new BigDecimal("100"));
-            case DISCOUNT_AMOUNT:
-                return this.value.min(value);
+        switch (type) {
+            case FIXED_AMOUNT:
+                return discountAmount != null ? discountAmount : BigDecimal.ZERO;
+            case PERCENTAGE:
+                return discountPercentage != null ? 
+                    value.multiply(discountPercentage).divide(new BigDecimal("100")) : 
+                    BigDecimal.ZERO;
             case FREE_PRODUCT:
-                return value;
+                return value; // Full discount for free product
+            case POINTS_MULTIPLIER:
+                return BigDecimal.ZERO; // Points are handled separately
             default:
                 return BigDecimal.ZERO;
         }

@@ -26,6 +26,23 @@ import java.util.stream.Collectors;
  * A high-level Facade service responsible for the entire promotion application workflow.
  * This service orchestrates the promotion calculation process by coordinating between
  * different components and providing a simplified interface for clients.
+ *
+ * <p>The service handles:
+ * <ul>
+ *     <li>Validation of promotion eligibility</li>
+ *     <li>Calculation of discounts and rewards</li>
+ *     <li>Application of promotion rules and conditions</li>
+ *     <li>Management of promotion combinations and exclusions</li>
+ * </ul>
+ *
+ * <p>Key features:
+ * <ul>
+ *     <li>Support for multiple promotion types (percentage, fixed amount, free product)</li>
+ *     <li>Complex condition evaluation (AND/OR logic)</li>
+ *     <li>Customer-specific promotions</li>
+ *     <li>Time-based promotions</li>
+ *     <li>Product family and category-based promotions</li>
+ * </ul>
  */
 @Slf4j
 @Service
@@ -40,10 +57,15 @@ public class PromotionApplicationService {
 
     /**
      * Calculates all applicable promotions for a given cart.
+     * This method is the main entry point for promotion calculation and handles the entire workflow:
+     * 1. Validates the request
+     * 2. Creates an order from the request
+     * 3. Applies all eligible promotions
+     * 4. Returns the final prices and discounts
      *
      * @param request The request containing cart items and customer information
      * @return A response containing the calculated discounts and final prices
-     * @throws PromotionApplicationException if the calculation fails
+     * @throws PromotionApplicationException if the calculation fails or the request is invalid
      */
     @Transactional(readOnly = true)
     public ApplyPromotionResponse calculatePromotions(ApplyPromotionRequest request) {
@@ -60,9 +82,15 @@ public class PromotionApplicationService {
 
     /**
      * Gets all active promotions that could potentially apply to a cart.
+     * This method filters promotions based on:
+     * - Time validity (start/end dates)
+     * - Customer eligibility
+     * - Product eligibility
+     * - Usage limits
      *
      * @param request The cart request to check promotions for
      * @return List of eligible promotions
+     * @throws PromotionApplicationException if the promotion retrieval fails
      */
     @Transactional(readOnly = true)
     public List<PromotionDTO> getEligiblePromotions(ApplyPromotionRequest request) {
@@ -82,10 +110,17 @@ public class PromotionApplicationService {
 
     /**
      * Validates if a specific promotion code can be applied to the cart.
+     * This method checks:
+     * - Promotion existence
+     * - Time validity
+     * - Customer eligibility
+     * - Product eligibility
+     * - Usage limits
      *
      * @param request The cart request
      * @param promotionCode The promotion code to validate
      * @return True if the promotion can be applied
+     * @throws PromotionApplicationException if the validation fails
      */
     @Transactional(readOnly = true)
     public boolean validatePromotionCode(ApplyPromotionRequest request, String promotionCode) {
@@ -111,10 +146,16 @@ public class PromotionApplicationService {
 
     /**
      * Gets a detailed breakdown of how a specific promotion would affect the cart.
+     * This method provides:
+     * - Original prices
+     * - Discount amounts
+     * - Final prices
+     * - Per-item breakdown
      *
      * @param request The cart request
      * @param promotionCode The promotion code to analyze
      * @return Detailed breakdown of the promotion's effects
+     * @throws PromotionApplicationException if the breakdown calculation fails
      */
     @Transactional(readOnly = true)
     public PromotionBreakdownDTO getPromotionBreakdown(ApplyPromotionRequest request, String promotionCode) {
