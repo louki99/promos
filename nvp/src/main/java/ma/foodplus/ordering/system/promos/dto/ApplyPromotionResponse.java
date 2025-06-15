@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ApplyPromotionResponse {
-    private BigDecimal originalTotal;
-    private BigDecimal discountTotal;
-    private BigDecimal finalTotal;
-    private List<LineItemResultDto> lineItems;
-    private List<FreeItemDto> freeItems;
-    private List<AppliedPromotion> appliedPromotions;
-    private Map<String, BigDecimal> promotionDiscounts;
+    private final BigDecimal originalTotal;
+    private final BigDecimal discountTotal;
+    private final BigDecimal finalTotal;
+    private final List<LineItemResultDto> lineItems;
+    private final List<FreeItemDto> freeItems;
+    private final List<AppliedPromotion> appliedPromotions;
+    private final Map<String, BigDecimal> promotionDiscounts;
 
     // Private constructor for the builder
     private ApplyPromotionResponse(Builder builder) {
@@ -26,7 +26,30 @@ public class ApplyPromotionResponse {
         this.promotionDiscounts = builder.promotionDiscounts;
     }
 
-    // Getters...
+    public BigDecimal getOriginalTotal() {
+        return originalTotal;
+    }
+
+    public BigDecimal getDiscountTotal() {
+        return discountTotal;
+    }
+
+    public BigDecimal getFinalTotal() {
+        return finalTotal;
+    }
+
+    public List<LineItemResultDto> getLineItems() {
+        return lineItems;
+    }
+
+    public List<FreeItemDto> getFreeItems() {
+        return freeItems;
+    }
+
+    public List<AppliedPromotion> getAppliedPromotions() {
+        return appliedPromotions;
+    }
+
     public Map<String, BigDecimal> getPromotionDiscounts() {
         return promotionDiscounts;
     }

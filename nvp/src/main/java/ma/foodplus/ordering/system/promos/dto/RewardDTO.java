@@ -18,7 +18,7 @@ public class RewardDTO {
     private Integer id;
 
     @NotBlank(message = "Reward type is required")
-    private String rewardType;
+    private String type;
 
     @NotNull(message = "Value is required")
     @Positive(message = "Value must be positive")
@@ -27,11 +27,10 @@ public class RewardDTO {
     @NotBlank(message = "Description is required")
     private String description;
 
-    private String productId;
-    private String categoryId;
-    private String familyCode;
-    private Integer quantity;
-    private Boolean isPercentage;
+    private String targetEntityId;
+    private String targetEntityType;
+    private BigDecimal discountAmount;
+    private BigDecimal discountPercentage;
     private Boolean isActive;
     private Integer promotionId;
 } 

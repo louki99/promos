@@ -1,9 +1,11 @@
 package ma.foodplus.ordering.system.promos.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import java.util.List;
 
 @Data
+@Builder
 public class PromotionRuleDTO {
     private Integer id;
     private Integer promotionId;

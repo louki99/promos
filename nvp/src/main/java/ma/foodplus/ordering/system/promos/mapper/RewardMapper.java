@@ -7,17 +7,20 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE, uses = {})
 public interface RewardMapper {
     
-    @Mapping(target = "rewardType", source = "rewardType", qualifiedByName = "toRewardType")
+    @Mapping(target = "type", source = "type", qualifiedByName = "toRewardType")
+    @Mapping(target = "targetEntityType", source = "targetEntityType", qualifiedByName = "toTargetEntityType")
     Reward toEntity(RewardDTO dto);
 
-    @Mapping(target = "rewardType", source = "rewardType", qualifiedByName = "toRewardTypeString")
+    @Mapping(target = "type", source = "type", qualifiedByName = "toRewardTypeString")
+    @Mapping(target = "targetEntityType", source = "targetEntityType", qualifiedByName = "toTargetEntityTypeString")
     RewardDTO toDTO(Reward entity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "rewardType", source = "rewardType", qualifiedByName = "toRewardType")
+    @Mapping(target = "type", source = "type", qualifiedByName = "toRewardType")
+    @Mapping(target = "targetEntityType", source = "targetEntityType", qualifiedByName = "toTargetEntityType")
     void updateEntityFromDTO(RewardDTO dto, @MappingTarget Reward entity);
 
     @Named("toRewardType")
@@ -29,4 +32,14 @@ public interface RewardMapper {
     default String toRewardTypeString(Reward.RewardType type) {
         return type != null ? type.name() : null;
     }
-} 
+
+    @Named("toTargetEntityType")
+    default Reward.TargetEntityType toTargetEntityType(String type) {
+        return type != null ? Reward.TargetEntityType.valueOf(type) : null;
+    }
+
+    @Named("toTargetEntityTypeString")
+    default String toTargetEntityTypeString(Reward.TargetEntityType type) {
+        return type != null ? type.name() : null;
+    }
+}

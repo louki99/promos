@@ -5,27 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add mor column on order">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/foodplus-ordering.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/foodplus-ordering.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductManagementUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductManagementUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/product/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/controller/PromotionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/controller/PromotionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/ConditionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/ConditionDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/PromotionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/PromotionDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/ApplyPromotionResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/ApplyPromotionResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/PromotionRuleDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/PromotionRuleDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/PromotionTierDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/PromotionTierDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/mapper/ConditionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/mapper/ConditionMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Promotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Promotion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Reward.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/Reward.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/repository/PromotionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/repository/PromotionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/RewardApplicator.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/RewardApplicator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/impl/PromotionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/impl/PromotionServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/V1.0.0__create_base_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/V1.0.0__create_base_tables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/V1.0.4__add_performance_indexes.sql" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/V1.0.4__add_performance_indexes.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/data/V1.7.1__insert_dummy_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/data/V1.7.1__insert_dummy_data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/resources/db/migration/product/V1.3.4__create_product_audit_tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/RewardDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/dto/RewardDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/mapper/RewardMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/mapper/RewardMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/PromotionRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/model/PromotionRule.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +63,14 @@
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "Application.FoodPlusOrderingApplication.executor": "Run",
     "Application.ProductServiceApplication.executor": "Run",
+    "JUnit.PromotionApplicationServiceTest.calculatePromotions_InvalidRequest.executor": "Run",
+    "JUnit.PromotionApplicationServiceTest.calculatePromotions_Success.executor": "Run",
+    "JUnit.PromotionApplicationServiceTest.executor": "Run",
+    "JUnit.PromotionApplicationServiceTest.getEligiblePromotions_Success.executor": "Debug",
+    "JUnit.PromotionApplicationServiceTest.validatePromotionCode_Invalid.executor": "Run",
+    "JUnit.PromotionApplicationServiceTest.validatePromotionCode_Valid.executor": "Run",
+    "JUnit.PromotionCalculationServiceTest.executor": "Run",
+    "JUnit.RewardApplicatorTest.executor": "Run",
     "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
     "Maven.foodplus-ordering-system [clean].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -91,8 +88,11 @@
     "RunOnceActivity.ToggleCodyToolWindowAfterMigration": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "feature/build-product-ms",
+    "git-widget-placeholder": "develop",
     "last_opened_file_path": "/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/nvp/src/main/java/ma/foodplus/ordering/system/products",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
@@ -119,37 +119,92 @@
       <recent name="ma.foodplus.ordering.system.product.service.domain.ports.output.repository" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.FoodPlusOrderingApplication">
-    <configuration name="FoodPlusOrderingApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.FoodPlusOrderingApplication" />
+  <component name="RunManager" selected="JUnit.PromotionApplicationServiceTest">
+    <configuration name="PromotionApplicationServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="nvp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ma.foodplus.ordering.system.*" />
+          <option name="PATTERN" value="ma.foodplus.ordering.system.promos.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="ma.foodplus.ordering.system.promos.service" />
+      <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.promos.service.PromotionApplicationServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ProductServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.product.service.ProductServiceApplication" />
-      <module name="product-container" />
+    <configuration name="PromotionApplicationServiceTest.calculatePromotions_InvalidRequest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="nvp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ma.foodplus.ordering.system.product.service.*" />
+          <option name="PATTERN" value="ma.foodplus.ordering.system.promos.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="ma.foodplus.ordering.system.promos.service" />
+      <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.promos.service.PromotionApplicationServiceTest" />
+      <option name="METHOD_NAME" value="calculatePromotions_InvalidRequest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PromotionApplicationServiceTest.getEligiblePromotions_Success" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="nvp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ma.foodplus.ordering.system.promos.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ma.foodplus.ordering.system.promos.service" />
+      <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.promos.service.PromotionApplicationServiceTest" />
+      <option name="METHOD_NAME" value="getEligiblePromotions_Success" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PromotionApplicationServiceTest.validatePromotionCode_Valid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="nvp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ma.foodplus.ordering.system.promos.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ma.foodplus.ordering.system.promos.service" />
+      <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.promos.service.PromotionApplicationServiceTest" />
+      <option name="METHOD_NAME" value="validatePromotionCode_Valid" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PromotionCalculationServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="nvp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ma.foodplus.ordering.system.promos.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ma.foodplus.ordering.system.promos.service" />
+      <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.promos.service.PromotionCalculationServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.FoodPlusOrderingApplication" />
-        <item itemvalue="Application.ProductServiceApplication" />
+        <item itemvalue="JUnit.PromotionApplicationServiceTest" />
+        <item itemvalue="JUnit.PromotionApplicationServiceTest.validatePromotionCode_Valid" />
+        <item itemvalue="JUnit.PromotionCalculationServiceTest" />
+        <item itemvalue="JUnit.PromotionApplicationServiceTest.getEligiblePromotions_Success" />
+        <item itemvalue="JUnit.PromotionApplicationServiceTest.calculatePromotions_InvalidRequest" />
       </list>
     </recent_temporary>
   </component>
@@ -355,6 +410,26 @@
           <url>file://$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/service/impl/OrderServiceImpl.java</url>
           <line>85</line>
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationService.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/nvp/src/test/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationServiceTest.java</url>
+          <line>105</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/nvp/src/test/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationServiceTest.java</url>
+          <line>101</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/promos/service/PromotionApplicationService.java</url>
+          <line>97</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

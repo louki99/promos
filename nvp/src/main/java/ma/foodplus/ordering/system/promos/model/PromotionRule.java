@@ -51,7 +51,7 @@ public class PromotionRule {
     private Integer repetition; // Répétition
 
     // Enums for clarity
-    public enum ConditionLogic { ALL, ANY }
+    public enum ConditionLogic { ALL, ANY,AND }
     public enum CalculationMethod { BRACKET, CUMULATIVE }
     public enum BreakpointType { AMOUNT, QUANTITY, SKU_POINTS }
     public enum BreakpointCalculationBasis {
