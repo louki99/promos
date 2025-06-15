@@ -7,6 +7,8 @@ import ma.foodplus.ordering.system.product.dto.response.ProductResponse;
 import ma.foodplus.ordering.system.product.dto.update.UpdateProductCommand;
 
 import java.util.List;
+import java.util.Map;
+import java.math.BigDecimal;
 
 public interface ProductManagementUseCase{
     ProductId createProduct(CreateProductCommand command);
@@ -26,4 +28,18 @@ public interface ProductManagementUseCase{
     List<String>  getProductCategory(String entityId);
 
     double getProductPrice(String entityId);
+
+    /**
+     * Get the product family code for a given product ID
+     * @param productId the ID of the product
+     * @return the product family code
+     */
+    String getProductFamily(Long productId);
+
+    /**
+     * Get the prices for a map of product IDs and quantities
+     * @param basketItems map of product IDs to quantities
+     * @return map of product IDs to their prices
+     */
+    Map<Long, BigDecimal> getProductPrices(Map<Long, Integer> basketItems);
 }

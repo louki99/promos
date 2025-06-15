@@ -118,7 +118,7 @@ public class RewardApplicator {
         BigDecimal totalDiscount = BigDecimal.ZERO;
 
         switch (reward.getRewardType()) {
-            case PERCENT_DISCOUNT_ON_ITEM:
+            case DISCOUNT_PERCENTAGE:
                 BigDecimal basePrice = itemsToReward.stream()
                         .map(OrderItemContext::getRemainingPrice)
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -126,7 +126,7 @@ public class RewardApplicator {
                 distributeDiscountProportionally(itemsToReward, totalDiscount);
                 break;
 
-            case FIXED_DISCOUNT_ON_CART:
+            case DISCOUNT_AMOUNT:
                 BigDecimal availablePrice = itemsToReward.stream()
                         .map(OrderItemContext::getRemainingPrice)
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -135,14 +135,14 @@ public class RewardApplicator {
                 break;
 
             case FREE_PRODUCT:
-                if (reward.getTargetEntityId() == null) {
-                    throw new IllegalArgumentException("Target entity ID is required for free product reward");
+                if (reward.getProductId() == null) {
+                    throw new IllegalArgumentException("Product ID is required for free product reward");
                 }
                 int quantity = rewardValue.intValue();
                 if (quantity <= 0) {
                     throw new IllegalArgumentException("Free product quantity must be greater than zero");
                 }
-                context.logFreeItem(Long.valueOf(reward.getTargetEntityId()), quantity, promotion.getPromoCode());
+                context.logFreeItem(Long.valueOf(reward.getProductId()), quantity, promotion.getPromoCode());
                 break;
 
             default:
@@ -190,7 +190,7 @@ public class RewardApplicator {
 
         BigDecimal totalDiscountForSlice = BigDecimal.ZERO;
 
-        if (reward.getRewardType() == Reward.RewardType.PERCENT_DISCOUNT_ON_ITEM) {
+        if (reward.getRewardType() == Reward.RewardType.DISCOUNT_PERCENTAGE) {
             if (breakpointType == PromotionRule.BreakpointType.AMOUNT) {
                 totalDiscountForSlice = valueSlice.multiply(reward.getValue().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP));
                 distributeDiscountProportionally(allEligibleItems, totalDiscountForSlice);

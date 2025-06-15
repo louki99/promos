@@ -1,0 +1,305 @@
+{
+    "info": {
+        "_postman_id": "b2c3d4e5-f6g7-8901-bcde-f12345678901",
+        "name": "FoodPlus Conditions API",
+        "description": "API collection for managing promotion conditions and rules in the FoodPlus ordering system.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Condition Management",
+            "description": "Endpoints for managing promotion conditions",
+            "item": [
+                {
+                    "name": "Create Cart Subtotal Condition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"conditionType\": \"CART_SUBTOTAL\",\n    \"operator\": \"GREATER_THAN_OR_EQUAL\",\n    \"value\": \"50.00\",\n    \"entityId\": null,\n    \"threshold\": 50.00,\n    \"logic\": \"AND\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions"]
+                        },
+                        "description": "Creates a new condition for cart subtotal"
+                    }
+                },
+                {
+                    "name": "Create Product in Cart Condition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"conditionType\": \"PRODUCT_IN_CART\",\n    \"operator\": \"EQUALS\",\n    \"value\": \"1\",\n    \"entityId\": \"101\",\n    \"threshold\": 1,\n    \"logic\": \"AND\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions"]
+                        },
+                        "description": "Creates a new condition for product in cart"
+                    }
+                },
+                {
+                    "name": "Create Customer Group Condition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"conditionType\": \"CUSTOMER_GROUP\",\n    \"operator\": \"EQUALS\",\n    \"value\": \"VIP\",\n    \"entityId\": \"VIP_GROUP\",\n    \"threshold\": null,\n    \"logic\": \"AND\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions"]
+                        },
+                        "description": "Creates a new condition for customer group"
+                    }
+                },
+                {
+                    "name": "Create Time of Day Condition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"conditionType\": \"TIME_OF_DAY\",\n    \"operator\": \"GREATER_THAN\",\n    \"value\": \"14:00:00\",\n    \"entityId\": null,\n    \"threshold\": null,\n    \"logic\": \"AND\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions"]
+                        },
+                        "description": "Creates a new condition for time of day"
+                    }
+                },
+                {
+                    "name": "Create Day of Week Condition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"conditionType\": \"DAY_OF_WEEK\",\n    \"operator\": \"EQUALS\",\n    \"value\": \"1\",\n    \"entityId\": null,\n    \"threshold\": null,\n    \"logic\": \"AND\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions"]
+                        },
+                        "description": "Creates a new condition for day of week (1 = Monday)"
+                    }
+                },
+                {
+                    "name": "Create Customer Loyalty Level Condition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"conditionType\": \"CUSTOMER_LOYALTY_LEVEL\",\n    \"operator\": \"GREATER_THAN_OR_EQUAL\",\n    \"value\": \"3\",\n    \"entityId\": null,\n    \"threshold\": 3,\n    \"logic\": \"AND\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions"]
+                        },
+                        "description": "Creates a new condition for customer loyalty level"
+                    }
+                },
+                {
+                    "name": "Create Payment Method Condition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"conditionType\": \"PAYMENT_METHOD\",\n    \"operator\": \"EQUALS\",\n    \"value\": \"CREDIT_CARD\",\n    \"entityId\": null,\n    \"threshold\": null,\n    \"logic\": \"AND\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions"]
+                        },
+                        "description": "Creates a new condition for payment method"
+                    }
+                },
+                {
+                    "name": "Update Condition",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"id\": 1,\n    \"conditionType\": \"CART_SUBTOTAL\",\n    \"operator\": \"GREATER_THAN_OR_EQUAL\",\n    \"value\": \"75.00\",\n    \"entityId\": null,\n    \"threshold\": 75.00,\n    \"logic\": \"AND\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions", "1"]
+                        },
+                        "description": "Updates an existing condition"
+                    }
+                },
+                {
+                    "name": "Delete Condition",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions", "1"]
+                        },
+                        "description": "Deletes a condition"
+                    }
+                },
+                {
+                    "name": "Get Condition by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions", "1"]
+                        },
+                        "description": "Retrieves a specific condition by its ID"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Rule Conditions",
+            "description": "Endpoints for managing conditions within rules",
+            "item": [
+                {
+                    "name": "Get Conditions by Rule ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions/rule/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions", "rule", "1"]
+                        },
+                        "description": "Retrieves all conditions for a specific rule"
+                    }
+                },
+                {
+                    "name": "Add Condition to Rule",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"conditionType\": \"PRODUCT_IN_CART\",\n    \"operator\": \"EQUALS\",\n    \"value\": \"1\",\n    \"entityId\": \"101\",\n    \"threshold\": 1,\n    \"logic\": \"AND\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions/rule/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions", "rule", "1"]
+                        },
+                        "description": "Adds a new condition to a rule"
+                    }
+                },
+                {
+                    "name": "Remove Condition from Rule",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions/rule/1/condition/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions", "rule", "1", "condition", "1"]
+                        },
+                        "description": "Removes a condition from a rule"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Condition Metadata",
+            "description": "Endpoints for retrieving condition types and operators",
+            "item": [
+                {
+                    "name": "Get Condition Types",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions/types",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions", "types"]
+                        },
+                        "description": "Retrieves all available condition types"
+                    }
+                },
+                {
+                    "name": "Get Operators",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/conditions/operators",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "conditions", "operators"]
+                        },
+                        "description": "Retrieves all available operators"
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8080",
+            "type": "string"
+        }
+    ]
+} 

@@ -1,0 +1,353 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "FoodPlus Promotions API",
+		"description": "API collection for managing promotions, rules, and customer families in the FoodPlus ordering system.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Promotion Management",
+			"description": "Endpoints for managing promotions",
+			"item": [
+				{
+					"name": "Create Promotion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Summer Sale 2024\",\n    \"description\": \"20% off on all summer items\",\n    \"promoCode\": \"SUMMER20\",\n    \"startDate\": \"2024-06-01T00:00:00Z\",\n    \"endDate\": \"2024-08-31T23:59:59Z\",\n    \"priority\": 1,\n    \"isExclusive\": false,\n    \"combinabilityGroup\": \"SUMMER\",\n    \"minPurchaseAmount\": 50.00,\n    \"customerGroup\": \"ALL\",\n    \"maxUsagePerCustomer\": 3,\n    \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions"]
+						},
+						"description": "Creates a new promotion with specified rules and conditions"
+					}
+				},
+				{
+					"name": "Get All Promotions",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions"]
+						},
+						"description": "Retrieves all promotions in the system"
+					}
+				},
+				{
+					"name": "Get Promotion by ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1"]
+						},
+						"description": "Retrieves a specific promotion by its ID"
+					}
+				},
+				{
+					"name": "Get Promotion by Code",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/code/SUMMER20",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "code", "SUMMER20"]
+						},
+						"description": "Retrieves a specific promotion by its code"
+					}
+				},
+				{
+					"name": "Update Promotion",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Summer Sale 2024 Extended\",\n    \"description\": \"20% off on all summer items - Extended period\",\n    \"endDate\": \"2024-09-30T23:59:59Z\",\n    \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1"]
+						},
+						"description": "Updates an existing promotion"
+					}
+				},
+				{
+					"name": "Delete Promotion",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1"]
+						},
+						"description": "Deletes a promotion"
+					}
+				}
+			]
+		},
+		{
+			"name": "Promotion Rules",
+			"description": "Endpoints for managing promotion rules",
+			"item": [
+				{
+					"name": "Add Rule to Promotion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Summer Items Rule\",\n    \"breakpointType\": \"AMOUNT\",\n    \"calculationMethod\": \"BRACKET\",\n    \"conditionLogic\": \"ALL\",\n    \"conditions\": [\n        {\n            \"conditionType\": \"CART_SUBTOTAL\",\n            \"operator\": \"GREATER_THAN_OR_EQUAL\",\n            \"value\": \"50.00\"\n        }\n    ],\n    \"tiers\": [\n        {\n            \"minimumThreshold\": 50.00,\n            \"reward\": {\n                \"rewardType\": \"PERCENT_DISCOUNT_ON_ITEM\",\n                \"value\": 20.00,\n                \"isPercentage\": true,\n                \"description\": \"20% off on qualifying items\"\n            }\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1/rules",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1", "rules"]
+						},
+						"description": "Adds a new rule to a promotion"
+					}
+				},
+				{
+					"name": "Get Promotion Rules",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1/rules",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1", "rules"]
+						},
+						"description": "Retrieves all rules for a specific promotion"
+					}
+				},
+				{
+					"name": "Remove Rule from Promotion",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1/rules/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1", "rules", "1"]
+						},
+						"description": "Removes a rule from a promotion"
+					}
+				}
+			]
+		},
+		{
+			"name": "Promotion Application",
+			"description": "Endpoints for applying and validating promotions",
+			"item": [
+				{
+					"name": "Apply Promotions",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerId\": 123,\n    \"orderItems\": [\n        {\n            \"productId\": 101,\n            \"quantity\": 2,\n            \"unitPrice\": 50.00\n        },\n        {\n            \"productId\": 102,\n            \"quantity\": 1,\n            \"unitPrice\": 75.00\n        }\n    ],\n    \"promoCode\": \"SUMMER20\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/apply",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "apply"]
+						},
+						"description": "Applies promotions to a cart/order"
+					}
+				},
+				{
+					"name": "Get Eligible Promotions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerId\": 123,\n    \"orderItems\": [\n        {\n            \"productId\": 101,\n            \"quantity\": 2,\n            \"unitPrice\": 50.00\n        },\n        {\n            \"productId\": 102,\n            \"quantity\": 1,\n            \"unitPrice\": 75.00\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/eligible",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "eligible"]
+						},
+						"description": "Gets all eligible promotions for a cart"
+					}
+				},
+				{
+					"name": "Validate Promotion Code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerId\": 123,\n    \"orderItems\": [\n        {\n            \"productId\": 101,\n            \"quantity\": 2,\n            \"unitPrice\": 50.00\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/validate/SUMMER20",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "validate", "SUMMER20"]
+						},
+						"description": "Validates if a promotion code can be applied"
+					}
+				},
+				{
+					"name": "Get Promotion Breakdown",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerId\": 123,\n    \"orderItems\": [\n        {\n            \"productId\": 101,\n            \"quantity\": 2,\n            \"unitPrice\": 50.00\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/breakdown/SUMMER20",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "breakdown", "SUMMER20"]
+						},
+						"description": "Gets a detailed breakdown of how a promotion would affect the cart"
+					}
+				}
+			]
+		},
+		{
+			"name": "Promotion Points",
+			"description": "Endpoints for managing promotion points",
+			"item": [
+				{
+					"name": "Get Product Points",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1/points",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1", "points"]
+						},
+						"description": "Gets points for products in a promotion"
+					}
+				},
+				{
+					"name": "Calculate Points",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"101\": 2,\n    \"102\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1/points/calculate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1", "points", "calculate"]
+						},
+						"description": "Calculates total points for products in a basket"
+					}
+				}
+			]
+		},
+		{
+			"name": "Customer Families",
+			"description": "Endpoints for managing promotion customer families",
+			"item": [
+				{
+					"name": "Add Customer Family",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerFamilyCode\": \"VIP\",\n    \"startDate\": \"2024-06-01T00:00:00Z\",\n    \"endDate\": \"2024-12-31T23:59:59Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1/customer-families",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1", "customer-families"]
+						},
+						"description": "Adds a customer family to a promotion"
+					}
+				},
+				{
+					"name": "Get Customer Families",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1/customer-families",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1", "customer-families"]
+						},
+						"description": "Gets all customer families for a promotion"
+					}
+				},
+				{
+					"name": "Delete Customer Family",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/1/customer-families/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "1", "customer-families", "1"]
+						},
+						"description": "Removes a customer family from a promotion"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+} 

@@ -1,0 +1,338 @@
+{
+  "info": {
+    "name": "Promotion API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Promotion Management",
+      "item": [
+        {
+          "name": "Create Percentage Discount Promotion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promotions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promotions"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "promoCode": "SUMMER2024",
+                "name": "Summer Sale 2024",
+                "description": "Summer promotion with 20% off",
+                "startDate": "2024-06-01T00:00:00Z",
+                "endDate": "2024-08-31T23:59:59Z",
+                "priority": 1,
+                "exclusive": true,
+                "combinabilityGroup": "SUMMER",
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "conditionType": "MINIMUM_AMOUNT",
+                        "threshold": 100.00,
+                        "logic": "AND"
+                      },
+                      {
+                        "conditionType": "CUSTOMER_GROUP",
+                        "entityId": "CUST001",
+                        "threshold": "VIP_CUSTOMERS",
+                        "logic": "AND"
+                      }
+                    ],
+                    "calculationMethod": "BRACKET",
+                    "breakpointType": "AMOUNT",
+                    "tiers": [
+                      {
+                        "minimumThreshold": 100.00,
+                        "discountAmount": 20.00
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Fixed Amount Promotion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promotions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promotions"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "promoCode": "WELCOME10",
+                "name": "Welcome Discount",
+                "description": "Get $10 off your first order",
+                "startDate": "2024-01-01T00:00:00Z",
+                "endDate": "2024-12-31T23:59:59Z",
+                "priority": 2,
+                "exclusive": false,
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "conditionType": "MINIMUM_AMOUNT",
+                        "threshold": 50.00,
+                        "logic": "AND"
+                      }
+                    ],
+                    "calculationMethod": "FIXED",
+                    "breakpointType": "AMOUNT",
+                    "tiers": [
+                      {
+                        "minimumThreshold": 50.00,
+                        "discountAmount": 10.00
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Product Family Promotion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promotions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promotions"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "promoCode": "BEVERAGE20",
+                "name": "Beverage Discount",
+                "description": "20% off all beverages",
+                "startDate": "2024-01-01T00:00:00Z",
+                "endDate": "2024-12-31T23:59:59Z",
+                "priority": 3,
+                "exclusive": false,
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "conditionType": "CATEGORY_IN_CART",
+                        "entityId": "BEVERAGES",
+                        "logic": "AND"
+                      }
+                    ],
+                    "calculationMethod": "PERCENTAGE",
+                    "breakpointType": "AMOUNT",
+                    "tiers": [
+                      {
+                        "minimumThreshold": 0.00,
+                        "discountAmount": 20.00
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Promotion Application",
+      "item": [
+        {
+          "name": "Apply Single Promotion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promotions/apply",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promotions", "apply"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "customerId": 1,
+                "orderItems": [
+                  {
+                    "productId": 1,
+                    "quantity": 2,
+                    "unitPrice": 50.00
+                  },
+                  {
+                    "productId": 2,
+                    "quantity": 1,
+                    "unitPrice": 30.00
+                  }
+                ],
+                "promoCode": "SUMMER2024"
+              }
+            }
+          }
+        },
+        {
+          "name": "Apply Multiple Promotions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promotions/apply",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promotions", "apply"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "customerId": 1,
+                "orderItems": [
+                  {
+                    "productId": 1,
+                    "quantity": 2,
+                    "unitPrice": 50.00
+                  },
+                  {
+                    "productId": 2,
+                    "quantity": 1,
+                    "unitPrice": 30.00
+                  }
+                ],
+                "promoCode": "WELCOME10"
+              }
+            }
+          }
+        },
+        {
+          "name": "Apply Family-Based Promotion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promotions/apply",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promotions", "apply"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "customerId": 1,
+                "orderItems": [
+                  {
+                    "productId": 3,
+                    "quantity": 3,
+                    "unitPrice": 15.00
+                  }
+                ],
+                "promoCode": "BEVERAGE20"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Promotion Queries",
+      "item": [
+        {
+          "name": "Get Eligible Promotions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promotions/eligible",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promotions", "eligible"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "customerId": 1,
+                "orderItems": [
+                  {
+                    "productId": 1,
+                    "quantity": 2,
+                    "unitPrice": 50.00
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Promotion Breakdown",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promotions/breakdown",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promotions", "breakdown"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "customerId": 1,
+                "orderItems": [
+                  {
+                    "productId": 1,
+                    "quantity": 2,
+                    "unitPrice": 50.00
+                  }
+                ],
+                "promoCode": "SUMMER2024"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+} 

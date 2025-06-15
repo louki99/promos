@@ -16,7 +16,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
     /**
      * Finds all active promotions at the given time, sorted by priority.
      */
-    @Query("SELECT p FROM Promotion p WHERE p.startDate <= :now AND (p.endDate IS NULL OR p.endDate > :now) ORDER BY p.priority DESC")
+    @Query("SELECT p FROM Promotion p WHERE p.isActive = true AND p.startDate <= :now AND p.endDate >= :now")
     List<Promotion> findActivePromotions(@Param("now") ZonedDateTime now);
 
     /**
@@ -31,4 +31,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
            "AND (p.customerGroup IS NULL OR p.customerGroup = :customerGroup) " +
            "ORDER BY p.priority DESC")
     List<Promotion> findActivePromotionsForCustomer(@Param("now") ZonedDateTime now, @Param("customerGroup") String customerGroup);
+
+    @Query("SELECT p FROM Promotion p WHERE p.parentPromotionId = :parentId")
+    List<Promotion> findByParentPromotionId(@Param("parentId") Integer parentId);
 }

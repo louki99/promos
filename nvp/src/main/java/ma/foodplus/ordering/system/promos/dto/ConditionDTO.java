@@ -1,50 +1,32 @@
 package ma.foodplus.ordering.system.promos.dto;
 
+import lombok.Data;
+import java.math.BigDecimal;
+
+@Data
 public class ConditionDTO {
     private Integer id;
-    private String attribute;
+    private ConditionType conditionType;
+    private ConditionLogic logic;
+    private String entityId;
+    private BigDecimal threshold;
     private String operator;
-    private String value;
-    private String type;
 
-    // Getters and Setters
-    public Integer getId() {
-        return id;
+    public enum ConditionType {
+        CART_SUBTOTAL,
+        MINIMUM_AMOUNT,
+        MINIMUM_QUANTITY,
+        PRODUCT_IN_CART,
+        CATEGORY_IN_CART,
+        CUSTOMER_GROUP,
+        TIME_OF_DAY,
+        DAY_OF_WEEK,
+        CUSTOMER_LOYALTY_LEVEL,
+        PAYMENT_METHOD
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getAttribute() {
-        return attribute;
-    }
-
-    public void setAttribute(String attribute) {
-        this.attribute = attribute;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public enum ConditionLogic {
+        AND,
+        OR
     }
 } 

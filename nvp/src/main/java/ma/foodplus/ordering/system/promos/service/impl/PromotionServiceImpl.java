@@ -1,5 +1,6 @@
 package ma.foodplus.ordering.system.promos.service.impl;
 
+import ma.foodplus.ordering.system.product.service.ProductService;
 import ma.foodplus.ordering.system.promos.dto.PromotionDTO;
 import ma.foodplus.ordering.system.promos.dto.PromotionRuleDTO;
 import ma.foodplus.ordering.system.promos.dto.PromotionLineDTO;
@@ -35,6 +36,9 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Autowired
     private PromotionRuleMapper ruleMapper;
+
+    @Autowired
+    private ProductService productService;
 
     @Override
     public PromotionDTO createPromotion(PromotionDTO promotionDTO) {
@@ -344,5 +348,119 @@ public class PromotionServiceImpl implements PromotionService {
             dtos.add(dto);
         }
         return dtos;
+    }
+
+    @Override
+    public List<PromotionDTO> findEligiblePromotions(Long customerId, Map<Long, Integer> basketItems) {
+        List<Promotion> promotions = promotionRepository.findActivePromotions(ZonedDateTime.now());
+        return promotions.stream()
+            .filter(promo -> isEligibleForCustomer(promo, customerId))
+            .filter(promo -> isEligibleForBasket(promo, basketItems))
+            .map(promotionMapper::toDTO)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean validatePromoCode(String promoCode, Long customerId, Map<Long, Integer> basketItems) {
+        Promotion promotion = promotionRepository.findByPromoCode(promoCode)
+            .orElse(null);
+            
+        if (promotion == null || !promotion.isActive(ZonedDateTime.now())) {
+            return false;
+        }
+
+        return isEligibleForCustomer(promotion, customerId) && 
+               isEligibleForBasket(promotion, basketItems);
+    }
+
+    @Override
+    public List<PromotionDTO> findByParentPromotionId(Integer parentId) {
+        return promotionRepository.findByParentPromotionId(parentId)
+            .stream()
+            .map(promotionMapper::toDTO)
+            .collect(Collectors.toList());
+    }
+
+    private boolean isEligibleForCustomer(Promotion promotion, Long customerId) {
+        // التحقق من مجموعة العملاء
+        if (promotion.getCustomerGroup() != null) {
+            // التحقق من عائلة العملاء
+            if (promotion.getCustomerFamilies() != null && !promotion.getCustomerFamilies().isEmpty()) {
+                boolean isInCustomerFamily = promotion.getCustomerFamilies().stream()
+                    .anyMatch(family -> {
+                        ZonedDateTime now = ZonedDateTime.now();
+                        return family.getCustomerFamilyCode() != null &&
+                               family.getStartDate() != null &&
+                               family.getEndDate() != null &&
+                               now.isAfter(family.getStartDate()) &&
+                               now.isBefore(family.getEndDate());
+                    });
+                if (!isInCustomerFamily) {
+                    return false;
+                }
+            }
+
+            // التحقق من مجموعة العملاء العامة
+            if (promotion.getCustomerGroup() != null) {
+                // TODO: تنفيذ التحقق من مجموعة العملاء من خدمة العملاء
+                return false;
+            }
+        }
+
+        // التحقق من عدد مرات الاستخدام
+        if (promotion.getMaxUsagePerCustomer() != null) {
+            int usageCount = promotion.getCustomerUsageCount(customerId);
+            if (usageCount >= promotion.getMaxUsagePerCustomer()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isEligibleForBasket(Promotion promotion, Map<Long, Integer> basketItems) {
+        // Vérifiez l'achat minimum
+        if (promotion.getMinPurchaseAmount() != null) {
+            BigDecimal basketTotal = calculateBasketTotal(basketItems);
+            if (basketTotal.compareTo(promotion.getMinPurchaseAmount()) < 0) {
+                return false;
+            }
+        }
+
+        // Vérifiez la quantité minimale
+        if (promotion.getExcludedProductIds() != null) {
+            for (Long productId : basketItems.keySet()) {
+                if (promotion.getExcludedProductIds().contains(productId)) {
+                    return false;
+                }
+            }
+        }
+
+        // Vérifiez les catégories exclues
+        if (promotion.getExcludedCategoryIds() != null) {
+            for (Long productId : basketItems.keySet()) {
+                String productFamily = productService.getProductFamily(productId);
+                if (productFamily != null && promotion.getExcludedCategoryIds().contains(Long.parseLong(productFamily))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private BigDecimal calculateBasketTotal(Map<Long, Integer> basketItems) {
+        Map<Long, BigDecimal> productPrices = productService.getProductPrices(basketItems);
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (Map.Entry<Long, Integer> entry : basketItems.entrySet()) {
+            Long productId = entry.getKey();
+            Integer quantity = entry.getValue();
+            BigDecimal price = productPrices.getOrDefault(productId, BigDecimal.ZERO);
+            
+            total = total.add(price.multiply(BigDecimal.valueOf(quantity)));
+        }
+
+        return total;
     }
 } 

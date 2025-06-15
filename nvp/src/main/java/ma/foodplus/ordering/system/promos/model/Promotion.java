@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.time.LocalTime;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "promotions")
@@ -28,11 +31,11 @@ public class Promotion {
     private String description;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(name = "start_date", nullable = false)
     private ZonedDateTime startDate;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(name = "end_date", nullable = false)
     private ZonedDateTime endDate;
 
     @Column(name = "customer_group")
@@ -102,6 +105,34 @@ public class Promotion {
 
     @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PromotionLine> promotionLines;
+
+    @Column(name = "is_nested_promotion")
+    private boolean isNestedPromotion;
+
+    @Column(name = "parent_promotion_id")
+    private Long parentPromotionId;
+
+    @Column(name = "nested_level")
+    private Integer nestedLevel;
+
+    @ElementCollection
+    @CollectionTable(name = "promotion_product_points", 
+        joinColumns = @JoinColumn(name = "promotion_id"))
+    @MapKeyColumn(name = "product_id")
+    @Column(name = "points")
+    private Map<Long, Integer> productPoints;
+
+    @Column(name = "time_restricted")
+    private boolean timeRestricted;
+
+    @Column(name = "start_time")
+    private String startTime; // Format: "HH:mm"
+
+    @Column(name = "end_time")
+    private String endTime; // Format: "HH:mm"
+
+    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Reward> rewards = new HashSet<>();
 
     // Constructors
     public Promotion() {
@@ -357,6 +388,82 @@ public class Promotion {
 
     public void setCustomerGroup(String customerGroup) {
         this.customerGroup = customerGroup;
+    }
+
+    public boolean isNestedPromotion() {
+        return isNestedPromotion;
+    }
+
+    public void setNestedPromotion(boolean nestedPromotion) {
+        isNestedPromotion = nestedPromotion;
+    }
+
+    public Long getParentPromotionId() {
+        return parentPromotionId;
+    }
+
+    public void setParentPromotionId(Long parentPromotionId) {
+        this.parentPromotionId = parentPromotionId;
+    }
+
+    public Integer getNestedLevel() {
+        return nestedLevel;
+    }
+
+    public void setNestedLevel(Integer nestedLevel) {
+        this.nestedLevel = nestedLevel;
+    }
+
+    public Map<Long, Integer> getProductPoints() {
+        return productPoints;
+    }
+
+    public void setProductPoints(Map<Long, Integer> productPoints) {
+        this.productPoints = productPoints;
+    }
+
+    public boolean isTimeRestricted() {
+        return timeRestricted;
+    }
+
+    public void setTimeRestricted(boolean timeRestricted) {
+        this.timeRestricted = timeRestricted;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public boolean isWithinTimeRestriction() {
+        if (!timeRestricted || startTime == null || endTime == null) {
+            return true;
+        }
+        
+        LocalTime now = LocalTime.now();
+        LocalTime start = LocalTime.parse(startTime);
+        LocalTime end = LocalTime.parse(endTime);
+        
+        return !now.isBefore(start) && !now.isAfter(end);
+    }
+
+    public Set<Reward> getRewards() {
+        return rewards;
+    }
+
+    public void setRewards(Set<Reward> rewards) {
+        this.rewards = rewards;
     }
 
     @Override

@@ -1,0 +1,275 @@
+{
+  "info": {
+    "name": "PromoFamily API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "PromoFamily Management",
+      "item": [
+        {
+          "name": "Create Client Promo Family",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"VIP_CUSTOMERS\",\n    \"name\": \"VIP Customers\",\n    \"description\": \"Family for VIP customers with special privileges\",\n    \"type\": \"CLIENT\",\n    \"memberCodes\": [\"CUST001\", \"CUST002\"],\n    \"isActive\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Product Promo Family",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"BEVERAGES\",\n    \"name\": \"Beverages Family\",\n    \"description\": \"Family for beverage products including soft drinks, juices, and water\",\n    \"type\": \"PRODUCT\",\n    \"memberCodes\": [\"PROD001\", \"PROD002\", \"PROD003\"],\n    \"isActive\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Category Promo Family",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"FAST_FOOD\",\n    \"name\": \"Fast Food Category\",\n    \"description\": \"Family for fast food products including burgers, sandwiches, and fries\",\n    \"type\": \"CATEGORY\",\n    \"memberCodes\": [\"CAT001\", \"CAT002\"],\n    \"isActive\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Invalid Promo Family (Short Code)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"A\",\n    \"name\": \"Invalid Family\",\n    \"description\": \"This should fail validation\",\n    \"type\": \"CLIENT\",\n    \"isActive\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Invalid Promo Family (Missing Type)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"INVALID_TYPE\",\n    \"name\": \"Invalid Type Family\",\n    \"description\": \"This should fail validation due to missing type\",\n    \"isActive\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Promo Family",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"VIP_CUSTOMERS\",\n    \"name\": \"Updated VIP Customers\",\n    \"description\": \"Updated description for VIP customers family\",\n    \"type\": \"CLIENT\",\n    \"isActive\": true\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Member Management",
+      "item": [
+        {
+          "name": "Add Members to Family",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families/1/members",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families", "1", "members"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\"CUST003\", \"CUST004\"]"
+            }
+          }
+        },
+        {
+          "name": "Remove Members from Family",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families/1/members",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families", "1", "members"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\"CUST003\"]"
+            }
+          }
+        },
+        {
+          "name": "Check Member in Family",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families/1/members/CUST001",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families", "1", "members", "CUST001"]
+            }
+          }
+        },
+        {
+          "name": "Get All Family Members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families/1/members",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families", "1", "members"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Family Queries",
+      "item": [
+        {
+          "name": "Get Promo Family by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Promo Family by Code",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families/code/VIP_CUSTOMERS",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families", "code", "VIP_CUSTOMERS"]
+            }
+          }
+        },
+        {
+          "name": "Get Families by Type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families/type/CLIENT",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families", "type", "CLIENT"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Families by Type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families/type/CLIENT/active",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families", "type", "CLIENT", "active"]
+            }
+          }
+        },
+        {
+          "name": "Get Families by Member",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/promo-families/member/CUST001",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "promo-families", "member", "CUST001"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+} 

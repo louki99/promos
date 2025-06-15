@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.math.BigDecimal;
+import java.util.Map;
+import java.util.HashMap;
 
 @Slf4j
 @Service
@@ -193,5 +195,29 @@ public class ProductService implements ProductManagementUseCase {
             throw new ProductNotFoundException("Product sale price not found for id: " + entityId);
         }
         return salePrice.doubleValue();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = CacheConstants.PRODUCT_CACHE, key = "'family:' + #productId")
+    public String getProductFamily(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
+        return product.getProductFamily() != null ? product.getProductFamily().getCode() : null;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = CacheConstants.PRODUCT_CACHE, key = "'prices:' + #basketItems.hashCode()")
+    public Map<Long, BigDecimal> getProductPrices(Map<Long, Integer> basketItems) {
+        Map<Long, BigDecimal> prices = new HashMap<>();
+        for (Long productId : basketItems.keySet()) {
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
+            if (product.getSalePrice() != null) {
+                prices.put(productId, product.getSalePrice());
+            }
+        }
+        return prices;
     }
 }

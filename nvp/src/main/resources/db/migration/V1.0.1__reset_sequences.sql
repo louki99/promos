@@ -1,0 +1,24 @@
+-- Reset sequence values for all tables that use IDENTITY/SEQUENCE
+SELECT setval('promotions_id_seq', COALESCE((SELECT MAX(id) FROM promotions), 1));
+SELECT setval('promo_families_id_seq', COALESCE((SELECT MAX(id) FROM promo_families), 1));
+SELECT setval('promo_family_members_id_seq', COALESCE((SELECT MAX(id) FROM promo_family_members), 1));
+SELECT setval('promotion_product_points_id_seq', COALESCE((SELECT MAX(id) FROM promotion_product_points), 1));
+SELECT setval('cat_tarif_id_seq', COALESCE((SELECT MAX(id) FROM cat_tarif), 1));
+SELECT setval('categories_id_seq', COALESCE((SELECT MAX(id) FROM categories), 1));
+SELECT setval('customer_groups_id_seq', COALESCE((SELECT MAX(id) FROM customer_groups), 1));
+SELECT setval('customers_id_seq', COALESCE((SELECT MAX(id) FROM customers), 1));
+SELECT setval('depots_id_seq', COALESCE((SELECT MAX(id) FROM depots), 1));
+SELECT setval('order_items_id_seq', COALESCE((SELECT MAX(id) FROM order_items), 1));
+SELECT setval('orders_id_seq', COALESCE((SELECT MAX(id) FROM orders), 1));
+SELECT setval('product_families_id_seq', COALESCE((SELECT MAX(id) FROM product_families), 1));
+SELECT setval('product_stocks_id_seq', COALESCE((SELECT MAX(id) FROM product_stocks), 1));
+SELECT setval('products_id_seq', COALESCE((SELECT MAX(id) FROM products), 1));
+SELECT setval('products_customer_id_seq', COALESCE((SELECT MAX(id) FROM products_customer), 1));
+SELECT setval('promotion_conditions_id_seq', COALESCE((SELECT MAX(id) FROM promotion_conditions), 1));
+SELECT setval('promotion_customer_families_id_seq', COALESCE((SELECT MAX(id) FROM promotion_customer_families), 1));
+SELECT setval('promotion_dynamic_conditions_id_seq', COALESCE((SELECT MAX(id) FROM promotion_dynamic_conditions), 1));
+SELECT setval('promotion_lines_id_seq', COALESCE((SELECT MAX(id) FROM promotion_lines), 1));
+SELECT setval('promotion_rules_id_seq', COALESCE((SELECT MAX(id) FROM promotion_rules), 1));
+SELECT setval('promotion_tiers_id_seq', COALESCE((SELECT MAX(id) FROM promotion_tiers), 1));
+SELECT setval('rewards_id_seq', COALESCE((SELECT MAX(id) FROM rewards), 1));
+SELECT setval('sites_id_seq', COALESCE((SELECT MAX(id) FROM sites), 1)); 

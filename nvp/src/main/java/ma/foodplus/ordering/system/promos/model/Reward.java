@@ -1,149 +1,69 @@
 package ma.foodplus.ordering.system.promos.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import java.math.BigDecimal;
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
+@Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "rewards")
 public class Reward {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RewardType rewardType;
 
-    @NotNull
-    @DecimalMin("0.0")
     @Column(nullable = false)
     private BigDecimal value;
 
-    private Long targetEntityId;
-    private String targetEntityType;
+    @Column(nullable = false)
+    private String description;
 
-    public enum RewardType { 
-        PERCENT_DISCOUNT_ON_ITEM, 
-        FIXED_DISCOUNT_ON_CART, 
-        FREE_PRODUCT 
+    private String productId;
+    private String categoryId;
+    private String familyCode;
+    private Integer quantity;
+    private Boolean isPercentage;
+    private Boolean isActive;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "promotion_id")
+    private Promotion promotion;
+
+    public enum RewardType {
+        DISCOUNT_PERCENTAGE,
+        DISCOUNT_AMOUNT,
+        FREE_PRODUCT,
+        FREE_SHIPPING,
+        LOYALTY_POINTS,
+        GIFT_CARD,
+        CASHBACK
     }
 
-    // Constructors
-    public Reward() {
-    }
-
-    public Reward(RewardType rewardType, BigDecimal value) {
-        this.rewardType = rewardType;
-        this.value = value;
-        validateValue();
-    }
-
-    public Reward(RewardType rewardType, BigDecimal value, Long targetEntityId, String targetEntityType) {
-        this.rewardType = rewardType;
-        this.value = value;
-        this.targetEntityId = targetEntityId;
-        this.targetEntityType = targetEntityType;
-        validateValue();
-    }
-
-    // Business Logic Methods
-    private void validateValue() {
+    public BigDecimal calculateDiscount(BigDecimal value) {
         if (value == null || value.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Reward value must be non-negative");
-        }
-        if (rewardType == RewardType.PERCENT_DISCOUNT_ON_ITEM && value.compareTo(new BigDecimal("100")) > 0) {
-            throw new IllegalArgumentException("Percentage discount cannot exceed 100%");
-        }
-    }
-
-    public BigDecimal calculateDiscount(BigDecimal originalPrice) {
-        if (originalPrice == null || originalPrice.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Original price must be non-negative");
+            throw new IllegalArgumentException("Value must be non-negative");
         }
 
         switch (rewardType) {
-            case PERCENT_DISCOUNT_ON_ITEM:
-                return originalPrice.multiply(value).divide(new BigDecimal("100"));
-            case FIXED_DISCOUNT_ON_CART:
-                return value.min(originalPrice);
+            case DISCOUNT_PERCENTAGE:
+                return value.multiply(this.value).divide(new BigDecimal("100"));
+            case DISCOUNT_AMOUNT:
+                return this.value.min(value);
             case FREE_PRODUCT:
-                return originalPrice;
+                return value;
             default:
                 return BigDecimal.ZERO;
         }
-    }
-
-    public boolean requiresTargetEntity() {
-        return rewardType == RewardType.PERCENT_DISCOUNT_ON_ITEM || 
-               rewardType == RewardType.FREE_PRODUCT;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public RewardType getRewardType() {
-        return rewardType;
-    }
-
-    public void setRewardType(RewardType rewardType) {
-        this.rewardType = rewardType;
-    }
-
-    public BigDecimal getValue() {
-        return value;
-    }
-
-    public void setValue(BigDecimal value) {
-        this.value = value;
-        validateValue();
-    }
-
-    public Long getTargetEntityId() {
-        return targetEntityId;
-    }
-
-    public void setTargetEntityId(Long targetEntityId) {
-        this.targetEntityId = targetEntityId;
-    }
-
-    public String getTargetEntityType() {
-        return targetEntityType;
-    }
-
-    public void setTargetEntityType(String targetEntityType) {
-        this.targetEntityType = targetEntityType;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Reward reward = (Reward) o;
-        return Objects.equals(id, reward.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Reward{" +
-                "id=" + id +
-                ", rewardType=" + rewardType +
-                ", value=" + value +
-                ", targetEntityId=" + targetEntityId +
-                '}';
     }
 }

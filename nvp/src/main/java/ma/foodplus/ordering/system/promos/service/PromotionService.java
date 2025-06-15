@@ -7,6 +7,9 @@ import ma.foodplus.ordering.system.promos.dto.PromotionCustomerFamilyDTO;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public interface PromotionService {
     
@@ -112,4 +115,13 @@ public interface PromotionService {
     PromotionCustomerFamilyDTO addPromotionCustomerFamily(Long promotionId, PromotionCustomerFamilyDTO familyDTO);
     void deletePromotionCustomerFamily(Long promotionId, Long familyId);
     List<PromotionCustomerFamilyDTO> getPromotionCustomerFamilies(Long promotionId);
+
+    List<PromotionDTO> findEligiblePromotions(Long customerId, Map<Long, Integer> basketItems);
+    boolean validatePromoCode(String promoCode, Long customerId, Map<Long, Integer> basketItems);
+    /**
+     * Find promotions by parent promotion ID
+     * @param parentId the parent promotion ID
+     * @return list of child promotions
+     */
+    List<PromotionDTO> findByParentPromotionId(Integer parentId);
 } 

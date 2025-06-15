@@ -1,0 +1,246 @@
+{
+	"info": {
+		"_postman_id": "promotion-system",
+		"name": "Promotion System",
+		"description": "Collection for testing the promotion system endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PromoFamily",
+			"item": [
+				{
+					"name": "Create Client Promo Family",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"VIP_CUSTOMERS\",\n    \"name\": \"VIP Customers\",\n    \"description\": \"Family for VIP customers with special privileges\",\n    \"type\": \"CLIENT\",\n    \"memberCodes\": [\"CUST001\", \"CUST002\"],\n    \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promo-families",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promo-families"]
+						}
+					}
+				},
+				{
+					"name": "Create Product Promo Family",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"BEVERAGES\",\n    \"name\": \"Beverages\",\n    \"description\": \"Family for beverage products\",\n    \"type\": \"PRODUCT\",\n    \"memberCodes\": [\"PROD001\", \"PROD002\"],\n    \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promo-families",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promo-families"]
+						}
+					}
+				},
+				{
+					"name": "Add Member to Family",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"memberCode\": \"CUST003\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promo-families/VIP_CUSTOMERS/members",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promo-families", "VIP_CUSTOMERS", "members"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Conditions",
+			"item": [
+				{
+					"name": "Create Minimum Amount Condition",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"conditionType\": \"MINIMUM_AMOUNT\",\n    \"operator\": \"GREATER_THAN_OR_EQUAL\",\n    \"threshold\": 100.00,\n    \"description\": \"Order total must be at least 100\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/conditions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "conditions"]
+						}
+					}
+				},
+				{
+					"name": "Create Product in Cart Condition",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"conditionType\": \"PRODUCT_IN_CART\",\n    \"operator\": \"EQUALS\",\n    \"entityId\": \"PROD001\",\n    \"description\": \"Product PROD001 must be in cart\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/conditions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "conditions"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Promotion Tiers",
+			"item": [
+				{
+					"name": "Create Tier with Percentage Discount",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"minimumThreshold\": 100.00,\n    \"reward\": {\n        \"rewardType\": \"DISCOUNT_PERCENTAGE\",\n        \"value\": 10.00,\n        \"description\": \"10% discount on orders over 100\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotion-tiers",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotion-tiers"]
+						}
+					}
+				},
+				{
+					"name": "Create Tier with Fixed Amount Discount",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"minimumThreshold\": 200.00,\n    \"reward\": {\n        \"rewardType\": \"DISCOUNT_AMOUNT\",\n        \"value\": 25.00,\n        \"description\": \"25 off on orders over 200\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotion-tiers",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotion-tiers"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Promotions",
+			"item": [
+				{
+					"name": "Create Basic Promotion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"promoCode\": \"SUMMER2024\",\n    \"name\": \"Summer Sale 2024\",\n    \"description\": \"Summer promotion with tiered discounts\",\n    \"startDate\": \"2024-06-01T00:00:00Z\",\n    \"endDate\": \"2024-08-31T23:59:59Z\",\n    \"priority\": 1,\n    \"isExclusive\": false,\n    \"isActive\": true,\n    \"rules\": [\n        {\n            \"name\": \"Tier 1\",\n            \"conditions\": [\n                {\n                    \"conditionType\": \"MINIMUM_AMOUNT\",\n                    \"operator\": \"GREATER_THAN_OR_EQUAL\",\n                    \"threshold\": 100.00\n                }\n            ],\n            \"tiers\": [\n                {\n                    \"minimumThreshold\": 100.00,\n                    \"reward\": {\n                        \"rewardType\": \"DISCOUNT_PERCENTAGE\",\n                        \"value\": 10.00\n                    }\n                }\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions"]
+						}
+					}
+				},
+				{
+					"name": "Create Family-Specific Promotion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"promoCode\": \"VIP2024\",\n    \"name\": \"VIP Special\",\n    \"description\": \"Special promotion for VIP customers\",\n    \"startDate\": \"2024-01-01T00:00:00Z\",\n    \"endDate\": \"2024-12-31T23:59:59Z\",\n    \"priority\": 2,\n    \"isExclusive\": true,\n    \"isActive\": true,\n    \"customerFamilies\": [\n        {\n            \"customerFamilyCode\": \"VIP_CUSTOMERS\"\n        }\n    ],\n    \"rules\": [\n        {\n            \"name\": \"VIP Discount\",\n            \"conditions\": [],\n            \"tiers\": [\n                {\n                    \"minimumThreshold\": 0.00,\n                    \"reward\": {\n                        \"rewardType\": \"DISCOUNT_PERCENTAGE\",\n                        \"value\": 15.00\n                    }\n                }\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions"]
+						}
+					}
+				},
+				{
+					"name": "Apply Promotion to Cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerId\": 123,\n    \"orderItems\": [\n        {\n            \"productId\": 1,\n            \"quantity\": 2,\n            \"unitPrice\": 50.00\n        },\n        {\n            \"productId\": 2,\n            \"quantity\": 1,\n            \"unitPrice\": 75.00\n        }\n    ],\n    \"promoCode\": \"SUMMER2024\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/promotions/apply",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "promotions", "apply"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		}
+	]
+} 

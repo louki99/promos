@@ -290,7 +290,7 @@ public class PromotionApplicationService {
                 .startDate(promotion.getStartDate())
                 .endDate(promotion.getEndDate())
                 .priority(promotion.getPriority())
-                .isExclusive(promotion.isExclusive())
+                .exclusive(promotion.isExclusive())
                 .combinabilityGroup(promotion.getCombinabilityGroup())
                 .build();
     }

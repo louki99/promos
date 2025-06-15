@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import ma.foodplus.ordering.system.promos.dto.*;
 import ma.foodplus.ordering.system.promos.service.PromotionApplicationService;
 import ma.foodplus.ordering.system.promos.service.PromotionService;
+import ma.foodplus.ordering.system.promos.service.PromotionCalculationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,7 +15,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import ma.foodplus.ordering.system.common.dto.ErrorResponse;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/promotions")
@@ -24,6 +27,7 @@ public class PromotionController {
 
     private final PromotionService promotionService;
     private final PromotionApplicationService promotionApplicationService;
+    private final PromotionCalculationService calculationService;
 
     @PostMapping("/apply")
     @Operation(summary = "Apply promotions to a cart/order",
@@ -205,5 +209,50 @@ public class PromotionController {
     @GetMapping("/{promotionId}/customer-families")
     public ResponseEntity<List<PromotionCustomerFamilyDTO>> getPromotionCustomerFamilies(@PathVariable Long promotionId) {
         return ResponseEntity.ok(promotionService.getPromotionCustomerFamilies(promotionId));
+    }
+
+    @PostMapping("/calculate")
+    public ResponseEntity<PromotionCalculationResponse> calculatePromotions(
+            @RequestBody PromotionCalculationRequest request) {
+        BigDecimal totalDiscount = calculationService.calculateNestedPromotions(
+            request.getPromotionId(), 
+            request.getBasketItems()
+        );
+        
+        return ResponseEntity.ok(new PromotionCalculationResponse(totalDiscount));
+    }
+
+    @PostMapping("/validate-code")
+    public ResponseEntity<PromotionValidationResponse> validatePromoCode(
+            @RequestBody PromotionValidationRequest request) {
+        boolean isValid = promotionService.validatePromoCode(
+            request.getPromoCode(),
+            request.getCustomerId(),
+            request.getBasketItems()
+        );
+        
+        return ResponseEntity.ok(new PromotionValidationResponse(isValid));
+    }
+
+    @GetMapping("/{promotionId}/points")
+    public ResponseEntity<Map<Long, Integer>> getProductPoints(
+            @PathVariable Integer promotionId) {
+        PromotionDTO promotion = promotionService.getPromotionById(promotionId);
+        return ResponseEntity.ok(promotion.getProductPoints());
+    }
+
+    @PostMapping("/{promotionId}/points/calculate")
+    public ResponseEntity<Integer> calculatePoints(
+            @PathVariable Integer promotionId,
+            @RequestBody Map<Long, Integer> basketItems) {
+        int totalPoints = 0;
+        for (Map.Entry<Long, Integer> entry : basketItems.entrySet()) {
+            totalPoints += calculationService.calculateProductPoints(
+                promotionId,
+                entry.getKey(),
+                entry.getValue()
+            );
+        }
+        return ResponseEntity.ok(totalPoints);
     }
 } 

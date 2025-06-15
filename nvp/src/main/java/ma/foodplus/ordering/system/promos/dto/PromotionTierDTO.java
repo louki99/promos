@@ -1,50 +1,28 @@
 package ma.foodplus.ordering.system.promos.dto;
 
+import lombok.Data;
+import java.math.BigDecimal;
+
+@Data
 public class PromotionTierDTO {
     private Integer id;
-    private Double threshold;
-    private Double discountAmount;
-    private Double discountPercentage;
-    private String discountType;
+    private Integer ruleId;
+    private BigDecimal minimumThreshold;
+    private BigDecimal discountAmount;
+    private BigDecimal discountPercentage;
+    private RewardType rewardType;
 
-    // Getters and Setters
-    public Integer getId() {
-        return id;
+    public enum RewardType {
+        FIXED_AMOUNT,
+        PERCENTAGE
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Double getThreshold() {
-        return threshold;
-    }
-
-    public void setThreshold(Double threshold) {
-        this.threshold = threshold;
-    }
-
-    public Double getDiscountAmount() {
-        return discountAmount;
-    }
-
-    public void setDiscountAmount(Double discountAmount) {
-        this.discountAmount = discountAmount;
-    }
-
-    public Double getDiscountPercentage() {
-        return discountPercentage;
-    }
-
-    public void setDiscountPercentage(Double discountPercentage) {
-        this.discountPercentage = discountPercentage;
-    }
-
-    public String getDiscountType() {
-        return discountType;
-    }
-
-    public void setDiscountType(String discountType) {
-        this.discountType = discountType;
+    public BigDecimal getDiscountAmount() {
+        if (rewardType == RewardType.FIXED_AMOUNT) {
+            return discountAmount;
+        } else if (rewardType == RewardType.PERCENTAGE) {
+            return minimumThreshold.multiply(discountPercentage.divide(BigDecimal.valueOf(100)));
+        }
+        return BigDecimal.ZERO;
     }
 } 

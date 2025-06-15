@@ -1,71 +1,27 @@
 package ma.foodplus.ordering.system.promos.dto;
 
-import ma.foodplus.ordering.system.promos.model.PromotionRule;
+import lombok.Data;
 import java.util.List;
 
+@Data
 public class PromotionRuleDTO {
     private Integer id;
+    private Integer promotionId;
     private String name;
-    private PromotionRule.ConditionLogic conditionLogic;
-    private PromotionRule.CalculationMethod calculationMethod;
-    private PromotionRule.BreakpointType breakpointType;
-    private List<ConditionDTO> conditions;
+    private String description;
+    private BreakpointType breakpointType;
+    private CalculationMethod calculationMethod;
     private List<PromotionTierDTO> tiers;
+    private List<ConditionDTO> conditions;
 
-    // Getters and Setters
-    public Integer getId() {
-        return id;
+    public enum BreakpointType {
+        AMOUNT,
+        QUANTITY,
+        SKU_POINTS
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public PromotionRule.ConditionLogic getConditionLogic() {
-        return conditionLogic;
-    }
-
-    public void setConditionLogic(PromotionRule.ConditionLogic conditionLogic) {
-        this.conditionLogic = conditionLogic;
-    }
-
-    public PromotionRule.CalculationMethod getCalculationMethod() {
-        return calculationMethod;
-    }
-
-    public void setCalculationMethod(PromotionRule.CalculationMethod calculationMethod) {
-        this.calculationMethod = calculationMethod;
-    }
-
-    public PromotionRule.BreakpointType getBreakpointType() {
-        return breakpointType;
-    }
-
-    public void setBreakpointType(PromotionRule.BreakpointType breakpointType) {
-        this.breakpointType = breakpointType;
-    }
-
-    public List<ConditionDTO> getConditions() {
-        return conditions;
-    }
-
-    public void setConditions(List<ConditionDTO> conditions) {
-        this.conditions = conditions;
-    }
-
-    public List<PromotionTierDTO> getTiers() {
-        return tiers;
-    }
-
-    public void setTiers(List<PromotionTierDTO> tiers) {
-        this.tiers = tiers;
+    public enum CalculationMethod {
+        BRACKET,
+        CUMULATIVE
     }
 } 
