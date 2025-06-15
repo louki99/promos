@@ -2,6 +2,7 @@ package ma.foodplus.ordering.system.order.service.impl;
 
 import ma.foodplus.ordering.system.order.dto.OrderDto;
 import ma.foodplus.ordering.system.order.dto.OrderItemDto;
+import ma.foodplus.ordering.system.order.exception.InvalidOrderStatusTransitionException;
 import ma.foodplus.ordering.system.order.exception.OrderItemNotFoundException;
 import ma.foodplus.ordering.system.order.exception.OrderNotFoundException;
 import ma.foodplus.ordering.system.order.mapper.OrderMapper;
@@ -125,7 +126,10 @@ public class OrderServiceImpl implements OrderService {
         try {
             // Update the quantity
             order.updateItemQuantity(item, quantity);
+            order.validateOrderState(); // Validate order state after update
             return orderMapper.toDto(orderRepository.save(order));
+        } catch (IllegalStateException e) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, e.getMessage());
         } catch (Exception e) {
             throw new BaseException(ErrorCode.SYSTEM_ERROR, 
                 String.format("Failed to update quantity for item %d in order %d: %s", 
@@ -148,7 +152,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto confirmOrder(Long orderId) {
-        return updateOrderStatus(orderId, OrderStatus.CONFIRMED);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        try {
+            order.validateOrderState();
+            order.setStatus(OrderStatus.CONFIRMED);
+            return orderMapper.toDto(orderRepository.save(order));
+        } catch (IllegalStateException e) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, e.getMessage());
+        } catch (InvalidOrderStatusTransitionException e) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, e.getMessage());
+        }
     }
 
     @Override
@@ -163,6 +178,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto startDelivery(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        if (order.getShippingAddress() == null) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, 
+                "Cannot start delivery without shipping address");
+        }
+        
         return updateOrderStatus(orderId, OrderStatus.DELIVERING);
     }
 
@@ -173,12 +196,28 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto cancelOrder(Long orderId) {
-        return updateOrderStatus(orderId, OrderStatus.CANCELLED);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        try {
+            order.cancel("Order cancelled by user");
+            return orderMapper.toDto(orderRepository.save(order));
+        } catch (InvalidOrderStatusTransitionException e) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, e.getMessage());
+        }
     }
 
     @Override
     public OrderDto refundOrder(Long orderId) {
-        return updateOrderStatus(orderId, OrderStatus.REFUNDED);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        try {
+            order.refund("Order refunded by user");
+            return orderMapper.toDto(orderRepository.save(order));
+        } catch (InvalidOrderStatusTransitionException e) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, e.getMessage());
+        }
     }
 
     @Override
@@ -257,11 +296,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-        public OrderDto validateCreditLimit(Long orderId) {
+    public OrderDto validateCreditLimit(Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
-        // Validate credit limit logic here
-        return orderMapper.toDto(order);
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        try {
+            order.validateCreditLimit();
+            return orderMapper.toDto(order);
+        } catch (IllegalStateException e) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, e.getMessage());
+        }
     }
 
     @Override
@@ -333,11 +377,127 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toDto(order);
     }
 
+    @Override
+    public OrderDto setBulkOrderDetails(Long orderId, String reference, String frequency, LocalDateTime scheduledDate) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        if (order.getOrderType() != OrderType.B2B) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, "Bulk order details can only be set for B2B orders");
+        }
+
+        order.setBulkOrder(true);
+        order.setBulkOrderReference(reference);
+        order.setDeliveryScheduleFrequency(frequency);
+        order.setScheduledDeliveryDate(scheduledDate.atZone(java.time.ZoneId.systemDefault()));
+        
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+
+    @Override
+    public OrderDto setContractDetails(Long orderId, String contractId, LocalDateTime startDate, LocalDateTime endDate, String terms) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        if (order.getOrderType() != OrderType.B2B) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, "Contract details can only be set for B2B orders");
+        }
+
+        order.setContractId(contractId);
+        order.setContractStartDate(startDate.atZone(java.time.ZoneId.systemDefault()));
+        order.setContractEndDate(endDate.atZone(java.time.ZoneId.systemDefault()));
+        order.setContractTerms(terms);
+        order.setSpecialPricingAgreement(true);
+        
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+
+    @Override
+    public OrderDto applySpecialPricing(Long orderId, String pricingTerms) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        if (order.getOrderType() != OrderType.B2B) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, "Special pricing can only be applied to B2B orders");
+        }
+
+        order.setSpecialPricingTerms(pricingTerms);
+        order.setSpecialPricingAgreement(true);
+        
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+
+    @Override
+    public OrderDto setDeliveryTimeSlot(Long orderId, String timeSlot) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        if (order.getOrderType() != OrderType.B2C) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, "Delivery time slots are only available for B2C orders");
+        }
+
+        order.setPreferredDeliveryTimeSlot(timeSlot);
+        order.setDeliveryTimeSlotConfirmed(false);
+        
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+
+    @Override
+    public OrderDto confirmDeliveryTimeSlot(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        if (order.getOrderType() != OrderType.B2C) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, "Delivery time slots are only available for B2C orders");
+        }
+
+        if (order.getPreferredDeliveryTimeSlot() == null) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, "No delivery time slot has been set");
+        }
+
+        order.setDeliveryTimeSlotConfirmed(true);
+        
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+
+    @Override
+    public OrderDto setContactDetails(Long orderId, String phone, String email) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        if (order.getOrderType() != OrderType.B2C) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, "Contact details are only required for B2C orders");
+        }
+
+        order.setContactPhone(phone);
+        order.setContactEmail(email);
+        
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+
+    @Override
+    public OrderDto calculateLoyaltyPointsEarned(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        
+        if (order.getOrderType() != OrderType.B2C) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, "Loyalty points are only available for B2C orders");
+        }
+
+        order.calculateLoyaltyPointsEarned();
+        
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+
     private OrderDto updateOrderStatus(Long orderId, OrderStatus newStatus) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
 
-        order.setStatus(newStatus);
-        return orderMapper.toDto(orderRepository.save(order));
+        try {
+            order.setStatus(newStatus);
+            return orderMapper.toDto(orderRepository.save(order));
+        } catch (InvalidOrderStatusTransitionException e) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, e.getMessage());
+        }
     }
 } 

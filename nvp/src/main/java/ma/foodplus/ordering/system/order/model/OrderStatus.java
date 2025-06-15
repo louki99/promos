@@ -9,5 +9,9 @@ public enum OrderStatus {
     DELIVERING,     // قيد التوصيل
     DELIVERED,      // تم التوصيل
     CANCELLED,      // تم الإلغاء
-    REFUNDED        // تم استرداد المبلغ
+    REFUNDED;       // تم استرداد المبلغ
+
+    public OrderStatusTransition getTransition() {
+        return OrderStatusTransition.valueOf(this.name());
+    }
 } 

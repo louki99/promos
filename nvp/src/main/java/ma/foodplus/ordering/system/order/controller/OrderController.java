@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import ma.foodplus.ordering.system.common.dto.ErrorResponse;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -213,6 +214,41 @@ public class OrderController {
         return ResponseEntity.ok(orderService.setDeliverySchedule(orderId, preferredDeliveryDate));
     }
 
+    @PutMapping("/{orderId}/bulk-order")
+    public ResponseEntity<OrderDto> setBulkOrderDetails(
+            @PathVariable Long orderId,
+            @RequestBody BulkOrderRequest request) {
+        return ResponseEntity.ok(orderService.setBulkOrderDetails(
+            orderId, 
+            request.getReference(), 
+            request.getFrequency(), 
+            request.getScheduledDate()
+        ));
+    }
+
+    @PutMapping("/{orderId}/contract")
+    public ResponseEntity<OrderDto> setContractDetails(
+            @PathVariable Long orderId,
+            @RequestBody ContractRequest request) {
+        return ResponseEntity.ok(orderService.setContractDetails(
+            orderId,
+            request.getContractId(),
+            request.getStartDate(),
+            request.getEndDate(),
+            request.getTerms()
+        ));
+    }
+
+    @PutMapping("/{orderId}/special-pricing")
+    public ResponseEntity<OrderDto> applySpecialPricing(
+            @PathVariable Long orderId,
+            @RequestBody SpecialPricingRequest request) {
+        return ResponseEntity.ok(orderService.applySpecialPricing(
+            orderId,
+            request.getPricingTerms()
+        ));
+    }
+
     // B2C Specific Endpoints
     @PostMapping("/{orderId}/apply-loyalty-points")
     @Operation(summary = "Apply loyalty points", description = "Applies loyalty points to the order.")
@@ -256,6 +292,49 @@ public class OrderController {
         return ResponseEntity.ok(orderService.validateDeliveryAddress(orderId));
     }
 
+    @PutMapping("/{orderId}/delivery-time-slot")
+    public ResponseEntity<OrderDto> setDeliveryTimeSlot(
+            @PathVariable Long orderId,
+            @RequestBody DeliveryTimeSlotRequest request) {
+        return ResponseEntity.ok(orderService.setDeliveryTimeSlot(
+            orderId,
+            request.getTimeSlot()
+        ));
+    }
+
+    @PutMapping("/{orderId}/confirm-time-slot")
+    public ResponseEntity<OrderDto> confirmDeliveryTimeSlot(
+            @PathVariable Long orderId) {
+        return ResponseEntity.ok(orderService.confirmDeliveryTimeSlot(orderId));
+    }
+
+    @PutMapping("/{orderId}/contact-details")
+    public ResponseEntity<OrderDto> setContactDetails(
+            @PathVariable Long orderId,
+            @RequestBody ContactDetailsRequest request) {
+        return ResponseEntity.ok(orderService.setContactDetails(
+            orderId,
+            request.getPhone(),
+            request.getEmail()
+        ));
+    }
+
+    @PutMapping("/{orderId}/loyalty-points")
+    public ResponseEntity<OrderDto> applyLoyaltyPoints(
+            @PathVariable Long orderId,
+            @RequestBody LoyaltyPointsRequest request) {
+        return ResponseEntity.ok(orderService.applyLoyaltyPoints(
+            orderId,
+            request.getPoints()
+        ));
+    }
+
+    @GetMapping("/{orderId}/loyalty-points")
+    public ResponseEntity<OrderDto> calculateLoyaltyPointsEarned(
+            @PathVariable Long orderId) {
+        return ResponseEntity.ok(orderService.calculateLoyaltyPointsEarned(orderId));
+    }
+
     // Common Operations
     @PostMapping("/{orderId}/calculate-totals")
     @Operation(summary = "Calculate order totals", description = "Recalculates all totals for the order.")
@@ -293,5 +372,42 @@ public class OrderController {
             @RequestParam LocalDateTime startDate,
             @RequestParam LocalDateTime endDate) {
         return ResponseEntity.ok(orderService.getOrdersByDateRange(startDate, endDate));
+    }
+
+    // Request DTOs
+    @Data
+    public static class BulkOrderRequest {
+        private String reference;
+        private String frequency;
+        private LocalDateTime scheduledDate;
+    }
+
+    @Data
+    public static class ContractRequest {
+        private String contractId;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
+        private String terms;
+    }
+
+    @Data
+    public static class SpecialPricingRequest {
+        private String pricingTerms;
+    }
+
+    @Data
+    public static class DeliveryTimeSlotRequest {
+        private String timeSlot;
+    }
+
+    @Data
+    public static class ContactDetailsRequest {
+        private String phone;
+        private String email;
+    }
+
+    @Data
+    public static class LoyaltyPointsRequest {
+        private Integer points;
     }
 } 

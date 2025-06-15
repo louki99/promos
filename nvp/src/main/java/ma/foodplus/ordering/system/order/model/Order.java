@@ -1,6 +1,7 @@
 package ma.foodplus.ordering.system.order.model;
 
 import jakarta.persistence.*;
+import ma.foodplus.ordering.system.order.exception.InvalidOrderStatusTransitionException;
 import ma.foodplus.ordering.system.promos.dto.OrdertemDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -155,6 +156,77 @@ public class Order {
     @Column(name = "delivered_at")
     private ZonedDateTime deliveredAt;
 
+    // B2B Credit Management
+    @Column(name = "credit_limit")
+    private BigDecimal creditLimit;
+
+    @Column(name = "available_credit")
+    private BigDecimal availableCredit;
+
+    @Column(name = "payment_due_days")
+    private Integer paymentDueDays;
+
+    @Column(name = "credit_terms")
+    private String creditTerms;
+
+    // Bulk Order Management
+    @Column(name = "is_bulk_order")
+    private Boolean isBulkOrder = false;
+
+    @Column(name = "bulk_order_reference")
+    private String bulkOrderReference;
+
+    @Column(name = "bulk_order_notes")
+    private String bulkOrderNotes;
+
+    @Column(name = "scheduled_delivery_date")
+    private ZonedDateTime scheduledDeliveryDate;
+
+    @Column(name = "delivery_schedule_frequency")
+    private String deliveryScheduleFrequency; // DAILY, WEEKLY, MONTHLY
+
+    // Contract Management
+    @Column(name = "contract_id")
+    private String contractId;
+
+    @Column(name = "contract_start_date")
+    private ZonedDateTime contractStartDate;
+
+    @Column(name = "contract_end_date")
+    private ZonedDateTime contractEndDate;
+
+    @Column(name = "contract_terms")
+    private String contractTerms;
+
+    @Column(name = "special_pricing_terms")
+    private String specialPricingTerms;
+
+    // Delivery Time Slot Management
+    @Column(name = "preferred_delivery_time_slot")
+    private String preferredDeliveryTimeSlot;
+
+    @Column(name = "delivery_time_slot_confirmed")
+    private Boolean deliveryTimeSlotConfirmed = false;
+
+    @Column(name = "contact_phone")
+    private String contactPhone;
+
+    @Column(name = "contact_email")
+    private String contactEmail;
+
+    // Loyalty Program
+    @Column(name = "loyalty_points_earned")
+    private Integer loyaltyPointsEarned = 0;
+
+    @Column(name = "loyalty_points_redeemed")
+    private Integer loyaltyPointsRedeemed = 0;
+
+    @Column(name = "loyalty_discount_applied")
+    private BigDecimal loyaltyDiscountApplied = BigDecimal.ZERO;
+
+    @Column(name = "loyalty_member_id")
+    private String loyaltyMemberId;
+
     // Constructors
     public Order() {
     }
@@ -180,18 +252,27 @@ public class Order {
 
     // Business Logic Methods
     public void addItem(OrderItem item) {
+        if (status != OrderStatus.DRAFT) {
+            throw new IllegalStateException("Cannot add items to an order that is not in DRAFT status");
+        }
         items.add(item);
         item.setOrder(this);
         recalculateTotals();
     }
 
     public void removeItem(OrderItem item) {
+        if (status != OrderStatus.DRAFT) {
+            throw new IllegalStateException("Cannot remove items from an order that is not in DRAFT status");
+        }
         items.remove(item);
         item.setOrder(null);
         recalculateTotals();
     }
 
     public void updateItemQuantity(OrderItem item, Integer newQuantity) {
+        if (status != OrderStatus.DRAFT) {
+            throw new IllegalStateException("Cannot update item quantity in an order that is not in DRAFT status");
+        }
         if (items.contains(item)) {
             item.setQuantity(newQuantity);
             recalculateTotals();
@@ -205,7 +286,8 @@ public class Order {
         
         this.totalDiscount = items.stream()
                 .map(OrderItem::getDiscountAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .add(loyaltyDiscountApplied);
         
         this.totalTax = items.stream()
                 .map(OrderItem::getTaxAmount)
@@ -265,20 +347,72 @@ public class Order {
 
     // Lifecycle Methods
     public void cancel(String reason) {
-        this.status = OrderStatus.CANCELLED;
+        if (status == OrderStatus.DELIVERED || status == OrderStatus.REFUNDED) {
+            throw new InvalidOrderStatusTransitionException(status, OrderStatus.CANCELLED);
+        }
         this.cancellationReason = reason;
-        this.cancelledAt = ZonedDateTime.now();
+        setStatus(OrderStatus.CANCELLED);
     }
 
     public void refund(String reason) {
-        this.status = OrderStatus.REFUNDED;
+        if (status != OrderStatus.DELIVERED) {
+            throw new InvalidOrderStatusTransitionException(status, OrderStatus.REFUNDED);
+        }
         this.refundReason = reason;
-        this.refundedAt = ZonedDateTime.now();
+        setStatus(OrderStatus.REFUNDED);
     }
 
     public void markAsDelivered() {
-        this.status = OrderStatus.DELIVERED;
-        this.deliveredAt = ZonedDateTime.now();
+        if (shippingAddress == null) {
+            throw new IllegalStateException("Cannot mark order as delivered without shipping address");
+        }
+        setStatus(OrderStatus.DELIVERED);
+    }
+
+    // Status Management
+    public void setStatus(OrderStatus newStatus) {
+        if (this.status != null && !OrderStatusTransition.isValidTransition(this.status, newStatus)) {
+            throw new InvalidOrderStatusTransitionException(this.status, newStatus);
+        }
+        this.status = newStatus;
+        this.updatedAt = ZonedDateTime.now();
+        
+        // Update relevant timestamps based on status
+        switch (newStatus) {
+            case CANCELLED -> this.cancelledAt = ZonedDateTime.now();
+            case REFUNDED -> this.refundedAt = ZonedDateTime.now();
+            case DELIVERED -> this.deliveredAt = ZonedDateTime.now();
+        }
+    }
+
+    // Business Rules Validation
+    public void validateOrderState() {
+        if (items == null || items.isEmpty()) {
+            throw new IllegalStateException("Order must have at least one item");
+        }
+
+        if (status == OrderStatus.DELIVERED && shippingAddress == null) {
+            throw new IllegalStateException("Delivery address is required for delivered orders");
+        }
+
+        if (status == OrderStatus.CANCELLED && cancellationReason == null) {
+            throw new IllegalStateException("Cancellation reason is required for cancelled orders");
+        }
+
+        if (status == OrderStatus.REFUNDED && refundReason == null) {
+            throw new IllegalStateException("Refund reason is required for refunded orders");
+        }
+
+        if (orderType == OrderType.B2B) {
+            if (!meetsMinimumOrderValue()) {
+                throw new IllegalStateException("B2B order does not meet minimum order value requirement");
+            }
+            validateCreditLimit();
+            validateBulkOrder();
+            validateContract();
+        } else {
+            validateDeliveryTimeSlot();
+        }
     }
 
     // Getters and Setters
@@ -333,10 +467,6 @@ public class Order {
 
     public OrderStatus getStatus() {
         return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
     }
 
     public ZonedDateTime getCreatedAt() {
@@ -420,6 +550,87 @@ public class Order {
         this.preferredDeliveryDate = preferredDeliveryDate;
     }
 
+    public boolean isWithinCreditLimit() {
+        if (orderType != OrderType.B2B) {
+            return true;
+        }
+        return availableCredit != null && 
+               total.compareTo(availableCredit) <= 0;
+    }
+
+    public void validateCreditLimit() {
+        if (orderType == OrderType.B2B && !isWithinCreditLimit()) {
+            throw new IllegalStateException(
+                String.format("Order total %.2f exceeds available credit limit %.2f", 
+                    total, availableCredit));
+        }
+    }
+
+    public void validateBulkOrder() {
+        if (isBulkOrder) {
+            if (scheduledDeliveryDate == null) {
+                throw new IllegalStateException("Scheduled delivery date is required for bulk orders");
+            }
+            if (deliveryScheduleFrequency == null) {
+                throw new IllegalStateException("Delivery schedule frequency is required for bulk orders");
+            }
+            if (bulkOrderReference == null) {
+                throw new IllegalStateException("Bulk order reference is required for bulk orders");
+            }
+        }
+    }
+
+    public void validateContract() {
+        if (orderType == OrderType.B2B && specialPricingAgreement) {
+            if (contractId == null) {
+                throw new IllegalStateException("Contract ID is required for special pricing agreements");
+            }
+            if (contractStartDate == null || contractEndDate == null) {
+                throw new IllegalStateException("Contract dates are required for special pricing agreements");
+            }
+            if (contractEndDate.isBefore(contractStartDate)) {
+                throw new IllegalStateException("Contract end date must be after start date");
+            }
+            if (ZonedDateTime.now().isAfter(contractEndDate)) {
+                throw new IllegalStateException("Contract has expired");
+            }
+        }
+    }
+
+    public void validateDeliveryTimeSlot() {
+        if (orderType == OrderType.B2C) {
+            if (preferredDeliveryTimeSlot == null) {
+                throw new IllegalStateException("Delivery time slot is required for B2C orders");
+            }
+            if (contactPhone == null) {
+                throw new IllegalStateException("Contact phone is required for B2C orders");
+            }
+        }
+    }
+
+    public void applyLoyaltyPoints(Integer pointsToRedeem) {
+        if (orderType != OrderType.B2C) {
+            throw new IllegalStateException("Loyalty points can only be applied to B2C orders");
+        }
+        if (pointsToRedeem < 0) {
+            throw new IllegalArgumentException("Points to redeem cannot be negative");
+        }
+        this.loyaltyPointsRedeemed = pointsToRedeem;
+        // Calculate discount based on points (example: 100 points = $1)
+        this.loyaltyDiscountApplied = BigDecimal.valueOf(pointsToRedeem)
+            .divide(BigDecimal.valueOf(100))
+            .setScale(2, BigDecimal.ROUND_HALF_UP);
+        recalculateTotals();
+    }
+
+    public void calculateLoyaltyPointsEarned() {
+        if (orderType != OrderType.B2C) {
+            return;
+        }
+        // Example: 1 point per $1 spent
+        this.loyaltyPointsEarned = total.intValue();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -442,5 +653,66 @@ public class Order {
                 ", status=" + status +
                 ", total=" + total +
                 '}';
+    }
+
+    // Getters and Setters for new fields
+    public void setBulkOrder(Boolean bulkOrder) {
+        this.isBulkOrder = bulkOrder;
+    }
+
+    public void setBulkOrderReference(String bulkOrderReference) {
+        this.bulkOrderReference = bulkOrderReference;
+    }
+
+    public void setDeliveryScheduleFrequency(String deliveryScheduleFrequency) {
+        this.deliveryScheduleFrequency = deliveryScheduleFrequency;
+    }
+
+    public void setScheduledDeliveryDate(ZonedDateTime scheduledDeliveryDate) {
+        this.scheduledDeliveryDate = scheduledDeliveryDate;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
+
+    public void setContractStartDate(ZonedDateTime contractStartDate) {
+        this.contractStartDate = contractStartDate;
+    }
+
+    public void setContractEndDate(ZonedDateTime contractEndDate) {
+        this.contractEndDate = contractEndDate;
+    }
+
+    public void setContractTerms(String contractTerms) {
+        this.contractTerms = contractTerms;
+    }
+
+    public void setSpecialPricingAgreement(Boolean specialPricingAgreement) {
+        this.specialPricingAgreement = specialPricingAgreement;
+    }
+
+    public void setSpecialPricingTerms(String specialPricingTerms) {
+        this.specialPricingTerms = specialPricingTerms;
+    }
+
+    public void setPreferredDeliveryTimeSlot(String preferredDeliveryTimeSlot) {
+        this.preferredDeliveryTimeSlot = preferredDeliveryTimeSlot;
+    }
+
+    public String getPreferredDeliveryTimeSlot() {
+        return preferredDeliveryTimeSlot;
+    }
+
+    public void setDeliveryTimeSlotConfirmed(Boolean deliveryTimeSlotConfirmed) {
+        this.deliveryTimeSlotConfirmed = deliveryTimeSlotConfirmed;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
     }
 }
