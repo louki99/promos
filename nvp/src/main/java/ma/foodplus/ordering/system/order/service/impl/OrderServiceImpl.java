@@ -2,6 +2,8 @@ package ma.foodplus.ordering.system.order.service.impl;
 
 import ma.foodplus.ordering.system.order.dto.OrderDto;
 import ma.foodplus.ordering.system.order.dto.OrderItemDto;
+import ma.foodplus.ordering.system.order.exception.OrderItemNotFoundException;
+import ma.foodplus.ordering.system.order.exception.OrderNotFoundException;
 import ma.foodplus.ordering.system.order.mapper.OrderMapper;
 import ma.foodplus.ordering.system.order.model.Order;
 import ma.foodplus.ordering.system.order.model.OrderItem;
@@ -9,12 +11,15 @@ import ma.foodplus.ordering.system.order.model.OrderStatus;
 import ma.foodplus.ordering.system.order.model.OrderType;
 import ma.foodplus.ordering.system.order.repository.OrderRepository;
 import ma.foodplus.ordering.system.order.service.OrderService;
+import ma.foodplus.ordering.system.common.exception.BaseException;
+import ma.foodplus.ordering.system.common.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private static final DateTimeFormatter ORDER_NUMBER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper) {
@@ -31,10 +37,17 @@ public class OrderServiceImpl implements OrderService {
         this.orderMapper = orderMapper;
     }
 
+    private String generateOrderNumber(OrderType orderType) {
+        String prefix = orderType == OrderType.B2B ? "B2B" : "B2C";
+        String timestamp = LocalDateTime.now().format(ORDER_NUMBER_FORMAT);
+        return String.format("%s-%s", prefix, timestamp);
+    }
+
     @Override
     public OrderDto createOrder(Long customerId, OrderType orderType) {
         Order order = new Order(customerId);
         order.setOrderType(orderType);
+        order.setOrderNumber(generateOrderNumber(orderType));
         return orderMapper.toDto(orderRepository.save(order));
     }
 
@@ -43,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto getOrderById(Long id) {
         return orderRepository.findById(id)
                 .map(orderMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
+                .orElseThrow(() -> new OrderNotFoundException(id));
     }
 
     @Override
@@ -70,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto addItemToOrder(Long orderId, OrderItemDto itemDto) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
 
         OrderItem item = orderMapper.toOrderItem(itemDto);
         order.addItem(item);
@@ -81,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto removeItemFromOrder(Long orderId, Long itemId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
 
         order.getItems().stream()
                 .filter(item -> item.getId().equals(itemId))
@@ -93,15 +106,31 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto updateItemQuantity(Long orderId, Long itemId, Integer quantity) {
+        // Validate quantity
+        if (quantity == null || quantity <= 0) {
+            throw new BaseException(ErrorCode.VALIDATION_ERROR, 
+                String.format("Invalid quantity: %d. Quantity must be greater than 0", quantity));
+        }
+
+        // First validate the order exists
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
 
-        order.getItems().stream()
-                .filter(item -> item.getId().equals(itemId))
+        // Then validate the item exists in the order
+        OrderItem item = order.getItems().stream()
+                .filter(i -> i.getId().equals(itemId))
                 .findFirst()
-                .ifPresent(item -> order.updateItemQuantity(item, quantity));
+                .orElseThrow(() -> new OrderItemNotFoundException(orderId, itemId));
 
-        return orderMapper.toDto(orderRepository.save(order));
+        try {
+            // Update the quantity
+            order.updateItemQuantity(item, quantity);
+            return orderMapper.toDto(orderRepository.save(order));
+        } catch (Exception e) {
+            throw new BaseException(ErrorCode.SYSTEM_ERROR, 
+                String.format("Failed to update quantity for item %d in order %d: %s", 
+                    itemId, orderId, e.getMessage()));
+        }
     }
 
     @Override

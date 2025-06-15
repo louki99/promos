@@ -81,7 +81,20 @@ public class OrderController {
     @ApiResponse(responseCode = "404", description = "Order not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     public ResponseEntity<OrderDto> addItemToOrder(
             @Parameter(description = "Order ID", required = true) @PathVariable Long orderId,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Order item to add", required = true, content = @Content(schema = @Schema(implementation = OrderItemDto.class))) @RequestBody OrderItemDto itemDto) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                description = "Order item to add. Required fields: productId, unitPrice, quantity",
+                required = true,
+                content = @Content(schema = @Schema(implementation = OrderItemDto.class))
+            ) @RequestBody OrderItemDto itemDto) {
+        if (itemDto.getProductId() == null) {
+            throw new IllegalArgumentException("Product ID is required");
+        }
+        if (itemDto.getUnitPrice() == null) {
+            throw new IllegalArgumentException("Unit price is required");
+        }
+        if (itemDto.getQuantity() == null || itemDto.getQuantity() <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
         return ResponseEntity.ok(orderService.addItemToOrder(orderId, itemDto));
     }
 

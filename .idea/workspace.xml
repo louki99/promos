@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="fix some operation">
+    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="fix some errors on part manages Customers">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/foodplus-ordering.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/foodplus-ordering.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/dto/CustomerDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/dto/CustomerDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/model/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/model/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/repository/CustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/repository/CustomerRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/service/impl/CustomerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/service/impl/CustomerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/dto/OrderItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/dto/OrderItemDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/mapper/OrderMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/mapper/OrderMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/model/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/service/impl/OrderServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -290,7 +292,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749930351265</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="fix some errors on part manages Customers">
+      <option name="closed" value="true" />
+      <created>1749935329188</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1749935329188</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -304,6 +314,18 @@
     <MESSAGE value="add audit product" />
     <MESSAGE value="add ignore log" />
     <MESSAGE value="fix some operation" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix some operation" />
+    <MESSAGE value="fix some errors on part manages Customers" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix some errors on part manages Customers" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order/service/impl/OrderServiceImpl.java</url>
+          <line>84</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -4,13 +4,18 @@ import java.math.BigDecimal;
 
 public class OrderItemDto {
     private Long productId;
+    private Long productFamilyId;
+    private String productName;
+    private String sku;
+    private BigDecimal skuPoints;
     private BigDecimal unitPrice;
-    private int quantity;
+    private Integer quantity;
+    private String notes;
 
     public OrderItemDto() {
     }
 
-    public OrderItemDto(Long productId, BigDecimal unitPrice, int quantity) {
+    public OrderItemDto(Long productId, BigDecimal unitPrice, Integer quantity) {
         this.productId = productId;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
@@ -24,6 +29,38 @@ public class OrderItemDto {
         this.productId = productId;
     }
 
+    public Long getProductFamilyId() {
+        return productFamilyId;
+    }
+
+    public void setProductFamilyId(Long productFamilyId) {
+        this.productFamilyId = productFamilyId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public BigDecimal getSkuPoints() {
+        return skuPoints;
+    }
+
+    public void setSkuPoints(BigDecimal skuPoints) {
+        this.skuPoints = skuPoints;
+    }
+
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
@@ -32,11 +69,19 @@ public class OrderItemDto {
         this.unitPrice = unitPrice;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 } 

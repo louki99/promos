@@ -30,15 +30,31 @@ public interface OrderMapper {
     Order toEntity(OrderDto orderDto);
     
     @Mapping(target = "productId", source = "productId")
+    @Mapping(target = "productFamilyId", source = "productFamilyId")
+    @Mapping(target = "productName", source = "productName")
+    @Mapping(target = "sku", source = "sku")
+    @Mapping(target = "skuPoints", source = "skuPoints")
     @Mapping(target = "unitPrice", source = "unitPrice")
     @Mapping(target = "quantity", source = "quantity")
+    @Mapping(target = "notes", source = "notes")
     OrderItemDto toDto(OrderItem orderItem);
     
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "order", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "createdAt", expression = "java(java.time.ZonedDateTime.now())")
+    @Mapping(target = "updatedAt", expression = "java(java.time.ZonedDateTime.now())")
     @Mapping(target = "productId", source = "productId")
+    @Mapping(target = "productFamilyId", source = "productFamilyId")
+    @Mapping(target = "productName", source = "productName")
+    @Mapping(target = "sku", source = "sku")
+    @Mapping(target = "skuPoints", source = "skuPoints")
     @Mapping(target = "unitPrice", source = "unitPrice")
     @Mapping(target = "quantity", source = "quantity")
+    @Mapping(target = "notes", source = "notes")
+    @Mapping(target = "discountAmount", constant = "0")
+    @Mapping(target = "taxAmount", constant = "0")
+    @Mapping(target = "consumedQuantity", constant = "0")
+    @Mapping(target = "appliedPromotions", ignore = true)
+    @Mapping(target = "totalPrice", expression = "java(orderItemDto.getUnitPrice() != null && orderItemDto.getQuantity() != null ? orderItemDto.getUnitPrice().multiply(new java.math.BigDecimal(orderItemDto.getQuantity())) : java.math.BigDecimal.ZERO)")
     OrderItem toOrderItem(OrderItemDto orderItemDto);
 } 

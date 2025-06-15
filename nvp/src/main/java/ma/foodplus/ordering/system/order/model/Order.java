@@ -113,7 +113,7 @@ public class Order {
     private BigDecimal bulkDiscountPercentage;
 
     @Column(name = "special_pricing_agreement")
-    private boolean specialPricingAgreement = false;
+    private Boolean specialPricingAgreement = false;
 
     @Column(name = "contract_number")
     private String contractNumber;

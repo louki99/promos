@@ -70,7 +70,7 @@ public class OrderItem {
     private Integer bulkQuantityThreshold;
 
     @Column(name = "special_pricing")
-    private boolean specialPricing = false;
+    private Boolean specialPricing = false;
 
     // Promotion
     @Column(name = "applied_promotion_code")
@@ -150,6 +150,9 @@ public class OrderItem {
 
     // Business Logic Methods
     public BigDecimal getOriginalTotalPrice() {
+        if (this.unitPrice == null || this.quantity == null) {
+            return BigDecimal.ZERO;
+        }
         return this.unitPrice.multiply(BigDecimal.valueOf(this.quantity));
     }
 
@@ -184,9 +187,11 @@ public class OrderItem {
     }
 
     public void calculateTotalPrice() {
-        this.totalPrice = getOriginalTotalPrice()
-                .subtract(discountAmount)
-                .add(taxAmount);
+        if (this.unitPrice != null && this.quantity != null) {
+            this.totalPrice = getOriginalTotalPrice()
+                    .subtract(discountAmount)
+                    .add(taxAmount);
+        }
     }
 
     public int getRemainingQuantityForRewards() {
@@ -249,8 +254,13 @@ public class OrderItem {
     }
 
     public void setUnitPrice(BigDecimal unitPrice) {
+        if (unitPrice == null || unitPrice.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Price must be non-negative.");
+        }
         this.unitPrice = unitPrice;
-        calculateTotalPrice();
+        if (this.quantity != null) {
+            calculateTotalPrice();
+        }
     }
 
     public Integer getQuantity() {
@@ -258,11 +268,13 @@ public class OrderItem {
     }
 
     public void setQuantity(Integer quantity) {
-        if (quantity <= 0) {
+        if (quantity == null || quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
         this.quantity = quantity;
-        calculateTotalPrice();
+        if (this.unitPrice != null) {
+            calculateTotalPrice();
+        }
     }
 
     public String getSku() {
@@ -323,11 +335,11 @@ public class OrderItem {
         this.bulkQuantityThreshold = bulkQuantityThreshold;
     }
 
-    public boolean isSpecialPricing() {
+    public Boolean isSpecialPricing() {
         return specialPricing;
     }
 
-    public void setSpecialPricing(boolean specialPricing) {
+    public void setSpecialPricing(Boolean specialPricing) {
         this.specialPricing = specialPricing;
     }
 
