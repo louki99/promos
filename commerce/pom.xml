@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>ma.foodplus.ordering.system</groupId>
+        <artifactId>foodplus-ordering-system</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>commerce</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>catalog-service</module>
+        <module>price-list-service</module>
+        <module>tarif-service</module>
+        <module>promo-engine-service</module>
+    </modules>
+
+</project>

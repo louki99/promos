@@ -4,22 +4,72 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add test">
-      <change afterPath="$PROJECT_DIR$/cart-service/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cart-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cart-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/catalog-service/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/catalog-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/catalog-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/payment-service/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/payment-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
+    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add resources">
+      <change afterPath="$PROJECT_DIR$/commerce/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commerce/price-list-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commerce/price-list-service/src/main/java/ma/foodplus/ordering/system/pricelist/PriceListServiceApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commerce/price-list-service/src/test/java/ma/foodplus/ordering/system/PriceListServiceApplicationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commerce/promo-engine-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commerce/promo-engine-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commerce/promo-engine-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commerce/tarif-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/categorytarif/CategoryTarifServiceApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commerce/tarif-service/src/test/java/ma/foodplus/ordering/system/CategoryTarifServiceApplicationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/customer/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventory/inventory-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventory/inventory-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventory/inventory-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventory/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification/notification-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification/notification-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification/notification-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order/order-service/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order/receipt-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order/receipt-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order/receipt-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order/shipment-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order/shipment-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order/shipment-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment/payment-service/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/reporting/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/reporting/reporting-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/reporting/reporting-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/reporting/reporting-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/store/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/store/store-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/store/store-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/store/store-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sync-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sync-service/src/main/java/ma/foodplus/ordering/system/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sync-service/src/test/java/ma/foodplus/ordering/system/AppTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/order/cart-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/java/ma/foodplus/ordering/system/card/CardServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/cart-service/src/main/java/ma/foodplus/ordering/system/card/CardServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/catalog-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/test/java/ma/foodplus/ordering/system/CardServiceApplicationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/cart-service/src/test/java/ma/foodplus/ordering/system/CardServiceApplicationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalog-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/catalog-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalog-service/src/main/java/ma/foodplus/ordering/system/catalog/CatalogServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/catalog-service/src/main/java/ma/foodplus/ordering/system/catalog/CatalogServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalog-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/price-list-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalog-service/src/test/java/ma/foodplus/ordering/system/CatalogServiceApplicationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/catalog-service/src/test/java/ma/foodplus/ordering/system/CatalogServiceApplicationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/Assabil Doc promtions.doc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/foodplus-ordering.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/order/order-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/ma/foodplus/ordering/system/order/OrderApplicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/order-service/src/main/java/ma/foodplus/ordering/system/order/OrderApplicationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/tarif-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-service/src/test/java/ma/foodplus/ordering/system/OrderApplicationServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/order-service/src/test/java/ma/foodplus/ordering/system/OrderApplicationServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/partner-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/partner-service/src/main/java/ma/foodplus/ordering/system/partner/PartnerServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/PartnerServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/partner-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/partner-service/src/test/java/ma/foodplus/ordering/system/PartnerServiceApplicationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/test/java/ma/foodplus/ordering/system/PartnerServiceApplicationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/payment/payment-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/src/main/java/ma/foodplus/ordering/system/payment/PaymentServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment/payment-service/src/main/java/ma/foodplus/ordering/system/payment/PaymentServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/order/cart-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/src/test/java/ma/foodplus/ordering/system/PaymentServiceApplicationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment/payment-service/src/test/java/ma/foodplus/ordering/system/PaymentServiceApplicationTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,58 +114,62 @@
     <option name="showMembers" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;Application.FoodPlusOrderingApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ProductServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PromotionApplicationServiceTest.calculatePromotions_InvalidRequest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PromotionApplicationServiceTest.calculatePromotions_Success.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PromotionApplicationServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PromotionApplicationServiceTest.getEligiblePromotions_Success.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.PromotionApplicationServiceTest.validatePromotionCode_Invalid.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PromotionApplicationServiceTest.validatePromotionCode_Valid.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PromotionCalculationServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RewardApplicatorTest.executor&quot;: &quot;Run&quot;,
-    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.foodplus-ordering-system [clean].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ChatTagsLlmMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ClientConfigCleanupMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyAccountHistoryMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyAccountsIdsRefresh&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyAssignOrphanedChatsToActiveAccount&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyConvertUrlToCodebaseName&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyHistoryLlmMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyMigrateChatHistory-v2&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.CodyProjectSettingsMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.DeprecatedChatLlmMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ToggleCodyToolWindowAfterMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/nvp/src/main/java/ma/foodplus/ordering/system/products&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Application.FoodPlusOrderingApplication.executor": "Run",
+    "Application.ProductServiceApplication.executor": "Run",
+    "JUnit.PromotionApplicationServiceTest.calculatePromotions_InvalidRequest.executor": "Run",
+    "JUnit.PromotionApplicationServiceTest.calculatePromotions_Success.executor": "Run",
+    "JUnit.PromotionApplicationServiceTest.executor": "Run",
+    "JUnit.PromotionApplicationServiceTest.getEligiblePromotions_Success.executor": "Debug",
+    "JUnit.PromotionApplicationServiceTest.validatePromotionCode_Invalid.executor": "Run",
+    "JUnit.PromotionApplicationServiceTest.validatePromotionCode_Valid.executor": "Run",
+    "JUnit.PromotionCalculationServiceTest.executor": "Run",
+    "JUnit.RewardApplicatorTest.executor": "Run",
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "Maven.foodplus-ordering-system [clean].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ChatTagsLlmMigration": "true",
+    "RunOnceActivity.ClientConfigCleanupMigration": "true",
+    "RunOnceActivity.CodyAccountHistoryMigration": "true",
+    "RunOnceActivity.CodyAccountsIdsRefresh": "true",
+    "RunOnceActivity.CodyAssignOrphanedChatsToActiveAccount": "true",
+    "RunOnceActivity.CodyConvertUrlToCodebaseName": "true",
+    "RunOnceActivity.CodyHistoryLlmMigration": "true",
+    "RunOnceActivity.CodyMigrateChatHistory-v2": "true",
+    "RunOnceActivity.CodyProjectSettingsMigration": "true",
+    "RunOnceActivity.DeprecatedChatLlmMigration": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.ToggleCodyToolWindowAfterMigration": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "develop",
+    "last_opened_file_path": "/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/price-list-service/src/main/resources",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="ma.foodplus.ordering.system.promos.dto" />
       <recent name="ma.foodplus.ordering.system.promos.repository" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/products" />
-      <recent name="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/products/dto" />
-      <recent name="$PROJECT_DIR$/nvp/src/main/resources" />
-      <recent name="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/tarif" />
-      <recent name="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/order" />
+      <recent name="$PROJECT_DIR$/price-list-service/src/main/resources" />
+      <recent name="$PROJECT_DIR$/tarif-service/src/main/resources" />
+      <recent name="$PROJECT_DIR$/payment-service/src/main/resources" />
+      <recent name="$PROJECT_DIR$/partner-service/src/main/resources" />
+      <recent name="$PROJECT_DIR$/order-service/src/main/resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/nvp/src/main/resources/db/migration" />
+      <recent name="$PROJECT_DIR$/notification" />
+      <recent name="$PROJECT_DIR$/reporting" />
+      <recent name="$PROJECT_DIR$/inventory" />
+      <recent name="$PROJECT_DIR$/store" />
+      <recent name="$PROJECT_DIR$/payment" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ma.foodplus.ordering.system.products.exception" />
@@ -398,7 +452,23 @@
       <option name="project" value="LOCAL" />
       <updated>1750019936627</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="build structure microservices">
+      <option name="closed" value="true" />
+      <created>1750188601070</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1750188601070</updated>
+    </task>
+    <task id="LOCAL-00024" summary="add resources">
+      <option name="closed" value="true" />
+      <created>1750188695762</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1750188695762</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -416,7 +486,9 @@
     <MESSAGE value="add more fix pormos" />
     <MESSAGE value="add mor column on order" />
     <MESSAGE value="add test" />
-    <option name="LAST_COMMIT_MESSAGE" value="add test" />
+    <MESSAGE value="build structure microservices" />
+    <MESSAGE value="add resources" />
+    <option name="LAST_COMMIT_MESSAGE" value="add resources" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -13,13 +13,20 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
+		<module>commerce</module>
+		<module>order</module>
+		<module>customer</module>
+		<module>payment</module>
+		<module>store</module>
+		<module>inventory</module>
+		<module>reporting</module>
+		<module>notification</module>
+		<module>integration</module>
 		<module>common</module>
-        <module>nvp</module>
-        <module>cart-service</module>
-		<module>order-service</module>
-		<module>payment-service</module>
-		<module>catalog-service</module>
-		<module>partner-service</module>
+
+
+        <!-- <module>nvp</module> -->
+
 	</modules>
 
 	<properties>
@@ -176,25 +183,6 @@
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>${flyway.version}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.8</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
