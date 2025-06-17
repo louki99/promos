@@ -8,8 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="common-application" />
-        <module name="common-dataaccess" />
+        <module name="cart-service" />
+        <module name="payment-service" />
         <module name="common-domain" />
+        <module name="catalog-service" />
+        <module name="order-service" />
+        <module name="common-dataaccess" />
       </profile>
       <profile name="Annotation profile for foodplus-ordering-system" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -37,12 +41,16 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="cart-service" options="-parameters" />
+      <module name="catalog-service" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="common-application" options="-parameters" />
       <module name="common-dataaccess" options="-parameters" />
       <module name="common-domain" options="-parameters" />
       <module name="foodplus-ordering-system" options="-parameters" />
       <module name="nvp" options="-parameters" />
+      <module name="order-service" options="-parameters" />
+      <module name="payment-service" options="-parameters" />
       <module name="product-application" options="-parameters" />
       <module name="product-application-service" options="-parameters" />
       <module name="product-container" options="-parameters" />

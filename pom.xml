@@ -15,12 +15,28 @@
 	<modules>
 		<module>common</module>
         <module>nvp</module>
-    </modules>
+        <module>cart-service</module>
+		<module>order-service</module>
+		<module>payment-service</module>
+		<module>catalog-service</module>
+		<module>partner-service</module>
+	</modules>
 
 	<properties>
 		<java.version>21</java.version>
 		<mockito.version>5.17.0</mockito.version>
 		<maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+		<mapstruct.version>1.5.5.Final</mapstruct.version>
+		<testcontainers.version>1.19.3</testcontainers.version>
+		<archunit.version>1.2.1</archunit.version>
+		<caffeine.version>3.1.8</caffeine.version>
+		<lombok.version>1.18.30</lombok.version>
+		<flyway.version>11.9.1</flyway.version>
+		<postgresql.version>42.7.5</postgresql.version>
+		<openapi.version>2.3.0</openapi.version>
+		<jackson.version>2.15.2</jackson.version>
+		<commons-lang3.version>3.17.0</commons-lang3.version>
+		<hypersistence.version>3.0.3</hypersistence.version>
 	</properties>
 
 	<dependencyManagement>
@@ -56,6 +72,59 @@
 			</dependency>
 			<!-- end test dependencies -->
 
+
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+				<version>${openapi.version}</version>
+			</dependency>
+
+			<!-- manage migration dependencies -->
+			<dependency>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-core</artifactId>
+				<version>${flyway.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-database-postgresql</artifactId>
+				<version>${flyway.version}</version>
+			</dependency>
+			<!-- end manage migration dependencies -->
+
+			<!-- MapStruct for mapping -->
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct</artifactId>
+				<version>${mapstruct.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct-processor</artifactId>
+				<version>${mapstruct.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- Utilities -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
+			</dependency>
+
+			<!-- Hibernate Types -->
+			<dependency>
+				<groupId>io.hypersistence</groupId>
+				<artifactId>hypersistence-utils-hibernate-60</artifactId>
+				<version>${hypersistence.version}</version>
+			</dependency>
+
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -82,8 +151,50 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<release>21</release>
+					<source>21</source>
+					<target>21</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>${flyway.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.8</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
