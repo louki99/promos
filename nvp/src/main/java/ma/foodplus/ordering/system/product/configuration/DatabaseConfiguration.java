@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Configuration
-@EntityScan(basePackages = "ma.foodplus.ordering.system.product.model")
+@EntityScan(basePackages = "ma.foodplus.ordering.system.product.domain")
 @EnableJpaAuditing
 public class DatabaseConfiguration {
 }
