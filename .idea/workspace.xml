@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add new column">
+    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add swagger">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commerce/tarif-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/tarif-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/controller/CategoryTarifController.java" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/controller/CategoryTarifController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/dto/CategoryTarifDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/dto/CategoryTarifDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/repository/CategoryTarifRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/repository/CategoryTarifRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/service/CategoryTarifService.java" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/service/CategoryTarifService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/exception/ErrorCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/service/impl/CategoryTarifServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/commerce/tarif-service/src/main/java/ma/foodplus/ordering/system/category/tariff/service/impl/CategoryTarifServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -437,7 +439,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750423683043</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="add swagger">
+      <option name="closed" value="true" />
+      <created>1750426493535</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1750426493535</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -460,7 +470,8 @@
     <MESSAGE value="build infra structure and use groups bounded context" />
     <MESSAGE value="add category tarif" />
     <MESSAGE value="add new column" />
-    <option name="LAST_COMMIT_MESSAGE" value="add new column" />
+    <MESSAGE value="add swagger" />
+    <option name="LAST_COMMIT_MESSAGE" value="add swagger" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

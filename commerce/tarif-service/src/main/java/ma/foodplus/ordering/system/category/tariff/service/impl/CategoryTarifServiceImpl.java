@@ -4,6 +4,8 @@ import ma.foodplus.ordering.system.category.tariff.domain.CategoryTarif;
 import ma.foodplus.ordering.system.category.tariff.mapper.CategoryTarifMapper;
 import ma.foodplus.ordering.system.category.tariff.repository.CategoryTarifRepository;
 import ma.foodplus.ordering.system.category.tariff.service.CategoryTarifService;
+import ma.foodplus.ordering.system.category.tariff.exception.CategoryTarifException;
+import ma.foodplus.ordering.system.category.tariff.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -45,11 +47,17 @@ public class CategoryTarifServiceImpl implements CategoryTarifService{
 
     @Override
     public CategoryTarif save(CategoryTarif categoryTarif) {
+        if (categoryTarifRepository.findByCode(categoryTarif.getCode()).isPresent()) {
+            throw new CategoryTarifException(ErrorCode.CATEGORY_TARIF_DUPLICATE_CODE, "Code: " + categoryTarif.getCode());
+        }
         return categoryTarifRepository.save(categoryTarif);
     }
 
     @Override
     public void deleteById(Long id) {
+        if (!categoryTarifRepository.existsById(id)) {
+            throw new CategoryTarifException(ErrorCode.CATEGORY_TARIF_NOT_FOUND, "ID: " + id);
+        }
         categoryTarifRepository.deleteById(id);
     }
 
@@ -57,12 +65,16 @@ public class CategoryTarifServiceImpl implements CategoryTarifService{
     public CategoryTarif update(Long id, CategoryTarif categoryTarif) {
         return categoryTarifRepository.findById(id)
             .map(existingCategoryTarif -> {
+                if (!existingCategoryTarif.getCode().equals(categoryTarif.getCode()) &&
+                    categoryTarifRepository.findByCode(categoryTarif.getCode()).isPresent()) {
+                    throw new CategoryTarifException(ErrorCode.CATEGORY_TARIF_DUPLICATE_CODE, "Code: " + categoryTarif.getCode());
+                }
                 existingCategoryTarif.setCode(categoryTarif.getCode());
                 existingCategoryTarif.setName(categoryTarif.getName());
                 existingCategoryTarif.setDescription(categoryTarif.getDescription());
                 return categoryTarifRepository.save(existingCategoryTarif);
             })
-            .orElseThrow(() -> new RuntimeException("CategoryTarif not found with id: " + id));
+            .orElseThrow(() -> new CategoryTarifException(ErrorCode.CATEGORY_TARIF_NOT_FOUND, "ID: " + id));
     }
 
     @Override
@@ -72,6 +84,6 @@ public class CategoryTarifServiceImpl implements CategoryTarifService{
                 categoryTarif.setActive(!categoryTarif.getActive());
                 return categoryTarifRepository.save(categoryTarif);
             })
-            .orElseThrow(() -> new RuntimeException("CategoryTarif not found with id: " + id));
+            .orElseThrow(() -> new CategoryTarifException(ErrorCode.CATEGORY_TARIF_NOT_FOUND, "ID: " + id));
     }
 } 

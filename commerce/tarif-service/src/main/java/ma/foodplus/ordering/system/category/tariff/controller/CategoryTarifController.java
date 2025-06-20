@@ -15,6 +15,7 @@ import ma.foodplus.ordering.system.category.tariff.service.CategoryTarifService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/category-tarifs")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "Category Tariff Management", description = "CRUD and activation APIs for managing category tariffs (hotels, restaurants, cafes). Includes endpoints for create, update, delete, fetch by ID/code, list all, get active, and toggle activation.")
 public class CategoryTarifController {
 
