@@ -27,6 +27,8 @@ public class CategoryTarif {
 
     @Column(name="code",unique=true,nullable=false)
     private String code;
+
+    private Boolean active;
     
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
