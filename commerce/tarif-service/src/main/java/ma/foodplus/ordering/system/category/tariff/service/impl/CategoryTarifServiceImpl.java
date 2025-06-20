@@ -6,6 +6,7 @@ import ma.foodplus.ordering.system.category.tariff.repository.CategoryTarifRepos
 import ma.foodplus.ordering.system.category.tariff.service.CategoryTarifService;
 import ma.foodplus.ordering.system.category.tariff.exception.CategoryTarifException;
 import ma.foodplus.ordering.system.category.tariff.exception.ErrorCode;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -21,12 +22,6 @@ public class CategoryTarifServiceImpl implements CategoryTarifService{
     public CategoryTarifServiceImpl(CategoryTarifRepository categoryTarifRepository,CategoryTarifMapper mapper) {
         this.categoryTarifRepository = categoryTarifRepository;
         this.mapper=mapper;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<CategoryTarif> findAll() {
-        return categoryTarifRepository.findAll();
     }
 
     @Override
@@ -85,5 +80,15 @@ public class CategoryTarifServiceImpl implements CategoryTarifService{
                 return categoryTarifRepository.save(categoryTarif);
             })
             .orElseThrow(() -> new CategoryTarifException(ErrorCode.CATEGORY_TARIF_NOT_FOUND, "ID: " + id));
+    }
+
+    @Override
+    public List<CategoryTarif> search(Specification<CategoryTarif> categoryTarifSpecification){
+        return categoryTarifRepository.findAll(categoryTarifSpecification);
+    }
+
+    @Override
+    public List<CategoryTarif> findAll(){
+        return categoryTarifRepository.findAll();
     }
 } 

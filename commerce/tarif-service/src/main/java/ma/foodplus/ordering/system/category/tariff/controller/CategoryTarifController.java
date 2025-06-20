@@ -12,6 +12,7 @@ import ma.foodplus.ordering.system.category.tariff.domain.CategoryTarif;
 import ma.foodplus.ordering.system.category.tariff.dto.CategoryTarifDTO;
 import ma.foodplus.ordering.system.category.tariff.mapper.CategoryTarifMapper;
 import ma.foodplus.ordering.system.category.tariff.service.CategoryTarifService;
+import ma.foodplus.ordering.system.category.tariff.service.CategoryTarifSpecifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -136,5 +137,20 @@ public class CategoryTarifController {
             @Parameter(description = "ID of the category tariff to toggle", required = true) @PathVariable Long id) {
         CategoryTarif response = categoryTarifService.toggle(id);
         return ResponseEntity.ok(categoryTarifMapper.toDTO(response));
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "Search category tariffs", description = "Searches for category tariffs by name, description, or code.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Search results", content = @Content(schema = @Schema(implementation = CategoryTarifDTO.class)))
+    })
+    public ResponseEntity<List<CategoryTarifDTO>> searchCategoryTarifs(
+            @Parameter(description = "Keyword to search for", required = true) @RequestParam String keyword) {
+        List<CategoryTarif> results = categoryTarifService.search(CategoryTarifSpecifications.containsTextInNameDescOrCode(keyword));
+        List<CategoryTarifDTO> response = results.stream()
+                .map(categoryTarifMapper::toDTO)
+                .toList();
+
+        return ResponseEntity.ok(response);
     }
 } 
