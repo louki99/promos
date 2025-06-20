@@ -8,7 +8,11 @@ import java.util.Optional;
 public interface CategoryTarifService {
     List<CategoryTarif> findAll();
     Optional<CategoryTarif> findById(Long id);
+    Optional<CategoryTarif> findByCode(String code);
+    Optional<CategoryTarif> findActiveCategoryTarif();
     CategoryTarif save(CategoryTarif categoryTarif);
     void deleteById(Long id);
     CategoryTarif update(Long id, CategoryTarif categoryTarif);
-} 
+
+    CategoryTarif toggle(Long id);
+}
