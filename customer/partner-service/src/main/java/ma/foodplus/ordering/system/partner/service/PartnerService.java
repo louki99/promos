@@ -343,4 +343,230 @@ public interface PartnerService {
      * @return growth trends
      */
     Map<String, Object> getGrowthTrends(Long partnerId, String period);
+
+    // ========== Supplier Partner Operations ==========
+    
+    /**
+     * Create a supplier partner
+     * @param supplierPartnerDTO the supplier partner data
+     * @return the created supplier partner
+     */
+    PartnerDTO createSupplierPartner(ma.foodplus.ordering.system.partner.dto.SupplierPartnerDTO supplierPartnerDTO);
+    
+    /**
+     * Update a supplier partner
+     * @param id the partner ID
+     * @param supplierPartnerDTO the updated supplier partner data
+     * @return the updated supplier partner
+     */
+    PartnerDTO updateSupplierPartner(Long id, ma.foodplus.ordering.system.partner.dto.SupplierPartnerDTO supplierPartnerDTO);
+    
+    /**
+     * Get supplier partner by ID
+     * @param id the partner ID
+     * @return the supplier partner
+     */
+    PartnerDTO getSupplierPartnerById(Long id);
+    
+    /**
+     * Get all supplier partners with pagination
+     * @param pageable pagination parameters
+     * @return paginated supplier partners
+     */
+    Page<PartnerDTO> getSupplierPartners(Pageable pageable);
+    
+    /**
+     * Search supplier partners with filters
+     * @param searchTerm search term
+     * @param category supplier category
+     * @param status supplier status
+     * @param riskLevel risk level
+     * @param rating supplier rating
+     * @param pageable pagination parameters
+     * @return paginated supplier partners
+     */
+    Page<PartnerDTO> searchSupplierPartners(String searchTerm, String category, String status, String riskLevel, String rating, Pageable pageable);
+    
+    /**
+     * Get suppliers by category
+     * @param category supplier category
+     * @return list of suppliers in the category
+     */
+    List<PartnerDTO> getSuppliersByCategory(String category);
+    
+    /**
+     * Get suppliers by status
+     * @param status supplier status
+     * @return list of suppliers with the status
+     */
+    List<PartnerDTO> getSuppliersByStatus(String status);
+    
+    /**
+     * Update supplier performance scores
+     * @param id supplier partner ID
+     * @param deliveryScore delivery performance score
+     * @param qualityScore quality score
+     * @param priceScore price competitiveness score
+     * @return updated supplier partner
+     */
+    PartnerDTO updateSupplierPerformanceScores(Long id, BigDecimal deliveryScore, BigDecimal qualityScore, BigDecimal priceScore);
+    
+    /**
+     * Get supplier performance metrics
+     * @param id supplier partner ID
+     * @return performance metrics
+     */
+    Map<String, Object> getSupplierPerformance(Long id);
+    
+    /**
+     * Update supplier risk assessment
+     * @param id supplier partner ID
+     * @param riskLevel risk level
+     * @param notes risk assessment notes
+     * @return updated supplier partner
+     */
+    PartnerDTO updateSupplierRiskAssessment(Long id, String riskLevel, String notes);
+    
+    /**
+     * Get supplier risk assessment
+     * @return risk assessment data
+     */
+    Map<String, Object> getSupplierRiskAssessment();
+    
+    /**
+     * Schedule supplier audit
+     * @param id supplier partner ID
+     * @param nextAuditDate next audit date
+     * @param notes audit notes
+     * @return updated supplier partner
+     */
+    PartnerDTO scheduleSupplierAudit(Long id, java.time.ZonedDateTime nextAuditDate, String notes);
+    
+    /**
+     * Complete supplier audit
+     * @param id supplier partner ID
+     * @param auditDate audit completion date
+     * @param results audit results
+     * @return updated supplier partner
+     */
+    PartnerDTO completeSupplierAudit(Long id, java.time.ZonedDateTime auditDate, String results);
+    
+    /**
+     * Get suppliers with overdue audits
+     * @return list of suppliers with overdue audits
+     */
+    List<PartnerDTO> getSuppliersWithOverdueAudits();
+    
+    /**
+     * Get suppliers with audits due soon
+     * @param daysThreshold days threshold
+     * @return list of suppliers with audits due soon
+     */
+    List<PartnerDTO> getSuppliersWithAuditsDueSoon(int daysThreshold);
+    
+    /**
+     * Update supplier status
+     * @param id supplier partner ID
+     * @param status new status
+     * @param reason status change reason
+     * @return updated supplier partner
+     */
+    PartnerDTO updateSupplierStatus(Long id, String status, String reason);
+    
+    /**
+     * Get supplier performance analytics
+     * @return performance analytics data
+     */
+    Map<String, Object> getSupplierPerformanceAnalytics();
+    
+    /**
+     * Get supplier risk analytics
+     * @return risk analytics data
+     */
+    Map<String, Object> getSupplierRiskAnalytics();
+    
+    /**
+     * Get supplier category distribution
+     * @return category distribution data
+     */
+    Map<String, Object> getSupplierCategoryDistribution();
+
+    // ========== Additional Supplier Partner Operations ==========
+    
+    /**
+     * Update supplier performance scores (internal method)
+     * @param id supplier partner ID
+     * @param deliveryScore delivery performance score
+     * @param qualityScore quality score
+     * @param priceScore price competitiveness score
+     * @return updated supplier partner
+     */
+    PartnerDTO updatePerformanceScores(Long id, BigDecimal deliveryScore, BigDecimal qualityScore, BigDecimal priceScore);
+    
+    /**
+     * Update supplier risk assessment (internal method)
+     * @param id supplier partner ID
+     * @param riskLevel risk level
+     * @param notes risk assessment notes
+     * @return updated supplier partner
+     */
+    PartnerDTO updateRiskAssessment(Long id, String riskLevel, String notes);
+    
+    /**
+     * Schedule supplier audit (internal method)
+     * @param id supplier partner ID
+     * @param nextAuditDate next audit date
+     * @param notes audit notes
+     * @return updated supplier partner
+     */
+    PartnerDTO scheduleAudit(Long id, java.time.ZonedDateTime nextAuditDate, String notes);
+    
+    /**
+     * Complete supplier audit (internal method)
+     * @param id supplier partner ID
+     * @param auditDate audit completion date
+     * @param results audit results
+     * @return updated supplier partner
+     */
+    PartnerDTO completeAudit(Long id, java.time.ZonedDateTime auditDate, String results);
+    
+    /**
+     * Get suppliers with overdue audits (internal method)
+     * @return list of suppliers with overdue audits
+     */
+    List<PartnerDTO> getOverdueAudits();
+    
+    /**
+     * Get suppliers with audits due soon (internal method)
+     * @param daysThreshold days threshold
+     * @return list of suppliers with audits due soon
+     */
+    List<PartnerDTO> getAuditsDueSoon(int daysThreshold);
+    
+    /**
+     * Update supplier status (internal method)
+     * @param id supplier partner ID
+     * @param status new status
+     * @param reason status change reason
+     * @return updated supplier partner
+     */
+    PartnerDTO updateStatus(Long id, String status, String reason);
+    
+    /**
+     * Get supplier performance analytics (internal method)
+     * @return performance analytics data
+     */
+    Map<String, Object> getPerformanceAnalytics();
+    
+    /**
+     * Get supplier risk analytics (internal method)
+     * @return risk analytics data
+     */
+    Map<String, Object> getRiskAnalytics();
+    
+    /**
+     * Get supplier category distribution (internal method)
+     * @return category distribution data
+     */
+    Map<String, Object> getCategoryDistribution();
 }

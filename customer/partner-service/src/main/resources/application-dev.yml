@@ -1,22 +1,65 @@
+# Development Profile Configuration
+# This profile disables security for easier development
+
 spring:
-  datasource:
-    hikari:
-      maximum-pool-size: 20
-      minimum-idle: 5
-      connection-timeout: 30000
-      idle-timeout: 600000
-      max-lifetime: 1800000
-      leak-detection-threshold: 60000
+  # Disable security for development
+  security:
+    enabled: false
+    oauth2:
+      resourceserver:
+        jwt:
+          enabled: false
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+# Disable method security for development
+security:
+  basic:
+    enabled: false
+  oauth2:
+    enabled: false
 
+# Development-specific logging
 logging:
   level:
-    root: DEBUG
-    ma.foodplus.ordering.system: DEBUG
-    org.springframework.web: INFO
+    org.springframework.security: DEBUG
+    ma.foodplus.ordering.system.partner: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# Development database settings (if different from main config)
+# spring:
+#   datasource:
+#     url: jdbc:postgresql://localhost:5432/partners_dev
+#     username: dev_user
+#     password: dev_password
+
+# Development server settings
+server:
+  port: 2000
+  servlet:
+    context-path: /partner-service
+
+# Development management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # Expose all endpoints for development
+  endpoint:
+    health:
+      show-details: always  # Always show health details in dev
+
+# Development-specific business configuration
+partner:
+  service:
+    # Development defaults
+    default-credit-limit: 5000.00
+    default-payment-terms: 15
+    min-supplier-performance-score: 50.0
+    audit-reminder-days: 7
+    contract-expiry-reminder-days: 30
+    
+    # Disable notifications in development
+    notifications:
+      enabled: false
+      email:
+        enabled: false

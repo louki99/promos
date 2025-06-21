@@ -8,11 +8,22 @@ spring:
     username: ${DB_USERNAME:manager}
     password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
 
   jpa:
     hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
 
   flyway:
     enabled: true
@@ -20,14 +31,101 @@ spring:
     baseline-on-migrate: true
     validate-on-migrate: true
 
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 3
+      batch-size: 16384
+      linger-ms: 1
+      buffer-memory: 33554432
+      enable-idempotence: true
+      max-in-flight-requests-per-connection: 5
+    consumer:
+      group-id: partner-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  # Redis Configuration for Caching
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
+  # Security Configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/auth/realms/foodplus}
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:8080/auth/realms/foodplus/protocol/openid-connect/certs}
+
+  # Cache Configuration
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000 # 1 hour
+      cache-null-values: false
+      use-key-prefix: true
+      key-prefix: "partner-service:"
+
+  # Async Configuration
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 10
+        queue-capacity: 100
+        keep-alive: 60s
+        thread-name-prefix: "PartnerAsync-"
+    scheduling:
+      pool:
+        size: 5
+        thread-name-prefix: "PartnerScheduler-"
+
+# Keycloak Configuration
+keycloak:
+  auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL:http://localhost:8080/auth}
+  realm: ${KEYCLOAK_REALM:foodplus}
+  resource: ${KEYCLOAK_CLIENT_ID:partner-service}
+  public-client: false
+  confidential-port: 0
+  principal-attribute: preferred_username
+
+# Kafka Topics Configuration
+kafka:
+  topics:
+    partner-events: partner-events
+    contract-events: contract-events
+    credit-events: credit-events
+    loyalty-events: loyalty-events
+    supplier-events: supplier-events
+    group-events: group-events
+    business-events: business-events
+
 server:
   port: 2000
+  servlet:
+    context-path: /partner-service
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus,caches
+        include: health,info,metrics,prometheus,caches,env,configprops
   endpoint:
     health:
       show-details: when-authorized
@@ -40,10 +138,81 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      percentiles:
+        http.server.requests: 0.5, 0.95, 0.99
 
+# Logging Configuration
 logging:
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file:
     name: logs/foodplus-ordering-partners.log
+    max-size: 100MB
+    max-history: 30
+  level:
+    root: INFO
+    ma.foodplus.ordering.system.partner: DEBUG
+    org.springframework.kafka: INFO
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# OpenAPI Configuration
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+  info:
+    title: Partner Service API
+    description: Comprehensive partner management system for B2B, B2C, and Supplier partners
+    version: 3.0.0
+    contact:
+      name: FoodPlus Development Team
+      email: dev@foodplus.ma
+  servers:
+    - url: http://localhost:2000/partner-service
+      description: Development server
+    - url: https://api.foodplus.ma/partner-service
+      description: Production server
+
+# Business Configuration
+partner:
+  service:
+    # Default values for partner management
+    default-credit-limit: 10000.00
+    default-payment-terms: 30
+    min-supplier-performance-score: 60.0
+    audit-reminder-days: 30
+    contract-expiry-reminder-days: 60
+    
+    # Notification settings
+    notifications:
+      enabled: true
+      email:
+        enabled: true
+        from: noreply@foodplus.ma
+      sms:
+        enabled: false
+      webhook:
+        enabled: true
+        url: ${WEBHOOK_URL:}
+    
+    # Event publishing settings
+    events:
+      enabled: true
+      async: true
+      retry-attempts: 3
+      retry-delay: 1000
+    
+    # Cache settings
+    cache:
+      partner-details: 3600 # 1 hour
+      partner-statistics: 1800 # 30 minutes
+      partner-search: 900 # 15 minutes

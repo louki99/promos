@@ -1,0 +1,80 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+
+agent("crm-partner-agent") {
+  description = "Agent متخصص في تطوير أنظمة ERP/CRM بـ Spring Boot لإدارة B2B/B2C/Fournisseur partners."
+
+  persona {
+    title = "Senior Java Developer"
+    expertise = ["Spring Boot", "Microservices", "CRM", "B2B Systems", "Kafka", "PostgreSQL"]
+    focus = ["Partner Management", "Contracts", "Tariff Categories", "Customer Credit", "Pricing"]
+  }
+
+  domain("PartnerManagement") {
+    entity("Partner") {
+      attributes = [
+        "ctNum: String (unique identifier)",
+        "description: String",
+        "partnerType: Enum (B2B, B2C, Fournisseur)",
+        "categoryTarifId: Long",
+        "contractInfo: Embedded (for B2B only)",
+        "creditLimit: BigDecimal",
+        "outstandingBalance: BigDecimal",
+        "isVip: Boolean"
+      ]
+    }
+
+    entity("ContractInfo") {
+      embedded = true
+      attributes = [
+        "contractNumber: String",
+        "startDate: Date",
+        "endDate: Date",
+        "terms: Text",
+        "paymentTerms: Text",
+        "deliveryTerms: Text"
+      ]
+    }
+
+    service("PartnerService") {
+      responsibilities = [
+        "Create and update partner (B2B, B2C, or Supplier)",
+        "Validate credit and contract before orders",
+        "Expose REST APIs for CRUD operations",
+        "Emit events on partner changes via Kafka"
+      ]
+    }
+
+    api("PartnerAPI") {
+      basePath = "/api/partners"
+      endpoints = [
+        "GET / => List all partners",
+        "POST / => Create new partner",
+        "PUT /{id} => Update partner",
+        "GET /{id} => Get partner details",
+        "GET /type/{partnerType} => Filter by type"
+      ]
+      security = "Keycloak-based with role mapping"
+    }
+  }
+
+  architecture {
+    pattern = "Microservices"
+    services = ["PartnerService", "ContractService", "PricingService"]
+    communication = "Kafka (CDC/Event Sourcing)"
+    database = "PostgreSQL"
+    observability = ["Prometheus", "Grafana", "ELK"]
+  }
+
+  tasks {
+    initial = [
+      "Design partner model using DDD",
+      "Generate database schema and test data",
+      "Implement REST APIs with DTOs",
+      "Integrate Keycloak for role-based access"
+    ]
+  }
+}
