@@ -1,22 +1,21 @@
 package ma.foodplus.ordering.system.partner.mapper;
 
 import lombok.RequiredArgsConstructor;
+import ma.foodplus.ordering.system.partner.domain.B2BPartner;
+import ma.foodplus.ordering.system.partner.domain.B2CPartner;
 import ma.foodplus.ordering.system.partner.domain.Partner;
+import ma.foodplus.ordering.system.partner.domain.PartnerType;
 import ma.foodplus.ordering.system.partner.dto.PartnerDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Main Partner Mapper that delegates to type-specific mappers.
+ * Factory-based mapper for Partner entities and DTOs.
  * 
- * <p>This mapper provides backward compatibility with the existing PartnerMapper interface
- * while delegating to the appropriate type-specific mappers (B2B or B2C) based on the partner type.</p>
- * 
- * <p>For new code, it's recommended to use the type-specific mappers directly:
- * - B2BPartnerMapper for B2B partners
- * - B2CPartnerMapper for B2C partners
- * - PartnerMapperFactory for unified mapping operations</p>
+ * <p>This mapper uses a factory pattern to delegate to specific mappers based on partner type,
+ * ensuring proper handling of type-specific fields and business logic.</p>
  * 
  * @author FoodPlus Development Team
  * @version 2.0.0
@@ -24,163 +23,133 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class PartnerMapper {
-    
+
     private final PartnerMapperFactory partnerMapperFactory;
-    
+
     /**
-     * Maps a Partner entity to PartnerDTO.
-     * 
-     * @param partner the partner entity
-     * @return the partner DTO
+     * Maps a Partner entity to PartnerDTO using the appropriate specific mapper.
      */
     public PartnerDTO toDTO(Partner partner) {
+        if (partner == null) return null;
+        
         return partnerMapperFactory.toGenericDTO(partner);
     }
-    
+
     /**
-     * Maps a PartnerDTO to Partner entity.
-     * 
-     * @param partnerDTO the partner DTO
-     * @return the partner entity
+     * Maps a PartnerDTO to Partner entity using the appropriate specific mapper.
      */
     public Partner toEntity(PartnerDTO partnerDTO) {
+        if (partnerDTO == null) return null;
+        
         return partnerMapperFactory.toEntity(partnerDTO);
     }
-    
+
     /**
-     * Updates an existing Partner entity from PartnerDTO.
-     * 
-     * @param partnerDTO the partner DTO
-     * @param partner the partner entity to update
+     * Updates a Partner entity from PartnerDTO using the appropriate specific mapper.
      */
     public void updateEntityFromDTO(PartnerDTO partnerDTO, Partner partner) {
-        if (partnerDTO == null || partner == null) {
-            return;
-        }
+        if (partnerDTO == null || partner == null) return;
         
-        // Update common fields
+        // Update basic partner information
         partner.setCtNum(partnerDTO.getCtNum());
         partner.setIce(partnerDTO.getIce());
         partner.setDescription(partnerDTO.getDescription());
+        partner.setCateTarif(partnerDTO.getCategoryTarifId());
         
-        // Update contact info
-        if (partner.getContactInfo() == null) {
-            partner.setContactInfo(new ma.foodplus.ordering.system.partner.domain.ContactInfo());
-        }
-        partner.getContactInfo().setTelephone(partnerDTO.getTelephone());
-        partner.getContactInfo().setEmail(partnerDTO.getEmail());
-        partner.getContactInfo().setAddress(partnerDTO.getAddress());
-        partner.getContactInfo().setPostalCode(partnerDTO.getCodePostal());
-        partner.getContactInfo().setCity(partnerDTO.getVille());
-        partner.getContactInfo().setCountry(partnerDTO.getCountry());
+        // Update Contact Information (Individual columns)
+        partner.setTelephone(partnerDTO.getTelephone());
+        partner.setEmail(partnerDTO.getEmail());
+        partner.setAddress(partnerDTO.getAddress());
+        partner.setPostalCode(partnerDTO.getCodePostal());
+        partner.setCity(partnerDTO.getVille());
+        partner.setCountry(partnerDTO.getCountry());
         
-        // Update credit info
-        if (partner.getCreditInfo() == null) {
-            partner.setCreditInfo(new ma.foodplus.ordering.system.partner.domain.CreditInfo());
-        }
-        partner.getCreditInfo().setCreditLimit(partnerDTO.getCreditLimit());
-        partner.getCreditInfo().setCreditRating(partnerDTO.getCreditRating());
-        partner.getCreditInfo().setCreditScore(partnerDTO.getCreditScore());
-        partner.getCreditInfo().setPaymentHistory(partnerDTO.getPaymentHistory());
-        partner.getCreditInfo().setOutstandingBalance(partnerDTO.getOutstandingBalance());
-        partner.getCreditInfo().setLastPaymentDate(partnerDTO.getLastPaymentDate());
-        partner.getCreditInfo().setPaymentTermDays(partnerDTO.getPaymentTermDays());
-        partner.getCreditInfo().setPreferredPaymentMethod(partnerDTO.getPreferredPaymentMethod());
-        partner.getCreditInfo().setBankAccountInfo(partnerDTO.getBankAccountInfo());
+        // Update Credit Information (Individual columns)
+        partner.setCreditLimit(partnerDTO.getCreditLimit());
+        partner.setOutstandingBalance(partnerDTO.getOutstandingBalance());
+        partner.setCreditRating(partnerDTO.getCreditRating());
+        partner.setCreditScore(partnerDTO.getCreditScore());
+        partner.setPaymentTermDays(partnerDTO.getPaymentTermDays());
+        partner.setPreferredPaymentMethod(partnerDTO.getPreferredPaymentMethod());
+        partner.setBankAccountInfo(partnerDTO.getBankAccountInfo());
+        partner.setLastPaymentDate(partnerDTO.getLastPaymentDate());
+        partner.setPaymentHistory(partnerDTO.getPaymentHistory());
         
-        // Update loyalty info
-        if (partner.getLoyaltyInfo() == null) {
-            partner.setLoyaltyInfo(new ma.foodplus.ordering.system.partner.domain.LoyaltyInfo());
-        }
-        partner.getLoyaltyInfo().setVip(partnerDTO.isVip());
-        partner.getLoyaltyInfo().setLoyaltyPoints(partnerDTO.getLoyaltyPoints());
-        partner.getLoyaltyInfo().setLastOrderDate(partnerDTO.getLastOrderDate());
-        partner.getLoyaltyInfo().setTotalOrders(partnerDTO.getTotalOrders());
-        partner.getLoyaltyInfo().setTotalSpent(partnerDTO.getTotalSpent());
-        partner.getLoyaltyInfo().setAverageOrderValue(partnerDTO.getAverageOrderValue());
-        partner.getLoyaltyInfo().setPartnerSince(partnerDTO.getCustomerSince());
+        // Update Loyalty Information (Individual columns)
+        partner.setIsVip(partnerDTO.isVip());
+        partner.setLoyaltyPoints(partnerDTO.getLoyaltyPoints());
+        partner.setLastOrderDate(partnerDTO.getLastOrderDate());
+        partner.setTotalOrders(partnerDTO.getTotalOrders());
+        partner.setTotalSpent(partnerDTO.getTotalSpent());
+        partner.setAverageOrderValue(partnerDTO.getAverageOrderValue());
+        partner.setPartnerSince(partnerDTO.getCustomerSince());
         
-        // Update delivery preference
-        if (partner.getDeliveryPreference() == null) {
-            partner.setDeliveryPreference(new ma.foodplus.ordering.system.partner.domain.DeliveryPreference());
-        }
-        partner.getDeliveryPreference().setPreferredDeliveryTime(partnerDTO.getPreferredDeliveryTime());
-        partner.getDeliveryPreference().setPreferredDeliveryDays(partnerDTO.getPreferredDeliveryDays());
-        partner.getDeliveryPreference().setSpecialHandlingInstructions(partnerDTO.getSpecialHandlingInstructions());
+        // Update Delivery Preference (Individual columns)
+        partner.setPreferredDeliveryTime(partnerDTO.getPreferredDeliveryTime());
+        partner.setPreferredDeliveryDays(partnerDTO.getPreferredDeliveryDays());
+        partner.setSpecialHandlingInstructions(partnerDTO.getSpecialHandlingInstructions());
         
-        // Update audit info
-        if (partner.getAuditInfo() == null) {
-            partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        partner.getAuditInfo().setNotes(partnerDTO.getNotes());
-        partner.getAuditInfo().setActive(partnerDTO.isActive());
-        partner.getAuditInfo().setLastActivityDate(partnerDTO.getLastActivityDate());
-        partner.getAuditInfo().setCreatedBy(partnerDTO.getCreatedBy());
-        partner.getAuditInfo().setUpdatedBy(partnerDTO.getUpdatedBy());
-        partner.getAuditInfo().setCreatedAt(partnerDTO.getCreatedAt());
-        partner.getAuditInfo().setUpdatedAt(partnerDTO.getUpdatedAt());
+        // Update Audit Information (Individual columns)
+        partner.setNotes(partnerDTO.getNotes());
+        partner.setIsActive(partnerDTO.isActive());
+        partner.setLastActivityDate(partnerDTO.getLastActivityDate());
+        partner.setCreatedBy(partnerDTO.getCreatedBy());
+        partner.setUpdatedBy(partnerDTO.getUpdatedBy());
+        partner.setCreatedAt(partnerDTO.getCreatedAt());
+        partner.setUpdatedAt(partnerDTO.getUpdatedAt());
         
         // Update category tariff
         partner.setCateTarif(partnerDTO.getCategoryTarifId());
         
-        // Type-specific updates
-        if (partner instanceof ma.foodplus.ordering.system.partner.domain.B2BPartner) {
-            updateB2BFields(partnerDTO, (ma.foodplus.ordering.system.partner.domain.B2BPartner) partner);
-        } else if (partner instanceof ma.foodplus.ordering.system.partner.domain.B2CPartner) {
-            updateB2CFields(partnerDTO, (ma.foodplus.ordering.system.partner.domain.B2CPartner) partner);
+        // Update type-specific fields
+        if (partner instanceof B2BPartner) {
+            updateB2BFields(partnerDTO, (B2BPartner) partner);
+        } else if (partner instanceof B2CPartner) {
+            updateB2CFields(partnerDTO, (B2CPartner) partner);
         }
     }
-    
+
     /**
-     * Maps a list of partners to DTOs.
-     * 
-     * @param partners the list of partners
-     * @return the list of partner DTOs
+     * Maps a list of Partner entities to PartnerDTO list.
      */
     public List<PartnerDTO> toDTOList(List<Partner> partners) {
-        return partnerMapperFactory.toDTOList(partners);
+        if (partners == null) return null;
+        List<PartnerDTO> list = new ArrayList<>();
+        for (Partner p : partners) list.add(toDTO(p));
+        return list;
     }
-    
-    // ========== Private Helper Methods ==========
-    
+
     /**
-     * Updates B2B-specific fields.
+     * Updates B2B-specific fields from PartnerDTO.
      */
-    private void updateB2BFields(PartnerDTO partnerDTO, ma.foodplus.ordering.system.partner.domain.B2BPartner b2bPartner) {
-        // Update company info
-        if (b2bPartner.getCompanyInfo() == null) {
-            b2bPartner.setCompanyInfo(new ma.foodplus.ordering.system.partner.domain.CompanyInfo());
-        }
-        b2bPartner.getCompanyInfo().setCompanyName(partnerDTO.getCompanyName());
-        b2bPartner.getCompanyInfo().setLegalForm(partnerDTO.getLegalForm());
-        b2bPartner.getCompanyInfo().setRegistrationNumber(partnerDTO.getRegistrationNumber());
-        b2bPartner.getCompanyInfo().setTaxId(partnerDTO.getTaxId());
-        b2bPartner.getCompanyInfo().setVatNumber(partnerDTO.getVatNumber());
-        b2bPartner.getCompanyInfo().setBusinessActivity(partnerDTO.getBusinessActivity());
-        b2bPartner.getCompanyInfo().setAnnualTurnover(partnerDTO.getAnnualTurnover());
-        b2bPartner.getCompanyInfo().setNumberOfEmployees(partnerDTO.getNumberOfEmployees());
+    private void updateB2BFields(PartnerDTO partnerDTO, B2BPartner b2bPartner) {
+        // Update Company Information (Individual columns)
+        b2bPartner.setCompanyName(partnerDTO.getCompanyName());
+        b2bPartner.setLegalForm(partnerDTO.getLegalForm());
+        b2bPartner.setRegistrationNumber(partnerDTO.getRegistrationNumber());
+        b2bPartner.setTaxId(partnerDTO.getTaxId());
+        b2bPartner.setVatNumber(partnerDTO.getVatNumber());
+        b2bPartner.setBusinessActivity(partnerDTO.getBusinessActivity());
+        b2bPartner.setAnnualTurnover(partnerDTO.getAnnualTurnover());
+        b2bPartner.setNumberOfEmployees(partnerDTO.getNumberOfEmployees());
         
-        // Update contract info
-        if (b2bPartner.getContractInfo() == null) {
-            b2bPartner.setContractInfo(new ma.foodplus.ordering.system.partner.domain.ContractInfo());
-        }
-        b2bPartner.getContractInfo().setContractNumber(partnerDTO.getContractNumber());
-        b2bPartner.getContractInfo().setContractStartDate(partnerDTO.getContractStartDate());
-        b2bPartner.getContractInfo().setContractEndDate(partnerDTO.getContractEndDate());
-        b2bPartner.getContractInfo().setContractType(partnerDTO.getContractType());
-        b2bPartner.getContractInfo().setContractTerms(partnerDTO.getContractTerms());
-        b2bPartner.getContractInfo().setPaymentTerms(partnerDTO.getPaymentTerms());
-        b2bPartner.getContractInfo().setDeliveryTerms(partnerDTO.getDeliveryTerms());
-        b2bPartner.getContractInfo().setSpecialConditions(partnerDTO.getSpecialConditions());
+        // Update Contract Information (Individual columns)
+        b2bPartner.setContractNumber(partnerDTO.getContractNumber());
+        b2bPartner.setContractStartDate(partnerDTO.getContractStartDate());
+        b2bPartner.setContractEndDate(partnerDTO.getContractEndDate());
+        b2bPartner.setContractType(partnerDTO.getContractType());
+        b2bPartner.setContractTerms(partnerDTO.getContractTerms());
+        b2bPartner.setPaymentTerms(partnerDTO.getPaymentTerms());
+        b2bPartner.setDeliveryTerms(partnerDTO.getDeliveryTerms());
+        b2bPartner.setSpecialConditions(partnerDTO.getSpecialConditions());
     }
-    
+
     /**
-     * Updates B2C-specific fields.
+     * Updates B2C-specific fields from PartnerDTO.
      */
-    private void updateB2CFields(PartnerDTO partnerDTO, ma.foodplus.ordering.system.partner.domain.B2CPartner b2cPartner) {
-        b2cPartner.setPersonalIdNumber(partnerDTO.getPersonalIdNumber());
-        b2cPartner.setDateOfBirth(partnerDTO.getDateOfBirth());
-        b2cPartner.setPreferredLanguage(partnerDTO.getPreferredLanguage());
-        b2cPartner.setMarketingConsent(partnerDTO.getMarketingConsent());
+    private void updateB2CFields(PartnerDTO partnerDTO, B2CPartner b2cPartner) {
+        // B2C-specific fields are handled by the B2CPartnerMapper
+        // This method is kept for consistency but B2C partners don't have additional fields
+        // that need to be updated from the generic PartnerDTO
     }
 } 

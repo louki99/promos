@@ -4,7 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add manage partners" />
+    <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="add manage partners">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/documentation.md" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/documentation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/B2BPartner.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/B2BPartner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/B2CPartner.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/B2CPartner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/Partner.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/Partner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/PartnerGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/PartnerGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/SupplierPartner.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/SupplierPartner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/mapper/B2BPartnerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/mapper/B2BPartnerMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/mapper/B2CPartnerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/mapper/B2CPartnerMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/mapper/PartnerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/mapper/PartnerMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/mapper/PartnerMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/mapper/PartnerMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/mapper/SupplierPartnerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/mapper/SupplierPartnerMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/repository/PartnerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/repository/PartnerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/service/impl/PartnerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/service/impl/PartnerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/resources/migration/V1.1.0__create_partner_groups.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/resources/migration/V1.2.0__create_partners_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/resources/migration/V1.3.0__create_partner_group_members.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/resources/migration/V1.4.0__create_sample_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/resources/migration/V1.5.0__create_views_and_functions.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/resources/migration/V1.6.0__add_supplier_partner_fields.sql" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,6 +78,7 @@
     &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
     &quot;Application.CategoryTarifServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Application.FoodPlusOrderingApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.PartnerServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Application.ProductServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.PromotionApplicationServiceTest.calculatePromotions_InvalidRequest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.PromotionApplicationServiceTest.calculatePromotions_Success.executor&quot;: &quot;Run&quot;,
@@ -113,13 +140,26 @@
       <recent name="ma.foodplus.ordering.system.product.service.domain.ports.output.repository" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CategoryTarifServiceApplication">
+  <component name="RunManager" selected="Application.PartnerServiceApplication">
     <configuration name="CategoryTarifServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.category.tariff.CategoryTarifServiceApplication" />
       <module name="tarif-service" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ma.foodplus.ordering.system.category.tariff.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PartnerServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.partner.PartnerServiceApplication" />
+      <module name="partner-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ma.foodplus.ordering.system.partner.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -138,22 +178,6 @@
       <option name="PACKAGE_NAME" value="ma.foodplus.ordering.system.promos.service" />
       <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.promos.service.PromotionApplicationServiceTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PromotionApplicationServiceTest.getEligiblePromotions_Success" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="nvp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ma.foodplus.ordering.system.promos.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ma.foodplus.ordering.system.promos.service" />
-      <option name="MAIN_CLASS_NAME" value="ma.foodplus.ordering.system.promos.service.PromotionApplicationServiceTest" />
-      <option name="METHOD_NAME" value="getEligiblePromotions_Success" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -190,19 +214,19 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.PartnerServiceApplication" />
       <item itemvalue="Application.CategoryTarifServiceApplication" />
       <item itemvalue="JUnit.PromotionApplicationServiceTest" />
-      <item itemvalue="JUnit.PromotionApplicationServiceTest.getEligiblePromotions_Success" />
       <item itemvalue="JUnit.PromotionApplicationServiceTest.validatePromotionCode_Valid" />
       <item itemvalue="JUnit.PromotionCalculationServiceTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.PartnerServiceApplication" />
         <item itemvalue="Application.CategoryTarifServiceApplication" />
         <item itemvalue="JUnit.PromotionApplicationServiceTest" />
         <item itemvalue="JUnit.PromotionApplicationServiceTest.validatePromotionCode_Valid" />
         <item itemvalue="JUnit.PromotionCalculationServiceTest" />
-        <item itemvalue="JUnit.PromotionApplicationServiceTest.getEligiblePromotions_Success" />
       </list>
     </recent_temporary>
   </component>

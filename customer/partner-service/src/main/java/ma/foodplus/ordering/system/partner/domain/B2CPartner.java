@@ -25,7 +25,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("B2C")
-@Table(name = "partners")
 public class B2CPartner extends Partner {
     
     // B2C-specific attributes
@@ -68,11 +67,11 @@ public class B2CPartner extends Partner {
         }
         
         // For B2C, credit limit is optional but if set, check it
-        if (getCreditInfo() != null && getCreditInfo().getCreditLimit() != null) {
-            BigDecimal outstandingBalance = getCreditInfo().getOutstandingBalance() != null ? 
-                getCreditInfo().getOutstandingBalance() : BigDecimal.ZERO;
+        if (getCreditLimit() != null) {
+            BigDecimal outstandingBalance = getOutstandingBalance() != null ? 
+                getOutstandingBalance() : BigDecimal.ZERO;
             
-            if (outstandingBalance.compareTo(getCreditInfo().getCreditLimit()) >= 0) {
+            if (outstandingBalance.compareTo(getCreditLimit()) >= 0) {
                 return false;
             }
         }
@@ -159,7 +158,7 @@ public class B2CPartner extends Partner {
         }
         
         // Check contact information
-        if (getContactInfo() == null || getContactInfo().getTelephone() == null || getContactInfo().getTelephone().trim().isEmpty()) {
+        if (getTelephone() == null || getTelephone().trim().isEmpty()) {
             return false;
         }
         

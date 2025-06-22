@@ -44,21 +44,162 @@ public abstract class Partner {
     @Column(nullable = false)
     private String description;
 
-    // Common Embedded Objects
-    @Embedded
-    private ContactInfo contactInfo;
+    // Contact Information (Individual columns to match database)
+    @Column(name = "telephone")
+    private String telephone;
     
-    @Embedded
-    private CreditInfo creditInfo;
+    @Column(name = "telecopie")
+    private String telecopie;
     
-    @Embedded
-    private LoyaltyInfo loyaltyInfo;
+    @Column(name = "email")
+    private String email;
     
-    @Embedded
-    private DeliveryPreference deliveryPreference;
+    @Column(name = "address")
+    private String address;
     
-    @Embedded
-    private AuditInfo auditInfo;
+    @Column(name = "city")
+    private String city;
+    
+    @Column(name = "country")
+    private String country;
+    
+    @Column(name = "region")
+    private String region;
+    
+    @Column(name = "postal_code")
+    private String postalCode;
+    
+    // Credit Information (Individual columns to match database)
+    @Column(name = "credit_limit")
+    private BigDecimal creditLimit;
+    
+    @Column(name = "credit_rating")
+    private String creditRating;
+    
+    @Column(name = "credit_score")
+    private Integer creditScore;
+    
+    @Column(name = "payment_history")
+    private String paymentHistory;
+    
+    @Column(name = "outstanding_balance")
+    private BigDecimal outstandingBalance;
+    
+    @Column(name = "last_payment_date")
+    private ZonedDateTime lastPaymentDate;
+    
+    @Column(name = "payment_term_days")
+    private Integer paymentTermDays;
+    
+    @Column(name = "preferred_payment_method")
+    private String preferredPaymentMethod;
+    
+    @Column(name = "bank_account_info")
+    private String bankAccountInfo;
+    
+    // Loyalty Information (Individual columns to match database)
+    @Column(name = "is_vip")
+    private Boolean isVip;
+    
+    @Column(name = "loyalty_points")
+    private Integer loyaltyPoints;
+    
+    @Column(name = "total_orders")
+    private Integer totalOrders;
+    
+    @Column(name = "total_spent")
+    private BigDecimal totalSpent;
+    
+    @Column(name = "average_order_value")
+    private BigDecimal averageOrderValue;
+    
+    @Column(name = "last_order_date")
+    private ZonedDateTime lastOrderDate;
+    
+    @Column(name = "partner_since")
+    private ZonedDateTime partnerSince;
+    
+    // Delivery Preference (Individual columns to match database)
+    @Column(name = "preferred_delivery_time")
+    private String preferredDeliveryTime;
+    
+    @Column(name = "preferred_delivery_days")
+    private String preferredDeliveryDays;
+    
+    @Column(name = "special_handling_instructions")
+    private String specialHandlingInstructions;
+    
+    // Audit Information (Individual columns to match database)
+    @Column(name = "notes")
+    private String notes;
+    
+    @Column(name = "is_active")
+    private Boolean isActive;
+    
+    @Column(name = "last_activity_date")
+    private ZonedDateTime lastActivityDate;
+    
+    @Column(name = "created_by")
+    private String createdBy;
+    
+    @Column(name = "updated_by")
+    private String updatedBy;
+    
+    @Column(name = "created_at")
+    private ZonedDateTime createdAt;
+    
+    @Column(name = "updated_at")
+    private ZonedDateTime updatedAt;
+
+    // Company Information (Individual columns to match database)
+    @Column(name = "company_name")
+    private String companyName;
+    
+    @Column(name = "legal_form")
+    private String legalForm;
+    
+    @Column(name = "registration_number")
+    private String registrationNumber;
+    
+    @Column(name = "tax_id")
+    private String taxId;
+    
+    @Column(name = "vat_number")
+    private String vatNumber;
+    
+    @Column(name = "business_activity")
+    private String businessActivity;
+    
+    @Column(name = "annual_turnover")
+    private BigDecimal annualTurnover;
+    
+    @Column(name = "number_of_employees")
+    private Integer numberOfEmployees;
+    
+    // Contract Information (Individual columns to match database)
+    @Column(name = "contract_number")
+    private String contractNumber;
+    
+    @Column(name = "contract_start_date")
+    private ZonedDateTime contractStartDate;
+    
+    @Column(name = "contract_end_date")
+    private ZonedDateTime contractEndDate;
+    
+    @Column(name = "contract_type")
+    private String contractType;
+    
+    @Column(name = "contract_terms")
+    private String contractTerms;
+    
+    @Column(name = "payment_terms")
+    private String paymentTerms;
+    
+    @Column(name = "delivery_terms")
+    private String deliveryTerms;
+    
+    @Column(name = "special_conditions")
+    private String specialConditions;
 
     // Common Relationships
     @ManyToMany(fetch = FetchType.EAGER)
@@ -105,14 +246,14 @@ public abstract class Partner {
      * @return true if the partner has sufficient credit
      */
     public boolean hasSufficientCredit(BigDecimal amount) {
-        if (getCreditInfo() == null || getCreditInfo().getCreditLimit() == null) {
+        if (getCreditLimit() == null) {
             return false;
         }
         
-        BigDecimal outstandingBalance = getCreditInfo().getOutstandingBalance() != null ? 
-            getCreditInfo().getOutstandingBalance() : BigDecimal.ZERO;
+        BigDecimal outstandingBalance = getOutstandingBalance() != null ? 
+            getOutstandingBalance() : BigDecimal.ZERO;
         
-        return outstandingBalance.add(amount).compareTo(getCreditInfo().getCreditLimit()) <= 0;
+        return outstandingBalance.add(amount).compareTo(getCreditLimit()) <= 0;
     }
 
     /**
@@ -121,14 +262,14 @@ public abstract class Partner {
      * @return the available credit amount
      */
     public BigDecimal getAvailableCredit() {
-        if (getCreditInfo() == null || getCreditInfo().getCreditLimit() == null) {
+        if (getCreditLimit() == null) {
             return BigDecimal.ZERO;
         }
         
-        BigDecimal outstandingBalance = getCreditInfo().getOutstandingBalance() != null ? 
-            getCreditInfo().getOutstandingBalance() : BigDecimal.ZERO;
+        BigDecimal outstandingBalance = getOutstandingBalance() != null ? 
+            getOutstandingBalance() : BigDecimal.ZERO;
         
-        return getCreditInfo().getCreditLimit().subtract(outstandingBalance);
+        return getCreditLimit().subtract(outstandingBalance);
     }
 
     /**
@@ -137,7 +278,7 @@ public abstract class Partner {
      * @return true if the partner is VIP
      */
     public boolean isVip() {
-        return getLoyaltyInfo() != null && getLoyaltyInfo().isVip();
+        return getIsVip() != null && getIsVip();
     }
 
     /**
@@ -146,11 +287,11 @@ public abstract class Partner {
      * @return loyalty level (0-5)
      */
     public int getLoyaltyLevel() {
-        if (getLoyaltyInfo() == null || getLoyaltyInfo().getTotalSpent() == null) {
+        if (getTotalSpent() == null) {
             return 0;
         }
         
-        BigDecimal totalSpent = getLoyaltyInfo().getTotalSpent();
+        BigDecimal totalSpent = getTotalSpent();
         
         if (totalSpent.compareTo(BigDecimal.valueOf(10000)) >= 0) return 5;
         if (totalSpent.compareTo(BigDecimal.valueOf(5000)) >= 0) return 4;
@@ -162,91 +303,58 @@ public abstract class Partner {
     }
 
     public void addLoyaltyPoints(int points) {
-        if (loyaltyInfo == null) {
-            loyaltyInfo = new LoyaltyInfo();
-        }
-        this.loyaltyInfo.setLoyaltyPoints((this.loyaltyInfo.getLoyaltyPoints() == null ? 0 : this.loyaltyInfo.getLoyaltyPoints()) + points);
+        this.loyaltyPoints = (this.loyaltyPoints == null ? 0 : this.loyaltyPoints) + points;
     }
 
     public void updateOrderStats(BigDecimal orderValue) {
-        if (loyaltyInfo == null) {
-            loyaltyInfo = new LoyaltyInfo();
-        }
-        this.loyaltyInfo.setTotalOrders((this.loyaltyInfo.getTotalOrders() == null ? 0 : this.loyaltyInfo.getTotalOrders()) + 1);
-        this.loyaltyInfo.setTotalSpent((this.loyaltyInfo.getTotalSpent() == null ? BigDecimal.ZERO : this.loyaltyInfo.getTotalSpent()).add(orderValue));
-        this.loyaltyInfo.setAverageOrderValue(this.loyaltyInfo.getTotalSpent().divide(BigDecimal.valueOf(this.loyaltyInfo.getTotalOrders()), 2, RoundingMode.HALF_UP));
-        this.loyaltyInfo.setLastOrderDate(ZonedDateTime.now());
+        this.totalOrders = (this.totalOrders == null ? 0 : this.totalOrders) + 1;
+        this.totalSpent = (this.totalSpent == null ? BigDecimal.ZERO : this.totalSpent).add(orderValue);
+        this.averageOrderValue = this.totalSpent.divide(BigDecimal.valueOf(this.totalOrders), 2, RoundingMode.HALF_UP);
+        this.lastOrderDate = ZonedDateTime.now();
     }
 
     // Convenience methods for backward compatibility
-    public String getTelephone() {
-        return contactInfo != null ? contactInfo.getTelephone() : null;
-    }
-
-    public void setTelephone(String telephone) {
-        if (contactInfo == null) contactInfo = new ContactInfo();
-        contactInfo.setTelephone(telephone);
-    }
-
-    public String getEmail() {
-        return contactInfo != null ? contactInfo.getEmail() : null;
-    }
-
-    public void setEmail(String email) {
-        if (contactInfo == null) contactInfo = new ContactInfo();
-        contactInfo.setEmail(email);
-    }
-
-    public String getAddress() {
-        return contactInfo != null ? contactInfo.getAddress() : null;
-    }
-
     public void setAddress(String address) {
-        if (contactInfo == null) contactInfo = new ContactInfo();
-        contactInfo.setAddress(address);
+        this.address = address;
     }
 
     public boolean isActive() {
-        return auditInfo != null && auditInfo.isActive();
+        return getIsActive() != null && getIsActive();
     }
 
     public void setActive(boolean active) {
-        if (auditInfo == null) auditInfo = new AuditInfo();
-        auditInfo.setActive(active);
+        this.isActive = active;
     }
 
     public ZonedDateTime getCreatedAt() {
-        return auditInfo != null ? auditInfo.getCreatedAt() : null;
+        return createdAt;
     }
 
     public ZonedDateTime getUpdatedAt() {
-        return auditInfo != null ? auditInfo.getUpdatedAt() : null;
+        return updatedAt;
     }
 
     public Integer getLoyaltyPoints() {
-        return loyaltyInfo != null ? loyaltyInfo.getLoyaltyPoints() : null;
+        return loyaltyPoints;
     }
 
     public void setLoyaltyPoints(Integer loyaltyPoints) {
-        if (loyaltyInfo == null) loyaltyInfo = new LoyaltyInfo();
-        loyaltyInfo.setLoyaltyPoints(loyaltyPoints);
+        this.loyaltyPoints = loyaltyPoints;
     }
 
     public BigDecimal getCreditLimit() {
-        return creditInfo != null ? creditInfo.getCreditLimit() : null;
+        return creditLimit;
     }
 
     public void setCreditLimit(BigDecimal creditLimit) {
-        if (creditInfo == null) creditInfo = new CreditInfo();
-        creditInfo.setCreditLimit(creditLimit);
+        this.creditLimit = creditLimit;
     }
 
     public BigDecimal getOutstandingBalance() {
-        return creditInfo != null ? creditInfo.getOutstandingBalance() : null;
+        return outstandingBalance;
     }
 
     public void setOutstandingBalance(BigDecimal outstandingBalance) {
-        if (creditInfo == null) creditInfo = new CreditInfo();
-        creditInfo.setOutstandingBalance(outstandingBalance);
+        this.outstandingBalance = outstandingBalance;
     }
 }

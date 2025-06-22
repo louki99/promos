@@ -29,89 +29,75 @@ public class B2BPartnerMapper {
         
         B2BPartnerDTO dto = new B2BPartnerDTO();
         
-        // Base partner fields
+        // Basic partner information
         dto.setId(b2bPartner.getId());
         dto.setCtNum(b2bPartner.getCtNum());
         dto.setIce(b2bPartner.getIce());
         dto.setDescription(b2bPartner.getDescription());
-        dto.setPartnerType(PartnerType.B2B);
+        dto.setPartnerType(b2bPartner.getPartnerType());
         dto.setCategoryTarifId(b2bPartner.getCateTarif());
         
-        // Company Info
-        if (b2bPartner.getCompanyInfo() != null) {
-            dto.setCompanyName(b2bPartner.getCompanyInfo().getCompanyName());
-            dto.setLegalForm(b2bPartner.getCompanyInfo().getLegalForm());
-            dto.setRegistrationNumber(b2bPartner.getCompanyInfo().getRegistrationNumber());
-            dto.setTaxId(b2bPartner.getCompanyInfo().getTaxId());
-            dto.setVatNumber(b2bPartner.getCompanyInfo().getVatNumber());
-            dto.setBusinessActivity(b2bPartner.getCompanyInfo().getBusinessActivity());
-            dto.setAnnualTurnover(b2bPartner.getCompanyInfo().getAnnualTurnover());
-            dto.setNumberOfEmployees(b2bPartner.getCompanyInfo().getNumberOfEmployees());
-        }
+        // Company Information (Individual columns)
+        dto.setCompanyName(b2bPartner.getCompanyName());
+        dto.setLegalForm(b2bPartner.getLegalForm());
+        dto.setRegistrationNumber(b2bPartner.getRegistrationNumber());
+        dto.setTaxId(b2bPartner.getTaxId());
+        dto.setVatNumber(b2bPartner.getVatNumber());
+        dto.setBusinessActivity(b2bPartner.getBusinessActivity());
+        dto.setAnnualTurnover(b2bPartner.getAnnualTurnover());
+        dto.setNumberOfEmployees(b2bPartner.getNumberOfEmployees());
         
-        // Contract Info
-        if (b2bPartner.getContractInfo() != null) {
-            dto.setContractNumber(b2bPartner.getContractInfo().getContractNumber());
-            dto.setContractStartDate(b2bPartner.getContractInfo().getContractStartDate());
-            dto.setContractEndDate(b2bPartner.getContractInfo().getContractEndDate());
-            dto.setContractType(b2bPartner.getContractInfo().getContractType());
-            dto.setContractTerms(b2bPartner.getContractInfo().getContractTerms());
-            dto.setPaymentTerms(b2bPartner.getContractInfo().getPaymentTerms());
-            dto.setDeliveryTerms(b2bPartner.getContractInfo().getDeliveryTerms());
-            dto.setSpecialConditions(b2bPartner.getContractInfo().getSpecialConditions());
-        }
+        // Contract Information (Individual columns)
+        dto.setContractNumber(b2bPartner.getContractNumber());
+        dto.setContractStartDate(b2bPartner.getContractStartDate());
+        dto.setContractEndDate(b2bPartner.getContractEndDate());
+        dto.setContractType(b2bPartner.getContractType());
+        dto.setContractTerms(b2bPartner.getContractTerms());
+        dto.setPaymentTerms(b2bPartner.getPaymentTerms());
+        dto.setDeliveryTerms(b2bPartner.getDeliveryTerms());
+        dto.setSpecialConditions(b2bPartner.getSpecialConditions());
         
-        // Contact Info
-        if (b2bPartner.getContactInfo() != null) {
-            dto.setTelephone(b2bPartner.getContactInfo().getTelephone());
-            dto.setEmail(b2bPartner.getContactInfo().getEmail());
-            dto.setAddress(b2bPartner.getContactInfo().getAddress());
-            dto.setCodePostal(b2bPartner.getContactInfo().getPostalCode());
-            dto.setVille(b2bPartner.getContactInfo().getCity());
-            dto.setCountry(b2bPartner.getContactInfo().getCountry());
-        }
+        // Contact Information (Individual columns)
+        dto.setTelephone(b2bPartner.getTelephone());
+        dto.setEmail(b2bPartner.getEmail());
+        dto.setAddress(b2bPartner.getAddress());
+        dto.setCodePostal(b2bPartner.getPostalCode());
+        dto.setVille(b2bPartner.getCity());
+        dto.setCountry(b2bPartner.getCountry());
         
-        // Credit Info
-        if (b2bPartner.getCreditInfo() != null) {
-            dto.setCreditLimit(b2bPartner.getCreditInfo().getCreditLimit());
-            dto.setCreditRating(b2bPartner.getCreditInfo().getCreditRating());
-            dto.setCreditScore(b2bPartner.getCreditInfo().getCreditScore());
-            dto.setPaymentHistory(b2bPartner.getCreditInfo().getPaymentHistory());
-            dto.setOutstandingBalance(b2bPartner.getCreditInfo().getOutstandingBalance());
-            dto.setLastPaymentDate(b2bPartner.getCreditInfo().getLastPaymentDate());
-            dto.setPaymentTermDays(b2bPartner.getCreditInfo().getPaymentTermDays());
-            dto.setPreferredPaymentMethod(b2bPartner.getCreditInfo().getPreferredPaymentMethod());
-            dto.setBankAccountInfo(b2bPartner.getCreditInfo().getBankAccountInfo());
-        }
+        // Credit Information (Individual columns)
+        dto.setCreditLimit(b2bPartner.getCreditLimit());
+        dto.setOutstandingBalance(b2bPartner.getOutstandingBalance());
+        dto.setCreditRating(b2bPartner.getCreditRating());
+        dto.setCreditScore(b2bPartner.getCreditScore());
+        dto.setPaymentTermDays(b2bPartner.getPaymentTermDays());
+        dto.setPreferredPaymentMethod(b2bPartner.getPreferredPaymentMethod());
+        dto.setBankAccountInfo(b2bPartner.getBankAccountInfo());
+        dto.setLastPaymentDate(b2bPartner.getLastPaymentDate());
+        dto.setPaymentHistory(b2bPartner.getPaymentHistory());
         
-        // Loyalty Info
-        if (b2bPartner.getLoyaltyInfo() != null) {
-            dto.setVip(b2bPartner.getLoyaltyInfo().isVip());
-            dto.setLoyaltyPoints(b2bPartner.getLoyaltyInfo().getLoyaltyPoints());
-            dto.setLastOrderDate(b2bPartner.getLoyaltyInfo().getLastOrderDate());
-            dto.setTotalOrders(b2bPartner.getLoyaltyInfo().getTotalOrders());
-            dto.setTotalSpent(b2bPartner.getLoyaltyInfo().getTotalSpent());
-            dto.setAverageOrderValue(b2bPartner.getLoyaltyInfo().getAverageOrderValue());
-            dto.setCustomerSince(b2bPartner.getLoyaltyInfo().getPartnerSince());
-        }
+        // Loyalty Information (Individual columns)
+        dto.setVip(b2bPartner.getIsVip() != null && b2bPartner.getIsVip());
+        dto.setLoyaltyPoints(b2bPartner.getLoyaltyPoints());
+        dto.setLastOrderDate(b2bPartner.getLastOrderDate());
+        dto.setTotalOrders(b2bPartner.getTotalOrders());
+        dto.setTotalSpent(b2bPartner.getTotalSpent());
+        dto.setAverageOrderValue(b2bPartner.getAverageOrderValue());
+        dto.setCustomerSince(b2bPartner.getPartnerSince());
         
-        // Delivery Preference
-        if (b2bPartner.getDeliveryPreference() != null) {
-            dto.setPreferredDeliveryTime(b2bPartner.getDeliveryPreference().getPreferredDeliveryTime());
-            dto.setPreferredDeliveryDays(b2bPartner.getDeliveryPreference().getPreferredDeliveryDays());
-            dto.setSpecialHandlingInstructions(b2bPartner.getDeliveryPreference().getSpecialHandlingInstructions());
-        }
+        // Delivery Preference (Individual columns)
+        dto.setPreferredDeliveryTime(b2bPartner.getPreferredDeliveryTime());
+        dto.setPreferredDeliveryDays(b2bPartner.getPreferredDeliveryDays());
+        dto.setSpecialHandlingInstructions(b2bPartner.getSpecialHandlingInstructions());
         
-        // Audit Info
-        if (b2bPartner.getAuditInfo() != null) {
-            dto.setNotes(b2bPartner.getAuditInfo().getNotes());
-            dto.setActive(b2bPartner.getAuditInfo().isActive());
-            dto.setLastActivityDate(b2bPartner.getAuditInfo().getLastActivityDate());
-            dto.setCreatedBy(b2bPartner.getAuditInfo().getCreatedBy());
-            dto.setUpdatedBy(b2bPartner.getAuditInfo().getUpdatedBy());
-            dto.setCreatedAt(b2bPartner.getAuditInfo().getCreatedAt());
-            dto.setUpdatedAt(b2bPartner.getAuditInfo().getUpdatedAt());
-        }
+        // Audit Information (Individual columns)
+        dto.setNotes(b2bPartner.getNotes());
+        dto.setActive(b2bPartner.getIsActive() != null && b2bPartner.getIsActive());
+        dto.setLastActivityDate(b2bPartner.getLastActivityDate());
+        dto.setCreatedBy(b2bPartner.getCreatedBy());
+        dto.setUpdatedBy(b2bPartner.getUpdatedBy());
+        dto.setCreatedAt(b2bPartner.getCreatedAt());
+        dto.setUpdatedAt(b2bPartner.getUpdatedAt());
         
         return dto;
     }
@@ -121,99 +107,74 @@ public class B2BPartnerMapper {
         
         B2BPartner b2bPartner = new B2BPartner();
         
-        // Base partner fields
+        // Basic partner information
+        b2bPartner.setId(dto.getId());
         b2bPartner.setCtNum(dto.getCtNum());
         b2bPartner.setIce(dto.getIce());
         b2bPartner.setDescription(dto.getDescription());
         b2bPartner.setCateTarif(dto.getCategoryTarifId());
         
-        // Company Info
-        if (dto.getCompanyName() != null || dto.getLegalForm() != null) {
-            ma.foodplus.ordering.system.partner.domain.CompanyInfo companyInfo = new ma.foodplus.ordering.system.partner.domain.CompanyInfo();
-            companyInfo.setCompanyName(dto.getCompanyName());
-            companyInfo.setLegalForm(dto.getLegalForm());
-            companyInfo.setRegistrationNumber(dto.getRegistrationNumber());
-            companyInfo.setTaxId(dto.getTaxId());
-            companyInfo.setVatNumber(dto.getVatNumber());
-            companyInfo.setBusinessActivity(dto.getBusinessActivity());
-            companyInfo.setAnnualTurnover(dto.getAnnualTurnover());
-            companyInfo.setNumberOfEmployees(dto.getNumberOfEmployees());
-            b2bPartner.setCompanyInfo(companyInfo);
-        }
+        // Company Information (Individual columns)
+        b2bPartner.setCompanyName(dto.getCompanyName());
+        b2bPartner.setLegalForm(dto.getLegalForm());
+        b2bPartner.setRegistrationNumber(dto.getRegistrationNumber());
+        b2bPartner.setTaxId(dto.getTaxId());
+        b2bPartner.setVatNumber(dto.getVatNumber());
+        b2bPartner.setBusinessActivity(dto.getBusinessActivity());
+        b2bPartner.setAnnualTurnover(dto.getAnnualTurnover());
+        b2bPartner.setNumberOfEmployees(dto.getNumberOfEmployees());
         
-        // Contract Info
-        if (dto.getContractNumber() != null || dto.getContractStartDate() != null) {
-            ma.foodplus.ordering.system.partner.domain.ContractInfo contractInfo = new ma.foodplus.ordering.system.partner.domain.ContractInfo();
-            contractInfo.setContractNumber(dto.getContractNumber());
-            contractInfo.setContractStartDate(dto.getContractStartDate());
-            contractInfo.setContractEndDate(dto.getContractEndDate());
-            contractInfo.setContractType(dto.getContractType());
-            contractInfo.setContractTerms(dto.getContractTerms());
-            contractInfo.setPaymentTerms(dto.getPaymentTerms());
-            contractInfo.setDeliveryTerms(dto.getDeliveryTerms());
-            contractInfo.setSpecialConditions(dto.getSpecialConditions());
-            b2bPartner.setContractInfo(contractInfo);
-        }
+        // Contract Information (Individual columns)
+        b2bPartner.setContractNumber(dto.getContractNumber());
+        b2bPartner.setContractStartDate(dto.getContractStartDate());
+        b2bPartner.setContractEndDate(dto.getContractEndDate());
+        b2bPartner.setContractType(dto.getContractType());
+        b2bPartner.setContractTerms(dto.getContractTerms());
+        b2bPartner.setPaymentTerms(dto.getPaymentTerms());
+        b2bPartner.setDeliveryTerms(dto.getDeliveryTerms());
+        b2bPartner.setSpecialConditions(dto.getSpecialConditions());
         
-        // Contact Info
-        if (dto.getTelephone() != null || dto.getEmail() != null) {
-            ma.foodplus.ordering.system.partner.domain.ContactInfo contactInfo = new ma.foodplus.ordering.system.partner.domain.ContactInfo();
-            contactInfo.setTelephone(dto.getTelephone());
-            contactInfo.setEmail(dto.getEmail());
-            contactInfo.setAddress(dto.getAddress());
-            contactInfo.setPostalCode(dto.getCodePostal());
-            contactInfo.setCity(dto.getVille());
-            contactInfo.setCountry(dto.getCountry());
-            b2bPartner.setContactInfo(contactInfo);
-        }
+        // Contact Information (Individual columns)
+        b2bPartner.setTelephone(dto.getTelephone());
+        b2bPartner.setEmail(dto.getEmail());
+        b2bPartner.setAddress(dto.getAddress());
+        b2bPartner.setCity(dto.getVille());
+        b2bPartner.setCountry(dto.getCountry());
+        b2bPartner.setPostalCode(dto.getCodePostal());
         
-        // Credit Info
-        if (dto.getCreditLimit() != null || dto.getOutstandingBalance() != null) {
-            ma.foodplus.ordering.system.partner.domain.CreditInfo creditInfo = new ma.foodplus.ordering.system.partner.domain.CreditInfo();
-            creditInfo.setCreditLimit(dto.getCreditLimit());
-            creditInfo.setCreditRating(dto.getCreditRating());
-            creditInfo.setCreditScore(dto.getCreditScore());
-            creditInfo.setPaymentHistory(dto.getPaymentHistory());
-            creditInfo.setOutstandingBalance(dto.getOutstandingBalance());
-            creditInfo.setLastPaymentDate(dto.getLastPaymentDate());
-            creditInfo.setPaymentTermDays(dto.getPaymentTermDays());
-            creditInfo.setPreferredPaymentMethod(dto.getPreferredPaymentMethod());
-            creditInfo.setBankAccountInfo(dto.getBankAccountInfo());
-            b2bPartner.setCreditInfo(creditInfo);
-        }
+        // Credit Information (Individual columns)
+        b2bPartner.setCreditLimit(dto.getCreditLimit());
+        b2bPartner.setOutstandingBalance(dto.getOutstandingBalance());
+        b2bPartner.setCreditRating(dto.getCreditRating());
+        b2bPartner.setCreditScore(dto.getCreditScore());
+        b2bPartner.setPaymentTermDays(dto.getPaymentTermDays());
+        b2bPartner.setPreferredPaymentMethod(dto.getPreferredPaymentMethod());
+        b2bPartner.setBankAccountInfo(dto.getBankAccountInfo());
+        b2bPartner.setLastPaymentDate(dto.getLastPaymentDate());
+        b2bPartner.setPaymentHistory(dto.getPaymentHistory());
         
-        // Loyalty Info
-        if (dto.getLoyaltyPoints() != null || dto.isVip()) {
-            ma.foodplus.ordering.system.partner.domain.LoyaltyInfo loyaltyInfo = new ma.foodplus.ordering.system.partner.domain.LoyaltyInfo();
-            loyaltyInfo.setVip(dto.isVip());
-            loyaltyInfo.setLoyaltyPoints(dto.getLoyaltyPoints());
-            loyaltyInfo.setLastOrderDate(dto.getLastOrderDate());
-            loyaltyInfo.setTotalOrders(dto.getTotalOrders());
-            loyaltyInfo.setTotalSpent(dto.getTotalSpent());
-            loyaltyInfo.setAverageOrderValue(dto.getAverageOrderValue());
-            loyaltyInfo.setPartnerSince(dto.getCustomerSince());
-            b2bPartner.setLoyaltyInfo(loyaltyInfo);
-        }
+        // Loyalty Information (Individual columns)
+        b2bPartner.setIsVip(dto.isVip());
+        b2bPartner.setLoyaltyPoints(dto.getLoyaltyPoints());
+        b2bPartner.setLastOrderDate(dto.getLastOrderDate());
+        b2bPartner.setTotalOrders(dto.getTotalOrders());
+        b2bPartner.setTotalSpent(dto.getTotalSpent());
+        b2bPartner.setAverageOrderValue(dto.getAverageOrderValue());
+        b2bPartner.setPartnerSince(dto.getCustomerSince());
         
-        // Delivery Preference
-        if (dto.getPreferredDeliveryTime() != null || dto.getPreferredDeliveryDays() != null) {
-            ma.foodplus.ordering.system.partner.domain.DeliveryPreference deliveryPreference = new ma.foodplus.ordering.system.partner.domain.DeliveryPreference();
-            deliveryPreference.setPreferredDeliveryTime(dto.getPreferredDeliveryTime());
-            deliveryPreference.setPreferredDeliveryDays(dto.getPreferredDeliveryDays());
-            deliveryPreference.setSpecialHandlingInstructions(dto.getSpecialHandlingInstructions());
-            b2bPartner.setDeliveryPreference(deliveryPreference);
-        }
+        // Delivery Preference (Individual columns)
+        b2bPartner.setPreferredDeliveryTime(dto.getPreferredDeliveryTime());
+        b2bPartner.setPreferredDeliveryDays(dto.getPreferredDeliveryDays());
+        b2bPartner.setSpecialHandlingInstructions(dto.getSpecialHandlingInstructions());
         
-        // Audit Info
-        ma.foodplus.ordering.system.partner.domain.AuditInfo auditInfo = new ma.foodplus.ordering.system.partner.domain.AuditInfo();
-        auditInfo.setNotes(dto.getNotes());
-        auditInfo.setActive(dto.isActive());
-        auditInfo.setLastActivityDate(dto.getLastActivityDate());
-        auditInfo.setCreatedBy(dto.getCreatedBy());
-        auditInfo.setUpdatedBy(dto.getUpdatedBy());
-        auditInfo.setCreatedAt(dto.getCreatedAt());
-        auditInfo.setUpdatedAt(dto.getUpdatedAt());
-        b2bPartner.setAuditInfo(auditInfo);
+        // Audit Information (Individual columns)
+        b2bPartner.setNotes(dto.getNotes());
+        b2bPartner.setIsActive(dto.isActive());
+        b2bPartner.setLastActivityDate(dto.getLastActivityDate());
+        b2bPartner.setCreatedBy(dto.getCreatedBy());
+        b2bPartner.setUpdatedBy(dto.getUpdatedBy());
+        b2bPartner.setCreatedAt(dto.getCreatedAt());
+        b2bPartner.setUpdatedAt(dto.getUpdatedAt());
         
         return b2bPartner;
     }
@@ -221,102 +182,79 @@ public class B2BPartnerMapper {
     public void updateEntityFromDTO(B2BPartnerDTO dto, B2BPartner b2bPartner) {
         if (dto == null || b2bPartner == null) return;
         
-        // Base partner fields
+        // Update basic partner information
         b2bPartner.setCtNum(dto.getCtNum());
         b2bPartner.setIce(dto.getIce());
         b2bPartner.setDescription(dto.getDescription());
         b2bPartner.setCateTarif(dto.getCategoryTarifId());
         
-        // Company Info
-        if (b2bPartner.getCompanyInfo() == null) {
-            b2bPartner.setCompanyInfo(new ma.foodplus.ordering.system.partner.domain.CompanyInfo());
-        }
-        b2bPartner.getCompanyInfo().setCompanyName(dto.getCompanyName());
-        b2bPartner.getCompanyInfo().setLegalForm(dto.getLegalForm());
-        b2bPartner.getCompanyInfo().setRegistrationNumber(dto.getRegistrationNumber());
-        b2bPartner.getCompanyInfo().setTaxId(dto.getTaxId());
-        b2bPartner.getCompanyInfo().setVatNumber(dto.getVatNumber());
-        b2bPartner.getCompanyInfo().setBusinessActivity(dto.getBusinessActivity());
-        b2bPartner.getCompanyInfo().setAnnualTurnover(dto.getAnnualTurnover());
-        b2bPartner.getCompanyInfo().setNumberOfEmployees(dto.getNumberOfEmployees());
+        // Update Company Information (Individual columns)
+        b2bPartner.setCompanyName(dto.getCompanyName());
+        b2bPartner.setLegalForm(dto.getLegalForm());
+        b2bPartner.setRegistrationNumber(dto.getRegistrationNumber());
+        b2bPartner.setTaxId(dto.getTaxId());
+        b2bPartner.setVatNumber(dto.getVatNumber());
+        b2bPartner.setBusinessActivity(dto.getBusinessActivity());
+        b2bPartner.setAnnualTurnover(dto.getAnnualTurnover());
+        b2bPartner.setNumberOfEmployees(dto.getNumberOfEmployees());
         
-        // Contract Info
-        if (b2bPartner.getContractInfo() == null) {
-            b2bPartner.setContractInfo(new ma.foodplus.ordering.system.partner.domain.ContractInfo());
-        }
-        b2bPartner.getContractInfo().setContractNumber(dto.getContractNumber());
-        b2bPartner.getContractInfo().setContractStartDate(dto.getContractStartDate());
-        b2bPartner.getContractInfo().setContractEndDate(dto.getContractEndDate());
-        b2bPartner.getContractInfo().setContractType(dto.getContractType());
-        b2bPartner.getContractInfo().setContractTerms(dto.getContractTerms());
-        b2bPartner.getContractInfo().setPaymentTerms(dto.getPaymentTerms());
-        b2bPartner.getContractInfo().setDeliveryTerms(dto.getDeliveryTerms());
-        b2bPartner.getContractInfo().setSpecialConditions(dto.getSpecialConditions());
+        // Update Contract Information (Individual columns)
+        b2bPartner.setContractNumber(dto.getContractNumber());
+        b2bPartner.setContractStartDate(dto.getContractStartDate());
+        b2bPartner.setContractEndDate(dto.getContractEndDate());
+        b2bPartner.setContractType(dto.getContractType());
+        b2bPartner.setContractTerms(dto.getContractTerms());
+        b2bPartner.setPaymentTerms(dto.getPaymentTerms());
+        b2bPartner.setDeliveryTerms(dto.getDeliveryTerms());
+        b2bPartner.setSpecialConditions(dto.getSpecialConditions());
         
-        // Contact Info
-        if (b2bPartner.getContactInfo() == null) {
-            b2bPartner.setContactInfo(new ma.foodplus.ordering.system.partner.domain.ContactInfo());
-        }
-        b2bPartner.getContactInfo().setTelephone(dto.getTelephone());
-        b2bPartner.getContactInfo().setEmail(dto.getEmail());
-        b2bPartner.getContactInfo().setAddress(dto.getAddress());
-        b2bPartner.getContactInfo().setPostalCode(dto.getCodePostal());
-        b2bPartner.getContactInfo().setCity(dto.getVille());
-        b2bPartner.getContactInfo().setCountry(dto.getCountry());
+        // Update Contact Information (Individual columns)
+        b2bPartner.setTelephone(dto.getTelephone());
+        b2bPartner.setEmail(dto.getEmail());
+        b2bPartner.setAddress(dto.getAddress());
+        b2bPartner.setCity(dto.getVille());
+        b2bPartner.setCountry(dto.getCountry());
+        b2bPartner.setPostalCode(dto.getCodePostal());
         
-        // Credit Info
-        if (b2bPartner.getCreditInfo() == null) {
-            b2bPartner.setCreditInfo(new ma.foodplus.ordering.system.partner.domain.CreditInfo());
-        }
-        b2bPartner.getCreditInfo().setCreditLimit(dto.getCreditLimit());
-        b2bPartner.getCreditInfo().setCreditRating(dto.getCreditRating());
-        b2bPartner.getCreditInfo().setCreditScore(dto.getCreditScore());
-        b2bPartner.getCreditInfo().setPaymentHistory(dto.getPaymentHistory());
-        b2bPartner.getCreditInfo().setOutstandingBalance(dto.getOutstandingBalance());
-        b2bPartner.getCreditInfo().setLastPaymentDate(dto.getLastPaymentDate());
-        b2bPartner.getCreditInfo().setPaymentTermDays(dto.getPaymentTermDays());
-        b2bPartner.getCreditInfo().setPreferredPaymentMethod(dto.getPreferredPaymentMethod());
-        b2bPartner.getCreditInfo().setBankAccountInfo(dto.getBankAccountInfo());
+        // Update Credit Information (Individual columns)
+        b2bPartner.setCreditLimit(dto.getCreditLimit());
+        b2bPartner.setOutstandingBalance(dto.getOutstandingBalance());
+        b2bPartner.setCreditRating(dto.getCreditRating());
+        b2bPartner.setCreditScore(dto.getCreditScore());
+        b2bPartner.setPaymentTermDays(dto.getPaymentTermDays());
+        b2bPartner.setPreferredPaymentMethod(dto.getPreferredPaymentMethod());
+        b2bPartner.setBankAccountInfo(dto.getBankAccountInfo());
+        b2bPartner.setLastPaymentDate(dto.getLastPaymentDate());
+        b2bPartner.setPaymentHistory(dto.getPaymentHistory());
         
-        // Loyalty Info
-        if (b2bPartner.getLoyaltyInfo() == null) {
-            b2bPartner.setLoyaltyInfo(new ma.foodplus.ordering.system.partner.domain.LoyaltyInfo());
-        }
-        b2bPartner.getLoyaltyInfo().setVip(dto.isVip());
-        b2bPartner.getLoyaltyInfo().setLoyaltyPoints(dto.getLoyaltyPoints());
-        b2bPartner.getLoyaltyInfo().setLastOrderDate(dto.getLastOrderDate());
-        b2bPartner.getLoyaltyInfo().setTotalOrders(dto.getTotalOrders());
-        b2bPartner.getLoyaltyInfo().setTotalSpent(dto.getTotalSpent());
-        b2bPartner.getLoyaltyInfo().setAverageOrderValue(dto.getAverageOrderValue());
-        b2bPartner.getLoyaltyInfo().setPartnerSince(dto.getCustomerSince());
+        // Update Loyalty Information (Individual columns)
+        b2bPartner.setIsVip(dto.isVip());
+        b2bPartner.setLoyaltyPoints(dto.getLoyaltyPoints());
+        b2bPartner.setLastOrderDate(dto.getLastOrderDate());
+        b2bPartner.setTotalOrders(dto.getTotalOrders());
+        b2bPartner.setTotalSpent(dto.getTotalSpent());
+        b2bPartner.setAverageOrderValue(dto.getAverageOrderValue());
+        b2bPartner.setPartnerSince(dto.getCustomerSince());
         
-        // Delivery Preference
-        if (b2bPartner.getDeliveryPreference() == null) {
-            b2bPartner.setDeliveryPreference(new ma.foodplus.ordering.system.partner.domain.DeliveryPreference());
-        }
-        b2bPartner.getDeliveryPreference().setPreferredDeliveryTime(dto.getPreferredDeliveryTime());
-        b2bPartner.getDeliveryPreference().setPreferredDeliveryDays(dto.getPreferredDeliveryDays());
-        b2bPartner.getDeliveryPreference().setSpecialHandlingInstructions(dto.getSpecialHandlingInstructions());
+        // Update Delivery Preference (Individual columns)
+        b2bPartner.setPreferredDeliveryTime(dto.getPreferredDeliveryTime());
+        b2bPartner.setPreferredDeliveryDays(dto.getPreferredDeliveryDays());
+        b2bPartner.setSpecialHandlingInstructions(dto.getSpecialHandlingInstructions());
         
-        // Audit Info
-        if (b2bPartner.getAuditInfo() == null) {
-            b2bPartner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        b2bPartner.getAuditInfo().setNotes(dto.getNotes());
-        b2bPartner.getAuditInfo().setActive(dto.isActive());
-        b2bPartner.getAuditInfo().setLastActivityDate(dto.getLastActivityDate());
-        b2bPartner.getAuditInfo().setCreatedBy(dto.getCreatedBy());
-        b2bPartner.getAuditInfo().setUpdatedBy(dto.getUpdatedBy());
-        b2bPartner.getAuditInfo().setCreatedAt(dto.getCreatedAt());
-        b2bPartner.getAuditInfo().setUpdatedAt(dto.getUpdatedAt());
+        // Update Audit Information (Individual columns)
+        b2bPartner.setNotes(dto.getNotes());
+        b2bPartner.setIsActive(dto.isActive());
+        b2bPartner.setLastActivityDate(dto.getLastActivityDate());
+        b2bPartner.setCreatedBy(dto.getCreatedBy());
+        b2bPartner.setUpdatedBy(dto.getUpdatedBy());
+        b2bPartner.setCreatedAt(dto.getCreatedAt());
+        b2bPartner.setUpdatedAt(dto.getUpdatedAt());
     }
     
     public List<B2BPartnerDTO> toDTOList(List<B2BPartner> b2bPartners) {
         if (b2bPartners == null) return null;
         List<B2BPartnerDTO> list = new ArrayList<>();
-        for (B2BPartner p : b2bPartners) {
-            list.add(toDTO(p));
-        }
+        for (B2BPartner p : b2bPartners) list.add(toDTO(p));
         return list;
     }
     
@@ -330,89 +268,75 @@ public class B2BPartnerMapper {
         
         PartnerDTO dto = new PartnerDTO();
         
-        // Base partner fields
+        // Basic partner information
         dto.setId(b2bPartner.getId());
         dto.setCtNum(b2bPartner.getCtNum());
         dto.setIce(b2bPartner.getIce());
         dto.setDescription(b2bPartner.getDescription());
-        dto.setPartnerType(PartnerType.B2B);
+        dto.setPartnerType(b2bPartner.getPartnerType());
         dto.setCategoryTarifId(b2bPartner.getCateTarif());
         
-        // Company Info (flattened)
-        if (b2bPartner.getCompanyInfo() != null) {
-            dto.setCompanyName(b2bPartner.getCompanyInfo().getCompanyName());
-            dto.setLegalForm(b2bPartner.getCompanyInfo().getLegalForm());
-            dto.setRegistrationNumber(b2bPartner.getCompanyInfo().getRegistrationNumber());
-            dto.setTaxId(b2bPartner.getCompanyInfo().getTaxId());
-            dto.setVatNumber(b2bPartner.getCompanyInfo().getVatNumber());
-            dto.setBusinessActivity(b2bPartner.getCompanyInfo().getBusinessActivity());
-            dto.setAnnualTurnover(b2bPartner.getCompanyInfo().getAnnualTurnover());
-            dto.setNumberOfEmployees(b2bPartner.getCompanyInfo().getNumberOfEmployees());
-        }
+        // Company Information (Individual columns)
+        dto.setCompanyName(b2bPartner.getCompanyName());
+        dto.setLegalForm(b2bPartner.getLegalForm());
+        dto.setRegistrationNumber(b2bPartner.getRegistrationNumber());
+        dto.setTaxId(b2bPartner.getTaxId());
+        dto.setVatNumber(b2bPartner.getVatNumber());
+        dto.setBusinessActivity(b2bPartner.getBusinessActivity());
+        dto.setAnnualTurnover(b2bPartner.getAnnualTurnover());
+        dto.setNumberOfEmployees(b2bPartner.getNumberOfEmployees());
         
-        // Contract Info (flattened)
-        if (b2bPartner.getContractInfo() != null) {
-            dto.setContractNumber(b2bPartner.getContractInfo().getContractNumber());
-            dto.setContractStartDate(b2bPartner.getContractInfo().getContractStartDate());
-            dto.setContractEndDate(b2bPartner.getContractInfo().getContractEndDate());
-            dto.setContractType(b2bPartner.getContractInfo().getContractType());
-            dto.setContractTerms(b2bPartner.getContractInfo().getContractTerms());
-            dto.setPaymentTerms(b2bPartner.getContractInfo().getPaymentTerms());
-            dto.setDeliveryTerms(b2bPartner.getContractInfo().getDeliveryTerms());
-            dto.setSpecialConditions(b2bPartner.getContractInfo().getSpecialConditions());
-        }
+        // Contract Information (Individual columns)
+        dto.setContractNumber(b2bPartner.getContractNumber());
+        dto.setContractStartDate(b2bPartner.getContractStartDate());
+        dto.setContractEndDate(b2bPartner.getContractEndDate());
+        dto.setContractType(b2bPartner.getContractType());
+        dto.setContractTerms(b2bPartner.getContractTerms());
+        dto.setPaymentTerms(b2bPartner.getPaymentTerms());
+        dto.setDeliveryTerms(b2bPartner.getDeliveryTerms());
+        dto.setSpecialConditions(b2bPartner.getSpecialConditions());
         
-        // Contact Info
-        if (b2bPartner.getContactInfo() != null) {
-            dto.setTelephone(b2bPartner.getContactInfo().getTelephone());
-            dto.setEmail(b2bPartner.getContactInfo().getEmail());
-            dto.setAddress(b2bPartner.getContactInfo().getAddress());
-            dto.setCodePostal(b2bPartner.getContactInfo().getPostalCode());
-            dto.setVille(b2bPartner.getContactInfo().getCity());
-            dto.setCountry(b2bPartner.getContactInfo().getCountry());
-        }
+        // Contact Information (Individual columns)
+        dto.setTelephone(b2bPartner.getTelephone());
+        dto.setEmail(b2bPartner.getEmail());
+        dto.setAddress(b2bPartner.getAddress());
+        dto.setCodePostal(b2bPartner.getPostalCode());
+        dto.setVille(b2bPartner.getCity());
+        dto.setCountry(b2bPartner.getCountry());
         
-        // Credit Info
-        if (b2bPartner.getCreditInfo() != null) {
-            dto.setCreditLimit(b2bPartner.getCreditInfo().getCreditLimit());
-            dto.setCreditRating(b2bPartner.getCreditInfo().getCreditRating());
-            dto.setCreditScore(b2bPartner.getCreditInfo().getCreditScore());
-            dto.setPaymentHistory(b2bPartner.getCreditInfo().getPaymentHistory());
-            dto.setOutstandingBalance(b2bPartner.getCreditInfo().getOutstandingBalance());
-            dto.setLastPaymentDate(b2bPartner.getCreditInfo().getLastPaymentDate());
-            dto.setPaymentTermDays(b2bPartner.getCreditInfo().getPaymentTermDays());
-            dto.setPreferredPaymentMethod(b2bPartner.getCreditInfo().getPreferredPaymentMethod());
-            dto.setBankAccountInfo(b2bPartner.getCreditInfo().getBankAccountInfo());
-        }
+        // Credit Information (Individual columns)
+        dto.setCreditLimit(b2bPartner.getCreditLimit());
+        dto.setOutstandingBalance(b2bPartner.getOutstandingBalance());
+        dto.setCreditRating(b2bPartner.getCreditRating());
+        dto.setCreditScore(b2bPartner.getCreditScore());
+        dto.setPaymentTermDays(b2bPartner.getPaymentTermDays());
+        dto.setPreferredPaymentMethod(b2bPartner.getPreferredPaymentMethod());
+        dto.setBankAccountInfo(b2bPartner.getBankAccountInfo());
+        dto.setLastPaymentDate(b2bPartner.getLastPaymentDate());
+        dto.setPaymentHistory(b2bPartner.getPaymentHistory());
         
-        // Loyalty Info
-        if (b2bPartner.getLoyaltyInfo() != null) {
-            dto.setVip(b2bPartner.getLoyaltyInfo().isVip());
-            dto.setLoyaltyPoints(b2bPartner.getLoyaltyInfo().getLoyaltyPoints());
-            dto.setLastOrderDate(b2bPartner.getLoyaltyInfo().getLastOrderDate());
-            dto.setTotalOrders(b2bPartner.getLoyaltyInfo().getTotalOrders());
-            dto.setTotalSpent(b2bPartner.getLoyaltyInfo().getTotalSpent());
-            dto.setAverageOrderValue(b2bPartner.getLoyaltyInfo().getAverageOrderValue());
-            dto.setCustomerSince(b2bPartner.getLoyaltyInfo().getPartnerSince());
-        }
+        // Loyalty Information (Individual columns)
+        dto.setVip(b2bPartner.getIsVip() != null && b2bPartner.getIsVip());
+        dto.setLoyaltyPoints(b2bPartner.getLoyaltyPoints());
+        dto.setLastOrderDate(b2bPartner.getLastOrderDate());
+        dto.setTotalOrders(b2bPartner.getTotalOrders());
+        dto.setTotalSpent(b2bPartner.getTotalSpent());
+        dto.setAverageOrderValue(b2bPartner.getAverageOrderValue());
+        dto.setCustomerSince(b2bPartner.getPartnerSince());
         
-        // Delivery Preference
-        if (b2bPartner.getDeliveryPreference() != null) {
-            dto.setPreferredDeliveryTime(b2bPartner.getDeliveryPreference().getPreferredDeliveryTime());
-            dto.setPreferredDeliveryDays(b2bPartner.getDeliveryPreference().getPreferredDeliveryDays());
-            dto.setSpecialHandlingInstructions(b2bPartner.getDeliveryPreference().getSpecialHandlingInstructions());
-        }
+        // Delivery Preference (Individual columns)
+        dto.setPreferredDeliveryTime(b2bPartner.getPreferredDeliveryTime());
+        dto.setPreferredDeliveryDays(b2bPartner.getPreferredDeliveryDays());
+        dto.setSpecialHandlingInstructions(b2bPartner.getSpecialHandlingInstructions());
         
-        // Audit Info
-        if (b2bPartner.getAuditInfo() != null) {
-            dto.setNotes(b2bPartner.getAuditInfo().getNotes());
-            dto.setActive(b2bPartner.getAuditInfo().isActive());
-            dto.setLastActivityDate(b2bPartner.getAuditInfo().getLastActivityDate());
-            dto.setCreatedBy(b2bPartner.getAuditInfo().getCreatedBy());
-            dto.setUpdatedBy(b2bPartner.getAuditInfo().getUpdatedBy());
-            dto.setCreatedAt(b2bPartner.getAuditInfo().getCreatedAt());
-            dto.setUpdatedAt(b2bPartner.getAuditInfo().getUpdatedAt());
-        }
+        // Audit Information (Individual columns)
+        dto.setNotes(b2bPartner.getNotes());
+        dto.setActive(b2bPartner.getIsActive() != null && b2bPartner.getIsActive());
+        dto.setLastActivityDate(b2bPartner.getLastActivityDate());
+        dto.setCreatedBy(b2bPartner.getCreatedBy());
+        dto.setUpdatedBy(b2bPartner.getUpdatedBy());
+        dto.setCreatedAt(b2bPartner.getCreatedAt());
+        dto.setUpdatedAt(b2bPartner.getUpdatedAt());
         
         return dto;
     }

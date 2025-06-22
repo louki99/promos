@@ -10,6 +10,42 @@ spring:
         jwt:
           enabled: false
 
+  # Kafka Configuration for Development (Docker Compose)
+  kafka:
+    bootstrap-servers: localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 3
+      batch-size: 16384
+      linger-ms: 1
+      buffer-memory: 33554432
+      enable-idempotence: true
+      max-in-flight-requests-per-connection: 5
+    consumer:
+      group-id: partner-service-group-dev
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+  # Redis Configuration for Development
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 
+      database: 0
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
 # Disable method security for development
 security:
   basic:
@@ -17,11 +53,14 @@ security:
   oauth2:
     enabled: false
 
-# Development-specific logging
+# Development-specific logging - Updated to reduce Kafka warnings
 logging:
   level:
-    org.springframework.security: DEBUG
+    root: INFO
     ma.foodplus.ordering.system.partner: DEBUG
+    org.springframework.kafka: WARN  # Changed from DEBUG to WARN to reduce version warnings
+    org.apache.kafka: WARN  # Changed from DEBUG to WARN to reduce version warnings
+    org.springframework.security: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
@@ -63,3 +102,14 @@ partner:
       enabled: false
       email:
         enabled: false
+
+# Development-specific Kafka Topics
+kafka:
+  topics:
+    partner-events: partner-events-dev
+    contract-events: contract-events-dev
+    credit-events: credit-events-dev
+    loyalty-events: loyalty-events-dev
+    supplier-events: supplier-events-dev
+    group-events: group-events-dev
+    business-events: business-events-dev

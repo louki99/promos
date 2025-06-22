@@ -26,15 +26,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("SUPPLIER")
-@Table(name = "partners")
 public class SupplierPartner extends Partner {
-    
-    // Supplier-specific Embedded Objects
-    @Embedded
-    private CompanyInfo companyInfo;
-    
-    @Embedded
-    private ContractInfo contractInfo;
     
     // Supplier-specific attributes
     @Column(name = "supplier_code", unique = true)
@@ -97,11 +89,11 @@ public class SupplierPartner extends Partner {
      * @return true if the partner has a valid contract
      */
     public boolean hasValidContract() {
-        if (contractInfo == null || contractInfo.getContractStartDate() == null || contractInfo.getContractEndDate() == null) {
+        if (getContractStartDate() == null || getContractEndDate() == null) {
             return false;
         }
         ZonedDateTime now = ZonedDateTime.now();
-        return now.isAfter(contractInfo.getContractStartDate()) && now.isBefore(contractInfo.getContractEndDate());
+        return now.isAfter(getContractStartDate()) && now.isBefore(getContractEndDate());
     }
 
     /**
@@ -111,15 +103,15 @@ public class SupplierPartner extends Partner {
      * @return true if the contract expires within the threshold
      */
     public boolean isContractExpiringSoon(int daysThreshold) {
-        if (contractInfo == null || contractInfo.getContractEndDate() == null) {
+        if (getContractEndDate() == null) {
             return false;
         }
         
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime thresholdDate = now.plusDays(daysThreshold);
         
-        return contractInfo.getContractEndDate().isBefore(thresholdDate) && 
-               contractInfo.getContractEndDate().isAfter(now);
+        return getContractEndDate().isBefore(thresholdDate) && 
+               getContractEndDate().isAfter(now);
     }
 
     /**
@@ -224,20 +216,20 @@ public class SupplierPartner extends Partner {
         }
         
         // Check company information
-        if (companyInfo == null || companyInfo.getCompanyName() == null || companyInfo.getCompanyName().trim().isEmpty()) {
+        if (getCompanyName() == null || getCompanyName().trim().isEmpty()) {
             return false;
         }
         
         // Check contract information
-        if (contractInfo == null || contractInfo.getContractNumber() == null || contractInfo.getContractNumber().trim().isEmpty()) {
+        if (getContractNumber() == null || getContractNumber().trim().isEmpty()) {
             return false;
         }
         
-        if (contractInfo.getContractStartDate() == null || contractInfo.getContractEndDate() == null) {
+        if (getContractStartDate() == null || getContractEndDate() == null) {
             return false;
         }
         
-        if (contractInfo.getContractEndDate().isBefore(contractInfo.getContractStartDate())) {
+        if (getContractEndDate().isBefore(getContractStartDate())) {
             return false;
         }
         
@@ -245,56 +237,28 @@ public class SupplierPartner extends Partner {
     }
 
     /**
-     * Gets the supplier risk assessment.
+     * Gets a risk assessment based on supplier metrics.
      * 
-     * @return risk assessment information
+     * @return risk assessment description
      */
     public String getRiskAssessment() {
-        if ("CRITICAL".equals(riskLevel)) {
-            return "CRITICAL - Immediate attention required";
-        } else if ("HIGH".equals(riskLevel)) {
-            return "HIGH - Monitor closely";
-        } else if ("MEDIUM".equals(riskLevel)) {
-            return "MEDIUM - Regular monitoring";
-        } else {
-            return "LOW - Standard monitoring";
+        if ("BLACKLISTED".equals(supplierStatus)) {
+            return "CRITICAL - Supplier is blacklisted";
         }
-    }
-
-    // Convenience methods for backward compatibility
-    public String getCompanyName() {
-        return companyInfo != null ? companyInfo.getCompanyName() : null;
-    }
-
-    public void setCompanyName(String companyName) {
-        if (companyInfo == null) companyInfo = new CompanyInfo();
-        companyInfo.setCompanyName(companyName);
-    }
-
-    public String getContractNumber() {
-        return contractInfo != null ? contractInfo.getContractNumber() : null;
-    }
-
-    public void setContractNumber(String contractNumber) {
-        if (contractInfo == null) contractInfo = new ContractInfo();
-        contractInfo.setContractNumber(contractNumber);
-    }
-
-    public ZonedDateTime getContractStartDate() {
-        return contractInfo != null ? contractInfo.getContractStartDate() : null;
-    }
-
-    public void setContractStartDate(ZonedDateTime contractStartDate) {
-        if (contractInfo == null) contractInfo = new ContractInfo();
-        contractInfo.setContractStartDate(contractStartDate);
-    }
-
-    public ZonedDateTime getContractEndDate() {
-        return contractInfo != null ? contractInfo.getContractEndDate() : null;
-    }
-
-    public void setContractEndDate(ZonedDateTime contractEndDate) {
-        if (contractInfo == null) contractInfo = new ContractInfo();
-        contractInfo.setContractEndDate(contractEndDate);
+        
+        if ("SUSPENDED".equals(supplierStatus)) {
+            return "HIGH - Supplier is suspended";
+        }
+        
+        BigDecimal performanceScore = getOverallPerformanceScore();
+        if (performanceScore.compareTo(BigDecimal.valueOf(40)) < 0) {
+            return "HIGH - Very low performance score";
+        } else if (performanceScore.compareTo(BigDecimal.valueOf(60)) < 0) {
+            return "MEDIUM - Below average performance";
+        } else if (performanceScore.compareTo(BigDecimal.valueOf(80)) < 0) {
+            return "LOW - Good performance";
+        } else {
+            return "VERY LOW - Excellent performance";
+        }
     }
 } 

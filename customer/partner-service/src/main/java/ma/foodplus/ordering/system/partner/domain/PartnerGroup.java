@@ -17,7 +17,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "customer_groups")
+@Table(name = "partner_groups")
 public class PartnerGroup{
     
     @Id

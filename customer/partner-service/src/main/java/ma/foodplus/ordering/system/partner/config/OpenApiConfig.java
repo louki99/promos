@@ -24,14 +24,14 @@ public class OpenApiConfig {
                         .version("v1.0.0")
                         .contact(new Contact()
                                 .name("FoodPlus Development Team")
-                                .email("dev@foodplus.ma")
-                                .url("https://foodplus.ma"))
+                                .email("dev@foodsolutions.com")
+                                .url("https://foodsolutions.com"))
                         .license(new License()
                                 .name("MIT License")
                                 .url("https://opensource.org/licenses/MIT")))
                 .servers(List.of(
-                        new Server().url("http://localhost:8080").description("Development Server"),
-                        new Server().url("https://api.foodplus.ma").description("Production Server")
+                        new Server().url("http://localhost:2000").description("Development Server"),
+                        new Server().url("https://api.partner.foodsolutions.com").description("Production Server")
                 ));
     }
 } 

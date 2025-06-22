@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the Partner Service providing comprehensive partner management functionality.
@@ -111,11 +112,8 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerMapper.toEntity(partnerDTO);
         
         // Set audit information
-        if (partner.getAuditInfo() == null) {
-            partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        partner.getAuditInfo().setCreatedAt(ZonedDateTime.now());
-        partner.getAuditInfo().setActive(true);
+        partner.setCreatedAt(ZonedDateTime.now());
+        partner.setIsActive(true);
         
         Partner savedPartner = partnerRepository.save(partner);
         log.info("Partner created successfully with ID: {}", savedPartner.getId());
@@ -149,11 +147,8 @@ public class PartnerServiceImpl implements PartnerService {
         validateBusinessRules(partnerDTO);
         
         // Update audit information
-        if (existingPartner.getAuditInfo() == null) {
-            existingPartner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        existingPartner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
-        existingPartner.getAuditInfo().setLastActivityDate(ZonedDateTime.now());
+        existingPartner.setUpdatedAt(ZonedDateTime.now());
+        existingPartner.setLastActivityDate(ZonedDateTime.now());
         
         partnerMapper.updateEntityFromDTO(partnerDTO, existingPartner);
         Partner updatedPartner = partnerRepository.save(existingPartner);
@@ -179,11 +174,8 @@ public class PartnerServiceImpl implements PartnerService {
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + id));
         
         // Soft delete - set active to false
-        if (partner.getAuditInfo() == null) {
-            partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        partner.getAuditInfo().setActive(false);
-        partner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
+        partner.setIsActive(false);
+        partner.setUpdatedAt(ZonedDateTime.now());
         
         partnerRepository.save(partner);
         log.info("Partner deleted successfully with ID: {}", id);
@@ -299,11 +291,8 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerRepository.findById(id)
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + id));
         
-        if (partner.getAuditInfo() == null) {
-            partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        partner.getAuditInfo().setActive(true);
-        partner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
+        partner.setIsActive(true);
+        partner.setUpdatedAt(ZonedDateTime.now());
         
         partnerRepository.save(partner);
         log.info("Partner activated successfully with ID: {}", id);
@@ -323,11 +312,8 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerRepository.findById(id)
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + id));
         
-        if (partner.getAuditInfo() == null) {
-            partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        partner.getAuditInfo().setActive(false);
-        partner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
+        partner.setIsActive(false);
+        partner.setUpdatedAt(ZonedDateTime.now());
         
         partnerRepository.save(partner);
         log.info("Partner deactivated successfully with ID: {}", id);
@@ -469,7 +455,7 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerRepository.findById(partnerId)
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + partnerId));
         
-        return partner.getLoyaltyInfo() != null ? partner.getLoyaltyInfo().getTotalSpent() : BigDecimal.ZERO;
+        return partner.getTotalSpent() != null ? partner.getTotalSpent() : BigDecimal.ZERO;
     }
 
     // ========== Search and Filter Operations ==========
@@ -499,7 +485,8 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional(readOnly = true)
     public List<PartnerDTO> getPartnersByType(PartnerDTO type) {
         log.debug("Fetching partners by type: {}", type.getPartnerType());
-        List<Partner> partners = partnerRepository.findByPartnerType(type.getPartnerType());
+        Class<? extends Partner> partnerClass = getPartnerClass(type.getPartnerType());
+        List<Partner> partners = partnerRepository.findByPartnerType(partnerClass);
         return partnerMapper.toDTOList(partners);
     }
 
@@ -613,10 +600,7 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerRepository.findById(id)
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + id));
         
-        if (partner.getCreditInfo() == null) {
-            partner.setCreditInfo(new ma.foodplus.ordering.system.partner.domain.CreditInfo());
-        }
-        partner.getCreditInfo().setCreditLimit(newLimit);
+        partner.setCreditLimit(newLimit);
         
         partnerRepository.save(partner);
         log.info("Credit limit updated successfully for partner ID: {}", id);
@@ -636,10 +620,7 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerRepository.findById(id)
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + id));
         
-        if (partner.getCreditInfo() == null) {
-            partner.setCreditInfo(new ma.foodplus.ordering.system.partner.domain.CreditInfo());
-        }
-        partner.getCreditInfo().setCreditScore(newScore);
+        partner.setCreditScore(newScore);
         
         partnerRepository.save(partner);
         log.info("Credit score updated successfully for partner ID: {}", id);
@@ -713,10 +694,7 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerRepository.findById(id)
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + id));
         
-        if (partner.getLoyaltyInfo() == null) {
-            partner.setLoyaltyInfo(new ma.foodplus.ordering.system.partner.domain.LoyaltyInfo());
-        }
-        partner.getLoyaltyInfo().setLoyaltyPoints(points);
+        partner.setLoyaltyPoints(points);
         
         partnerRepository.save(partner);
         log.info("Loyalty points updated successfully for partner ID: {}", id);
@@ -736,10 +714,7 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerRepository.findById(id)
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + id));
         
-        if (partner.getLoyaltyInfo() == null) {
-            partner.setLoyaltyInfo(new ma.foodplus.ordering.system.partner.domain.LoyaltyInfo());
-        }
-        partner.getLoyaltyInfo().setVip(isVip);
+        partner.setIsVip(isVip);
         
         partnerRepository.save(partner);
         log.info("VIP status updated successfully for partner ID: {}", id);
@@ -785,13 +760,13 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerRepository.findById(id)
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + id));
         
-        if (partner.getCreditInfo() == null || partner.getCreditInfo().getCreditLimit() == null) {
+        if (partner.getCreditLimit() == null) {
             return false;
         }
         
-        BigDecimal availableCredit = partner.getCreditInfo().getCreditLimit()
-                .subtract(partner.getCreditInfo().getOutstandingBalance() != null ? 
-                        partner.getCreditInfo().getOutstandingBalance() : BigDecimal.ZERO);
+        BigDecimal availableCredit = partner.getCreditLimit()
+                .subtract(partner.getOutstandingBalance() != null ? 
+                        partner.getOutstandingBalance() : BigDecimal.ZERO);
         
         return availableCredit.compareTo(amount) >= 0;
     }
@@ -824,15 +799,15 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional(readOnly = true)
     @Cacheable(value = CacheConfig.PARTNER_STATISTICS_CACHE, key = "'comprehensive-stats'")
     public Map<String, Object> getPartnerStatistics() {
-        log.debug("Generating partner statistics");
+        log.debug("Generating comprehensive partner statistics");
         Map<String, Object> statistics = new HashMap<>();
         
         // Basic counts
         statistics.put("totalPartners", partnerRepository.count());
         statistics.put("activePartners", partnerRepository.countByActiveTrue());
         statistics.put("vipPartners", partnerRepository.countByIsVipTrue());
-        statistics.put("b2bPartners", partnerRepository.countByPartnerType(PartnerType.B2B));
-        statistics.put("b2cPartners", partnerRepository.countByPartnerType(PartnerType.B2C));
+        statistics.put("b2bPartners", partnerRepository.countByPartnerType(B2BPartner.class));
+        statistics.put("b2cPartners", partnerRepository.countByPartnerType(B2CPartner.class));
         
         // Top spenders
         List<Partner> topSpenders = partnerRepository.findTopByOrderByTotalSpentDesc(10);
@@ -865,11 +840,11 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional(readOnly = true)
     @Cacheable(value = CacheConfig.PARTNER_STATISTICS_CACHE, key = "'distribution-by-type'")
     public Map<String, Integer> getPartnerDistributionByType() {
-        log.debug("Generating partner distribution by type");
+        log.debug("Calculating partner distribution by type");
         Map<String, Integer> distribution = new HashMap<>();
         
-        distribution.put("B2B", (int) partnerRepository.countByPartnerType(PartnerType.B2B));
-        distribution.put("B2C", (int) partnerRepository.countByPartnerType(PartnerType.B2C));
+        distribution.put("B2B", (int) partnerRepository.countByPartnerType(B2BPartner.class));
+        distribution.put("B2C", (int) partnerRepository.countByPartnerType(B2CPartner.class));
         
         return distribution;
     }
@@ -923,11 +898,8 @@ public class PartnerServiceImpl implements PartnerService {
         B2BPartner b2bPartner = b2bPartnerMapper.toEntity(b2bPartnerDTO);
         
         // Set audit information
-        if (b2bPartner.getAuditInfo() == null) {
-            b2bPartner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        b2bPartner.getAuditInfo().setCreatedAt(ZonedDateTime.now());
-        b2bPartner.getAuditInfo().setActive(true);
+        b2bPartner.setCreatedAt(ZonedDateTime.now());
+        b2bPartner.setIsActive(true);
         
         B2BPartner savedPartner = partnerRepository.save(b2bPartner);
         log.info("B2B partner created successfully with ID: {}", savedPartner.getId());
@@ -948,11 +920,8 @@ public class PartnerServiceImpl implements PartnerService {
         B2CPartner b2cPartner = b2cPartnerMapper.toEntity(b2cPartnerDTO);
         
         // Set audit information
-        if (b2cPartner.getAuditInfo() == null) {
-            b2cPartner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        b2cPartner.getAuditInfo().setCreatedAt(ZonedDateTime.now());
-        b2cPartner.getAuditInfo().setActive(true);
+        b2cPartner.setCreatedAt(ZonedDateTime.now());
+        b2cPartner.setIsActive(true);
         
         B2CPartner savedPartner = partnerRepository.save(b2cPartner);
         log.info("B2C partner created successfully with ID: {}", savedPartner.getId());
@@ -976,11 +945,8 @@ public class PartnerServiceImpl implements PartnerService {
         validateBusinessRulesForB2B(b2bPartnerDTO);
         
         // Update audit information
-        if (existingPartner.getAuditInfo() == null) {
-            existingPartner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        existingPartner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
-        existingPartner.getAuditInfo().setLastActivityDate(ZonedDateTime.now());
+        existingPartner.setUpdatedAt(ZonedDateTime.now());
+        existingPartner.setLastActivityDate(ZonedDateTime.now());
         
         b2bPartnerMapper.updateEntityFromDTO(b2bPartnerDTO, existingPartner);
         B2BPartner updatedPartner = partnerRepository.save(existingPartner);
@@ -1026,11 +992,10 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional(readOnly = true)
     public List<PartnerDTO> getAllB2BPartners() {
         log.debug("Fetching all B2B partners");
-        List<Partner> allPartners = partnerRepository.findByPartnerType(PartnerType.B2B);
+        List<Partner> allPartners = partnerRepository.findByPartnerType(B2BPartner.class);
         return allPartners.stream()
-                .filter(partner -> partner instanceof B2BPartner)
                 .map(partner -> b2bPartnerMapper.toPartnerDTO((B2BPartner) partner))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -1151,13 +1116,9 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerRepository.findById(partnerId)
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + partnerId));
         
-        if (partner.getCreditInfo() == null) {
-            partner.setCreditInfo(new ma.foodplus.ordering.system.partner.domain.CreditInfo());
-        }
-        
-        BigDecimal currentBalance = partner.getCreditInfo().getOutstandingBalance() != null ? 
-                partner.getCreditInfo().getOutstandingBalance() : BigDecimal.ZERO;
-        partner.getCreditInfo().setOutstandingBalance(currentBalance.add(amount));
+        BigDecimal currentBalance = partner.getOutstandingBalance() != null ? 
+                partner.getOutstandingBalance() : BigDecimal.ZERO;
+        partner.setOutstandingBalance(currentBalance.add(amount));
         
         Partner updatedPartner = partnerRepository.save(partner);
         log.info("Outstanding balance updated successfully for partner ID: {}", partnerId);
@@ -1182,16 +1143,14 @@ public class PartnerServiceImpl implements PartnerService {
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + partnerId));
         
         Map<String, Object> summary = new HashMap<>();
-        if (partner.getCreditInfo() != null) {
-            summary.put("creditLimit", partner.getCreditInfo().getCreditLimit());
-            summary.put("outstandingBalance", partner.getCreditInfo().getOutstandingBalance());
-            summary.put("availableCredit", partner.getCreditInfo().getCreditLimit() != null ? 
-                    partner.getCreditInfo().getCreditLimit().subtract(
-                            partner.getCreditInfo().getOutstandingBalance() != null ? 
-                                    partner.getCreditInfo().getOutstandingBalance() : BigDecimal.ZERO) : BigDecimal.ZERO);
-            summary.put("creditScore", partner.getCreditInfo().getCreditScore());
-            summary.put("creditRating", partner.getCreditInfo().getCreditRating());
-        }
+        summary.put("creditLimit", partner.getCreditLimit());
+        summary.put("outstandingBalance", partner.getOutstandingBalance());
+        summary.put("availableCredit", partner.getCreditLimit() != null ? 
+                partner.getCreditLimit().subtract(
+                        partner.getOutstandingBalance() != null ? 
+                                partner.getOutstandingBalance() : BigDecimal.ZERO) : BigDecimal.ZERO);
+        summary.put("creditScore", partner.getCreditScore());
+        summary.put("creditRating", partner.getCreditRating());
         return summary;
     }
 
@@ -1202,15 +1161,11 @@ public class PartnerServiceImpl implements PartnerService {
         Partner partner = partnerRepository.findById(partnerId)
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + partnerId));
         
-        if (partner.getCreditInfo() == null) {
-            partner.setCreditInfo(new ma.foodplus.ordering.system.partner.domain.CreditInfo());
-        }
-        
         // Reduce outstanding balance
-        BigDecimal currentBalance = partner.getCreditInfo().getOutstandingBalance() != null ? 
-                partner.getCreditInfo().getOutstandingBalance() : BigDecimal.ZERO;
-        partner.getCreditInfo().setOutstandingBalance(currentBalance.subtract(amount));
-        partner.getCreditInfo().setLastPaymentDate(ZonedDateTime.now());
+        BigDecimal currentBalance = partner.getOutstandingBalance() != null ? 
+                partner.getOutstandingBalance() : BigDecimal.ZERO;
+        partner.setOutstandingBalance(currentBalance.subtract(amount));
+        partner.setLastPaymentDate(ZonedDateTime.now());
         
         Partner updatedPartner = partnerRepository.save(partner);
         log.info("Payment processed successfully for partner ID: {}", partnerId);
@@ -1246,10 +1201,10 @@ public class PartnerServiceImpl implements PartnerService {
         }
         
         // Check credit availability
-        if (partner.getCreditInfo() != null && partner.getCreditInfo().getCreditLimit() != null) {
-            BigDecimal availableCredit = partner.getCreditInfo().getCreditLimit()
-                    .subtract(partner.getCreditInfo().getOutstandingBalance() != null ? 
-                            partner.getCreditInfo().getOutstandingBalance() : BigDecimal.ZERO);
+        if (partner.getCreditLimit() != null) {
+            BigDecimal availableCredit = partner.getCreditLimit()
+                    .subtract(partner.getOutstandingBalance() != null ? 
+                            partner.getOutstandingBalance() : BigDecimal.ZERO);
             
             if (availableCredit.compareTo(orderAmount) >= 0) {
                 validation.put("canPlaceOrder", true);
@@ -1269,7 +1224,7 @@ public class PartnerServiceImpl implements PartnerService {
                 .orElseThrow(() -> new PartnerException(ErrorCode.PARTNER_NOT_FOUND, "Partner not found with ID: " + partnerId));
         
         Map<String, Object> validation = new HashMap<>();
-        validation.put("eligible", partner.isActive() && partner.getCreditInfo() != null);
+        validation.put("eligible", partner.isActive() && partner.getCreditLimit() != null);
         return validation;
     }
 
@@ -1290,9 +1245,9 @@ public class PartnerServiceImpl implements PartnerService {
         }
         status.put("hasValidContract", hasValidContract);
         
-        status.put("hasCreditInfo", partner.getCreditInfo() != null);
-        status.put("creditLimit", partner.getCreditInfo() != null ? partner.getCreditInfo().getCreditLimit() : null);
-        status.put("outstandingBalance", partner.getCreditInfo() != null ? partner.getCreditInfo().getOutstandingBalance() : null);
+        status.put("hasCreditInfo", partner.getCreditLimit() != null);
+        status.put("creditLimit", partner.getCreditLimit());
+        status.put("outstandingBalance", partner.getOutstandingBalance());
         
         return status;
     }
@@ -1308,11 +1263,8 @@ public class PartnerServiceImpl implements PartnerService {
             try {
                 Partner partner = partnerRepository.findById(partnerId).orElse(null);
                 if (partner != null) {
-                    if (partner.getAuditInfo() == null) {
-                        partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-                    }
-                    partner.getAuditInfo().setActive(active);
-                    partner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
+                    partner.setIsActive(active);
+                    partner.setUpdatedAt(ZonedDateTime.now());
                     partnerRepository.save(partner);
                     updatedCount++;
                 }
@@ -1334,10 +1286,7 @@ public class PartnerServiceImpl implements PartnerService {
             try {
                 Partner partner = partnerRepository.findById(partnerId).orElse(null);
                 if (partner != null) {
-                    if (partner.getCreditInfo() == null) {
-                        partner.setCreditInfo(new ma.foodplus.ordering.system.partner.domain.CreditInfo());
-                    }
-                    partner.getCreditInfo().setCreditLimit(newLimit);
+                    partner.setCreditLimit(newLimit);
                     partnerRepository.save(partner);
                     updatedCount++;
                 }
@@ -1382,15 +1331,13 @@ public class PartnerServiceImpl implements PartnerService {
         List<Map<String, Object>> history = new ArrayList<>();
         
         // Add basic audit info
-        if (partner.getAuditInfo() != null) {
-            Map<String, Object> auditEntry = new HashMap<>();
-            auditEntry.put("createdAt", partner.getAuditInfo().getCreatedAt());
-            auditEntry.put("updatedAt", partner.getAuditInfo().getUpdatedAt());
-            auditEntry.put("createdBy", partner.getAuditInfo().getCreatedBy());
-            auditEntry.put("updatedBy", partner.getAuditInfo().getUpdatedBy());
-            auditEntry.put("active", partner.getAuditInfo().isActive());
-            history.add(auditEntry);
-        }
+        Map<String, Object> auditEntry = new HashMap<>();
+        auditEntry.put("createdAt", partner.getCreatedAt());
+        auditEntry.put("updatedAt", partner.getUpdatedAt());
+        auditEntry.put("createdBy", partner.getCreatedBy());
+        auditEntry.put("updatedBy", partner.getUpdatedBy());
+        auditEntry.put("active", partner.getIsActive());
+        history.add(auditEntry);
         
         return history;
     }
@@ -1405,11 +1352,11 @@ public class PartnerServiceImpl implements PartnerService {
         List<Map<String, Object>> activityLog = new ArrayList<>();
         
         Partner partner = partnerRepository.findById(partnerId).orElse(null);
-        if (partner != null && partner.getAuditInfo() != null) {
+        if (partner != null) {
             Map<String, Object> activity = new HashMap<>();
             activity.put("partnerId", partnerId);
-            activity.put("lastActivityDate", partner.getAuditInfo().getLastActivityDate());
-            activity.put("lastOrderDate", partner.getLoyaltyInfo() != null ? partner.getLoyaltyInfo().getLastOrderDate() : null);
+            activity.put("lastActivityDate", partner.getLastActivityDate());
+            activity.put("lastOrderDate", partner.getLastOrderDate());
             activityLog.add(activity);
         }
         
@@ -1428,19 +1375,15 @@ public class PartnerServiceImpl implements PartnerService {
         
         Map<String, Object> metrics = new HashMap<>();
         
-        if (partner.getLoyaltyInfo() != null) {
-            metrics.put("totalOrders", partner.getLoyaltyInfo().getTotalOrders());
-            metrics.put("totalSpent", partner.getLoyaltyInfo().getTotalSpent());
-            metrics.put("averageOrderValue", partner.getLoyaltyInfo().getAverageOrderValue());
-            metrics.put("loyaltyPoints", partner.getLoyaltyInfo().getLoyaltyPoints());
-            metrics.put("loyaltyLevel", getPartnerLoyaltyLevel(partnerId));
-        }
+        metrics.put("totalOrders", partner.getTotalOrders());
+        metrics.put("totalSpent", partner.getTotalSpent());
+        metrics.put("averageOrderValue", partner.getAverageOrderValue());
+        metrics.put("loyaltyPoints", partner.getLoyaltyPoints());
+        metrics.put("loyaltyLevel", getPartnerLoyaltyLevel(partnerId));
         
-        if (partner.getCreditInfo() != null) {
-            metrics.put("creditLimit", partner.getCreditInfo().getCreditLimit());
-            metrics.put("outstandingBalance", partner.getCreditInfo().getOutstandingBalance());
-            metrics.put("creditScore", partner.getCreditInfo().getCreditScore());
-        }
+        metrics.put("creditLimit", partner.getCreditLimit());
+        metrics.put("outstandingBalance", partner.getOutstandingBalance());
+        metrics.put("creditScore", partner.getCreditScore());
         
         return metrics;
     }
@@ -1458,9 +1401,9 @@ public class PartnerServiceImpl implements PartnerService {
         riskAssessment.put("factors", List.of("Good payment history", "Active status"));
         
         // Basic risk assessment logic
-        if (partner.getCreditInfo() != null && partner.getCreditInfo().getOutstandingBalance() != null) {
-            BigDecimal outstandingBalance = partner.getCreditInfo().getOutstandingBalance();
-            BigDecimal creditLimit = partner.getCreditInfo().getCreditLimit();
+        if (partner.getOutstandingBalance() != null) {
+            BigDecimal outstandingBalance = partner.getOutstandingBalance();
+            BigDecimal creditLimit = partner.getCreditLimit();
             
             if (creditLimit != null && creditLimit.compareTo(BigDecimal.ZERO) > 0) {
                 double utilizationRate = outstandingBalance.divide(creditLimit, 2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -1533,44 +1476,66 @@ public class PartnerServiceImpl implements PartnerService {
                 .supplierStatus(supplierPartnerDTO.getSupplierStatus())
                 .riskLevel(supplierPartnerDTO.getRiskLevel())
                 .supplierNotes(supplierPartnerDTO.getSupplierNotes())
+                // Company Information
+                .companyName(supplierPartnerDTO.getCompanyName())
+                .legalForm(supplierPartnerDTO.getLegalForm())
+                .registrationNumber(supplierPartnerDTO.getRegistrationNumber())
+                .taxId(supplierPartnerDTO.getTaxId())
+                .vatNumber(supplierPartnerDTO.getVatNumber())
+                .businessActivity(supplierPartnerDTO.getBusinessActivity())
+                .annualTurnover(supplierPartnerDTO.getAnnualTurnover())
+                .numberOfEmployees(supplierPartnerDTO.getNumberOfEmployees())
+                // Contract Information
+                .contractNumber(supplierPartnerDTO.getContractNumber())
+                .contractStartDate(supplierPartnerDTO.getContractStartDate())
+                .contractEndDate(supplierPartnerDTO.getContractEndDate())
+                .contractType(supplierPartnerDTO.getContractType())
+                .contractTerms(supplierPartnerDTO.getContractTerms())
+                .paymentTerms(supplierPartnerDTO.getPaymentTerms())
+                .deliveryTerms(supplierPartnerDTO.getDeliveryTerms())
+                .specialConditions(supplierPartnerDTO.getSpecialConditions())
+                // Contact Information
+                .telephone(supplierPartnerDTO.getTelephone())
+                .email(supplierPartnerDTO.getEmail())
+                .address(supplierPartnerDTO.getAddress())
+                .city(supplierPartnerDTO.getVille())
+                .country(supplierPartnerDTO.getCountry())
+                .postalCode(supplierPartnerDTO.getCodePostal())
+                // Credit Information
+                .creditLimit(supplierPartnerDTO.getCreditLimit())
+                .outstandingBalance(supplierPartnerDTO.getOutstandingBalance())
+                .creditRating(supplierPartnerDTO.getCreditRating())
+                .creditScore(supplierPartnerDTO.getCreditScore())
+                .paymentTermDays(supplierPartnerDTO.getPaymentTermDays())
+                .preferredPaymentMethod(supplierPartnerDTO.getPreferredPaymentMethod())
+                .bankAccountInfo(supplierPartnerDTO.getBankAccountInfo())
+                .lastPaymentDate(supplierPartnerDTO.getLastPaymentDate())
+                .paymentHistory(supplierPartnerDTO.getPaymentHistory())
+                // Loyalty Information
+                .isVip(supplierPartnerDTO.isVip())
+                .loyaltyPoints(supplierPartnerDTO.getLoyaltyPoints())
+                .totalOrders(supplierPartnerDTO.getTotalOrders())
+                .totalSpent(supplierPartnerDTO.getTotalSpent())
+                .averageOrderValue(supplierPartnerDTO.getAverageOrderValue())
+                .lastOrderDate(supplierPartnerDTO.getLastOrderDate())
+                .partnerSince(supplierPartnerDTO.getCustomerSince())
+                // Delivery Preference
+                .preferredDeliveryTime(supplierPartnerDTO.getPreferredDeliveryTime())
+                .preferredDeliveryDays(supplierPartnerDTO.getPreferredDeliveryDays())
+                .specialHandlingInstructions(supplierPartnerDTO.getSpecialHandlingInstructions())
+                // Audit Information
+                .notes(supplierPartnerDTO.getNotes())
+                .isActive(supplierPartnerDTO.isActive())
+                .lastActivityDate(supplierPartnerDTO.getLastActivityDate())
+                .createdBy(supplierPartnerDTO.getCreatedBy())
+                .updatedBy(supplierPartnerDTO.getUpdatedBy())
+                .createdAt(supplierPartnerDTO.getCreatedAt())
+                .updatedAt(supplierPartnerDTO.getUpdatedAt())
                 .build();
         
-        // Set company info
-        if (supplierPartnerDTO.getCompanyName() != null) {
-            ma.foodplus.ordering.system.partner.domain.CompanyInfo companyInfo = 
-                new ma.foodplus.ordering.system.partner.domain.CompanyInfo();
-            companyInfo.setCompanyName(supplierPartnerDTO.getCompanyName());
-            companyInfo.setLegalForm(supplierPartnerDTO.getLegalForm());
-            companyInfo.setRegistrationNumber(supplierPartnerDTO.getRegistrationNumber());
-            companyInfo.setTaxId(supplierPartnerDTO.getTaxId());
-            companyInfo.setVatNumber(supplierPartnerDTO.getVatNumber());
-            companyInfo.setBusinessActivity(supplierPartnerDTO.getBusinessActivity());
-            companyInfo.setAnnualTurnover(supplierPartnerDTO.getAnnualTurnover());
-            companyInfo.setNumberOfEmployees(supplierPartnerDTO.getNumberOfEmployees());
-            supplierPartner.setCompanyInfo(companyInfo);
-        }
-        
-        // Set contract info
-        if (supplierPartnerDTO.getContractNumber() != null) {
-            ma.foodplus.ordering.system.partner.domain.ContractInfo contractInfo = 
-                new ma.foodplus.ordering.system.partner.domain.ContractInfo();
-            contractInfo.setContractNumber(supplierPartnerDTO.getContractNumber());
-            contractInfo.setContractStartDate(supplierPartnerDTO.getContractStartDate());
-            contractInfo.setContractEndDate(supplierPartnerDTO.getContractEndDate());
-            contractInfo.setContractType(supplierPartnerDTO.getContractType());
-            contractInfo.setContractTerms(supplierPartnerDTO.getContractTerms());
-            contractInfo.setPaymentTerms(supplierPartnerDTO.getPaymentTerms());
-            contractInfo.setDeliveryTerms(supplierPartnerDTO.getDeliveryTerms());
-            contractInfo.setSpecialConditions(supplierPartnerDTO.getSpecialConditions());
-            supplierPartner.setContractInfo(contractInfo);
-        }
-        
         // Set audit information
-        ma.foodplus.ordering.system.partner.domain.AuditInfo auditInfo = 
-            new ma.foodplus.ordering.system.partner.domain.AuditInfo();
-        auditInfo.setCreatedAt(ZonedDateTime.now());
-        auditInfo.setActive(true);
-        supplierPartner.setAuditInfo(auditInfo);
+        supplierPartner.setCreatedAt(ZonedDateTime.now());
+        supplierPartner.setIsActive(true);
         
         ma.foodplus.ordering.system.partner.domain.SupplierPartner savedPartner = 
             partnerRepository.save(supplierPartner);
@@ -1594,31 +1559,27 @@ public class PartnerServiceImpl implements PartnerService {
         validateBusinessRulesForSupplier(supplierPartnerDTO);
         
         // Update audit information
-        if (existingPartner.getAuditInfo() == null) {
-            existingPartner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        existingPartner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
-        existingPartner.getAuditInfo().setLastActivityDate(ZonedDateTime.now());
+        existingPartner.setUpdatedAt(ZonedDateTime.now());
+        existingPartner.setLastActivityDate(ZonedDateTime.now());
         
-        // Update embedded objects manually since mapper doesn't support SupplierPartnerDTO
-        // Update contact info if provided
+        // Update fields manually since mapper doesn't support SupplierPartnerDTO
         if (supplierPartnerDTO.getTelephone() != null) {
-            if (existingPartner.getContactInfo() == null) {
-                existingPartner.setContactInfo(new ma.foodplus.ordering.system.partner.domain.ContactInfo());
-            }
-            existingPartner.getContactInfo().setTelephone(supplierPartnerDTO.getTelephone());
+            existingPartner.setTelephone(supplierPartnerDTO.getTelephone());
         }
         if (supplierPartnerDTO.getEmail() != null) {
-            if (existingPartner.getContactInfo() == null) {
-                existingPartner.setContactInfo(new ma.foodplus.ordering.system.partner.domain.ContactInfo());
-            }
-            existingPartner.getContactInfo().setEmail(supplierPartnerDTO.getEmail());
+            existingPartner.setEmail(supplierPartnerDTO.getEmail());
         }
         if (supplierPartnerDTO.getAddress() != null) {
-            if (existingPartner.getContactInfo() == null) {
-                existingPartner.setContactInfo(new ma.foodplus.ordering.system.partner.domain.ContactInfo());
-            }
-            existingPartner.getContactInfo().setAddress(supplierPartnerDTO.getAddress());
+            existingPartner.setAddress(supplierPartnerDTO.getAddress());
+        }
+        if (supplierPartnerDTO.getVille() != null) {
+            existingPartner.setCity(supplierPartnerDTO.getVille());
+        }
+        if (supplierPartnerDTO.getCountry() != null) {
+            existingPartner.setCountry(supplierPartnerDTO.getCountry());
+        }
+        if (supplierPartnerDTO.getCodePostal() != null) {
+            existingPartner.setPostalCode(supplierPartnerDTO.getCodePostal());
         }
         
         ma.foodplus.ordering.system.partner.domain.SupplierPartner updatedPartner = 
@@ -1711,26 +1672,24 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional(readOnly = true)
     public List<PartnerDTO> getSuppliersByCategory(String category) {
         log.debug("Fetching suppliers by category: {}", category);
-        List<Partner> allPartners = partnerRepository.findByPartnerType(PartnerType.SUPPLIER);
+        List<Partner> allPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class);
         return allPartners.stream()
-                .filter(p -> p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
                 .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
-                .filter(sp -> category.equals(sp.getSupplierCategory()))
-                .map(sp -> partnerMapper.toDTO(sp))
-                .toList();
+                .filter(s -> category.equals(s.getSupplierCategory()))
+                .map(supplierPartnerMapper::toPartnerDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<PartnerDTO> getSuppliersByStatus(String status) {
         log.debug("Fetching suppliers by status: {}", status);
-        List<Partner> allPartners = partnerRepository.findByPartnerType(PartnerType.SUPPLIER);
+        List<Partner> allPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class);
         return allPartners.stream()
-                .filter(p -> p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
                 .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
-                .filter(sp -> status.equals(sp.getSupplierStatus()))
-                .map(sp -> partnerMapper.toDTO(sp))
-                .toList();
+                .filter(s -> status.equals(s.getSupplierStatus()))
+                .map(supplierPartnerMapper::toPartnerDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -1751,10 +1710,7 @@ public class PartnerServiceImpl implements PartnerService {
         }
         
         // Update audit information
-        if (partner.getAuditInfo() == null) {
-            partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        partner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
+        partner.setUpdatedAt(ZonedDateTime.now());
         
         ma.foodplus.ordering.system.partner.domain.SupplierPartner updatedPartner = 
             partnerRepository.save(partner);
@@ -1799,10 +1755,7 @@ public class PartnerServiceImpl implements PartnerService {
         }
         
         // Update audit information
-        if (partner.getAuditInfo() == null) {
-            partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        partner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
+        partner.setUpdatedAt(ZonedDateTime.now());
         
         ma.foodplus.ordering.system.partner.domain.SupplierPartner updatedPartner = 
             partnerRepository.save(partner);
@@ -1818,7 +1771,7 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional(readOnly = true)
     public Map<String, Object> getSupplierRiskAssessmentInternal() {
         log.debug("Getting supplier risk assessment");
-        List<Partner> allPartners = partnerRepository.findByPartnerType(PartnerType.SUPPLIER);
+        List<Partner> allPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class);
         
         Map<String, Object> riskAssessment = new HashMap<>();
         Map<String, Long> riskLevelCounts = new HashMap<>();
@@ -1862,10 +1815,7 @@ public class PartnerServiceImpl implements PartnerService {
         }
         
         // Update audit information
-        if (partner.getAuditInfo() == null) {
-            partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        partner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
+        partner.setUpdatedAt(ZonedDateTime.now());
         
         ma.foodplus.ordering.system.partner.domain.SupplierPartner updatedPartner = 
             partnerRepository.save(partner);
@@ -1890,10 +1840,7 @@ public class PartnerServiceImpl implements PartnerService {
         }
         
         // Update audit information
-        if (partner.getAuditInfo() == null) {
-            partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        partner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
+        partner.setUpdatedAt(ZonedDateTime.now());
         
         ma.foodplus.ordering.system.partner.domain.SupplierPartner updatedPartner = 
             partnerRepository.save(partner);
@@ -1909,13 +1856,12 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional(readOnly = true)
     public List<PartnerDTO> getOverdueAudits() {
         log.debug("Fetching suppliers with overdue audits");
-        List<Partner> allPartners = partnerRepository.findByPartnerType(PartnerType.SUPPLIER);
+        List<Partner> allPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class);
         return allPartners.stream()
-                .filter(p -> p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
                 .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
-                .filter(sp -> sp.isDueForAudit())
-                .map(sp -> partnerMapper.toDTO(sp))
-                .toList();
+                .filter(s -> s.isDueForAudit())
+                .map(supplierPartnerMapper::toPartnerDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -1927,17 +1873,13 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional(readOnly = true)
     public List<PartnerDTO> getAuditsDueSoon(int daysThreshold) {
         log.debug("Fetching suppliers with audits due within {} days", daysThreshold);
-        List<Partner> allPartners = partnerRepository.findByPartnerType(PartnerType.SUPPLIER);
+        List<Partner> allPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class);
         ZonedDateTime thresholdDate = ZonedDateTime.now().plusDays(daysThreshold);
-        
         return allPartners.stream()
-                .filter(p -> p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
                 .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
-                .filter(sp -> sp.getNextAuditDate() != null && 
-                             sp.getNextAuditDate().isBefore(thresholdDate) && 
-                             sp.getNextAuditDate().isAfter(ZonedDateTime.now()))
-                .map(sp -> partnerMapper.toDTO(sp))
-                .toList();
+                .filter(s -> s.getNextAuditDate() != null && s.getNextAuditDate().isBefore(thresholdDate))
+                .map(supplierPartnerMapper::toPartnerDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -1958,10 +1900,7 @@ public class PartnerServiceImpl implements PartnerService {
         }
         
         // Update audit information
-        if (partner.getAuditInfo() == null) {
-            partner.setAuditInfo(new ma.foodplus.ordering.system.partner.domain.AuditInfo());
-        }
-        partner.getAuditInfo().setUpdatedAt(ZonedDateTime.now());
+        partner.setUpdatedAt(ZonedDateTime.now());
         
         ma.foodplus.ordering.system.partner.domain.SupplierPartner updatedPartner = 
             partnerRepository.save(partner);
@@ -1976,42 +1915,11 @@ public class PartnerServiceImpl implements PartnerService {
 
     @Transactional(readOnly = true)
     public Map<String, Object> getPerformanceAnalytics() {
-        log.debug("Getting supplier performance analytics");
-        List<Partner> allPartners = partnerRepository.findByPartnerType(PartnerType.SUPPLIER);
+        log.debug("Generating supplier performance analytics");
+        List<Partner> allPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class);
         
-        Map<String, Object> analytics = new HashMap<>();
-        
-        // Calculate average performance scores
-        double avgDeliveryScore = allPartners.stream()
-                .filter(p -> p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
-                .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
-                .filter(sp -> sp.getDeliveryPerformanceScore() != null)
-                .mapToDouble(sp -> sp.getDeliveryPerformanceScore().doubleValue())
-                .average()
-                .orElse(0.0);
-        
-        double avgQualityScore = allPartners.stream()
-                .filter(p -> p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
-                .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
-                .filter(sp -> sp.getQualityScore() != null)
-                .mapToDouble(sp -> sp.getQualityScore().doubleValue())
-                .average()
-                .orElse(0.0);
-        
-        double avgPriceScore = allPartners.stream()
-                .filter(p -> p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
-                .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
-                .filter(sp -> sp.getPriceCompetitivenessScore() != null)
-                .mapToDouble(sp -> sp.getPriceCompetitivenessScore().doubleValue())
-                .average()
-                .orElse(0.0);
-        
-        analytics.put("averageDeliveryScore", avgDeliveryScore);
-        analytics.put("averageQualityScore", avgQualityScore);
-        analytics.put("averagePriceScore", avgPriceScore);
-        analytics.put("totalSuppliers", allPartners.size());
-        
-        return analytics;
+        // Analytics calculation logic...
+        return calculatePerformanceAnalytics(allPartners);
     }
 
     @Override
@@ -2022,8 +1930,11 @@ public class PartnerServiceImpl implements PartnerService {
 
     @Transactional(readOnly = true)
     public Map<String, Object> getRiskAnalytics() {
-        log.debug("Getting supplier risk analytics");
-        return getSupplierRiskAssessmentInternal(); // Reuse existing method
+        log.debug("Generating supplier risk analytics");
+        List<Partner> allPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class);
+        
+        // Risk analytics calculation logic...
+        return calculateRiskAnalytics(allPartners);
     }
 
     @Override
@@ -2034,24 +1945,11 @@ public class PartnerServiceImpl implements PartnerService {
 
     @Transactional(readOnly = true)
     public Map<String, Object> getCategoryDistribution() {
-        log.debug("Getting supplier category distribution");
-        List<Partner> allPartners = partnerRepository.findByPartnerType(PartnerType.SUPPLIER);
+        log.debug("Calculating supplier category distribution");
+        List<Partner> allPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class);
         
-        Map<String, Object> distribution = new HashMap<>();
-        Map<String, Long> categoryCounts = new HashMap<>();
-        
-        allPartners.stream()
-                .filter(p -> p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
-                .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
-                .forEach(sp -> {
-                    String category = sp.getSupplierCategory() != null ? sp.getSupplierCategory() : "UNKNOWN";
-                    categoryCounts.put(category, categoryCounts.getOrDefault(category, 0L) + 1);
-                });
-        
-        distribution.put("categoryDistribution", categoryCounts);
-        distribution.put("totalSuppliers", allPartners.size());
-        
-        return distribution;
+        // Category distribution calculation logic...
+        return calculateCategoryDistribution(allPartners);
     }
 
     @Override
@@ -2077,7 +1975,7 @@ public class PartnerServiceImpl implements PartnerService {
         
         // Validate supplier code uniqueness (would need custom repository method)
         // For now, we'll check in the service layer
-        List<Partner> allPartners = partnerRepository.findByPartnerType(PartnerType.SUPPLIER);
+        List<Partner> allPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class);
         boolean supplierCodeExists = allPartners.stream()
                 .filter(p -> p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
                 .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
@@ -2104,7 +2002,7 @@ public class PartnerServiceImpl implements PartnerService {
         }
         
         // Validate supplier code uniqueness (excluding current partner)
-        List<Partner> allPartners = partnerRepository.findByPartnerType(PartnerType.SUPPLIER);
+        List<Partner> allPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class);
         boolean supplierCodeExists = allPartners.stream()
                 .filter(p -> p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
                 .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
@@ -2290,5 +2188,81 @@ public class PartnerServiceImpl implements PartnerService {
         if (existingByIce.isPresent() && !existingByIce.get().getId().equals(currentId)) {
             throw new PartnerException(ErrorCode.PARTNER_DUPLICATE_ICE, "Partner with ICE already exists: " + b2cPartnerDTO.getIce());
         }
+    }
+
+    private Class<? extends Partner> getPartnerClass(PartnerType type) {
+        switch (type) {
+            case B2B:
+                return B2BPartner.class;
+            case B2C:
+                return B2CPartner.class;
+            case SUPPLIER:
+                return ma.foodplus.ordering.system.partner.domain.SupplierPartner.class;
+            default:
+                throw new PartnerException(ErrorCode.PARTNER_INVALID_INPUT, "Invalid partner type: " + type);
+        }
+    }
+
+    private Map<String, Object> calculatePerformanceAnalytics(List<Partner> partners) {
+        Map<String, Object> analytics = new HashMap<>();
+        
+        // Calculate average performance scores
+        double avgDeliveryScore = partners.stream()
+                .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
+                .filter(sp -> sp.getDeliveryPerformanceScore() != null)
+                .mapToDouble(sp -> sp.getDeliveryPerformanceScore().doubleValue())
+                .average()
+                .orElse(0.0);
+        
+        double avgQualityScore = partners.stream()
+                .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
+                .filter(sp -> sp.getQualityScore() != null)
+                .mapToDouble(sp -> sp.getQualityScore().doubleValue())
+                .average()
+                .orElse(0.0);
+        
+        double avgPriceScore = partners.stream()
+                .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
+                .filter(sp -> sp.getPriceCompetitivenessScore() != null)
+                .mapToDouble(sp -> sp.getPriceCompetitivenessScore().doubleValue())
+                .average()
+                .orElse(0.0);
+        
+        analytics.put("averageDeliveryScore", avgDeliveryScore);
+        analytics.put("averageQualityScore", avgQualityScore);
+        analytics.put("averagePriceScore", avgPriceScore);
+        analytics.put("totalSuppliers", partners.size());
+        
+        return analytics;
+    }
+
+    private Map<String, Object> calculateRiskAnalytics(List<Partner> partners) {
+        Map<String, Object> analytics = new HashMap<>();
+        Map<String, Long> riskDistribution = partners.stream()
+                .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
+                .collect(Collectors.groupingBy(
+                    sp -> sp.getRiskLevel() != null ? sp.getRiskLevel() : "UNKNOWN",
+                    Collectors.counting()
+                ));
+        
+        analytics.put("riskDistribution", riskDistribution);
+        analytics.put("totalSuppliers", partners.size());
+        
+        return analytics;
+    }
+
+    private Map<String, Object> calculateCategoryDistribution(List<Partner> partners) {
+        Map<String, Object> distribution = new HashMap<>();
+        Map<String, Long> categoryCounts = partners.stream()
+                .map(p -> (ma.foodplus.ordering.system.partner.domain.SupplierPartner) p)
+                .collect(Collectors.groupingBy(
+                    sp -> sp.getSupplierCategory() != null ? sp.getSupplierCategory() : "UNKNOWN",
+                    Collectors.counting()
+                ));
+        
+        distribution.put("categoryDistribution", categoryCounts);
+        distribution.put("totalSuppliers", partners.size());
+        
+        return distribution;
     }
 } 
