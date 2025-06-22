@@ -201,8 +201,8 @@ public abstract class Partner {
     @Column(name = "special_conditions")
     private String specialConditions;
 
-    // Common Relationships
-    @ManyToMany(fetch = FetchType.EAGER)
+    // Partner Groups (Many-to-Many relationship)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "partner_group_members",
         joinColumns = @JoinColumn(name = "partner_id"),
@@ -356,5 +356,27 @@ public abstract class Partner {
 
     public void setOutstandingBalance(BigDecimal outstandingBalance) {
         this.outstandingBalance = outstandingBalance;
+    }
+
+    // Helper methods for partner groups
+    public Set<PartnerGroup> getPartnerGroups() {
+        return partnerGroups != null ? partnerGroups : new HashSet<>();
+    }
+
+    public void setPartnerGroups(Set<PartnerGroup> partnerGroups) {
+        this.partnerGroups = partnerGroups != null ? partnerGroups : new HashSet<>();
+    }
+
+    public void addPartnerGroup(PartnerGroup group) {
+        if (this.partnerGroups == null) {
+            this.partnerGroups = new HashSet<>();
+        }
+        this.partnerGroups.add(group);
+    }
+
+    public void removePartnerGroup(PartnerGroup group) {
+        if (this.partnerGroups != null) {
+            this.partnerGroups.remove(group);
+        }
     }
 }

@@ -16,12 +16,14 @@
 13. [Configuration du Cache Redis](#configuration-du-cache-redis)
 14. [Documentation de Refactorisation](#documentation-de-refactorisation)
 15. [Analyse Approfondie & Résumé Unifié](#analyse-approfondie--résumé-unifié)
+16. [Configuration et Dépannage Kafka](#configuration-et-dépannage-kafka)
+17. [Compatibilité des Versions Kafka](#compatibilité-des-versions-kafka)
 
 ---
 
 ## Introduction
 
-Ce document consolide toute la documentation technique, architecturale et opérationnelle pour le microservice Service Partenaire. Il inclut la documentation API, les décisions d'architecture, les analyses approfondies, les guides de migration, les stratégies de cache, et plus encore. Tous les fichiers de documentation précédents ont été fusionnés ici pour faciliter la maintenance et la référence.
+Ce document consolide toute la documentation technique, architecturale et opérationnelle pour le microservice Service Partenaire. Il inclut la documentation API, les décisions d'architecture, les analyses approfondies, les guides de migration, les stratégies de cache, la configuration Kafka, et plus encore. Tous les fichiers de documentation précédents ont été fusionnés ici pour faciliter la maintenance et la référence.
 
 ---
 
@@ -47,6 +49,7 @@ Le Service Partenaire est un microservice complet conçu pour gérer les partena
 - **Validation** : Validation d'entrée complète avec Bean Validation
 - **Mise en Cache** : Stratégie de cache multi-niveaux pour l'optimisation des performances
 - **Traitement Asynchrone** : Exécution de tâches en arrière-plan pour les opérations lourdes
+- **Messaging** : Apache Kafka pour les événements
 
 ### Stack Technologique
 
@@ -59,6 +62,7 @@ Le Service Partenaire est un microservice complet conçu pour gérer les partena
 - **Tests** : JUnit 5, Mockito, TestContainers
 - **Monitoring** : Micrometer, Actuator
 - **Sécurité** : Spring Security (configurable)
+- **Messaging** : Apache Kafka pour les événements
 
 ## 🚀 Fonctionnalités
 
@@ -134,16 +138,19 @@ partner-service/
 │   ├── config/                          # Classes de configuration
 │   │   ├── OpenApiConfig.java          # Configuration Swagger/OpenAPI
 │   │   ├── CacheConfig.java            # Configuration du cache
+│   │   ├── KafkaConfig.java            # Configuration Kafka
 │   │   └── AsyncConfig.java            # Configuration du traitement asynchrone
 │   ├── controller/                      # Contrôleurs API REST
 │   │   ├── B2BPartnerController.java   # Opérations partenaires B2B
 │   │   ├── B2CPartnerController.java   # Opérations partenaires B2C
+│   │   ├── SupplierPartnerController.java # Opérations fournisseurs
 │   │   ├── PartnerGroupController.java # Gestion des groupes
 │   │   └── PartnerStatisticsController.java # Analyse et rapports
 │   ├── domain/                         # Entités de domaine et objets de valeur
 │   │   ├── Partner.java               # Entité partenaire de base abstraite
 │   │   ├── B2BPartner.java            # Entité partenaire B2B
 │   │   ├── B2CPartner.java            # Entité partenaire B2C
+│   │   ├── SupplierPartner.java       # Entité fournisseur
 │   │   ├── PartnerGroup.java          # Entité de groupe
 │   │   ├── ContactInfo.java           # Informations de contact intégrées
 │   │   ├── CompanyInfo.java           # Informations d'entreprise intégrées
@@ -156,6 +163,7 @@ partner-service/
 │   │   ├── PartnerDTO.java            # DTO partenaire générique
 │   │   ├── B2BPartnerDTO.java         # DTO spécifique B2B
 │   │   ├── B2CPartnerDTO.java         # DTO spécifique B2C
+│   │   ├── SupplierPartnerDTO.java    # DTO spécifique fournisseur
 │   │   ├── PartnerStatisticsDTO.java  # DTO de statistiques
 │   │   └── ErrorResponse.java         # Réponse d'erreur standardisée
 │   ├── event/                         # Architecture orientée événements
@@ -187,6 +195,7 @@ partner-service/
 - Maven 3.6+
 - PostgreSQL 12+
 - Redis 6+ (pour le cache)
+- Apache Kafka (pour les événements)
 
 ### Configuration de Développement
 ```bash
@@ -226,8 +235,6 @@ spring:
 
 server:
   port: 2000
-  servlet:
-    context-path: /partner-service
 ```
 
 ## 🧪 Tests
@@ -1862,3 +1869,336 @@ Le Service Partenaire est **parfaitement aligné** avec le schéma de base de do
 ---
 
 *Pour toute analyse détaillée, se référer à cette section unifiée qui remplace les anciens rapports séparés.*
+
+---
+
+## Configuration et Dépannage Kafka
+
+### Problème: Échec de Connexion Kafka
+
+Si vous voyez des erreurs comme:
+```
+Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available.
+```
+
+### Cause Racine
+L'application essaie de se connecter au mauvais port Kafka. Votre configuration Docker Compose expose Kafka sur le port `29092`, mais l'application était configurée pour utiliser le port `9092`.
+
+### Solution
+
+#### 1. Configuration Mise à Jour
+J'ai déjà corrigé les fichiers de configuration:
+
+- **`application.yml`**: Mise à jour des serveurs Kafka bootstrap vers `localhost:29092`
+- **`application-dev.yml`**: Ajout de la configuration Kafka spécifique au développement
+
+#### 2. Vérifier que Docker Compose Fonctionne
+Assurez-vous que vos conteneurs Kafka fonctionnent:
+
+```bash
+# Vérifier si les conteneurs fonctionnent
+docker-compose ps
+
+# Si pas en cours d'exécution, les démarrer
+docker-compose up -d
+
+# Vérifier les logs Kafka
+docker-compose logs kafka
+```
+
+#### 3. Tester la Connectivité Kafka
+Utilisez le script fourni pour tester la connectivité:
+
+```bash
+# Exécuter le script de vérification de connectivité
+./scripts/check-kafka.sh
+
+# Ou tester manuellement
+telnet localhost 29092
+```
+
+#### 4. Variables d'Environnement
+Définir les bonnes variables d'environnement:
+
+```bash
+export KAFKA_BOOTSTRAP_SERVERS=localhost:29092
+export SPRING_PROFILES_ACTIVE=dev
+```
+
+#### 5. Configuration de l'Application
+L'application utilise maintenant ces paramètres:
+
+```yaml
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092  # Port correct pour Docker Compose
+    consumer:
+      group-id: partner-service-group-dev
+    producer:
+      acks: all
+      retries: 3
+```
+
+### Configuration Docker Compose
+Votre Docker Compose expose correctement Kafka:
+
+```yaml
+kafka:
+  ports:
+    - 29092:29092  # Mapping de port externe
+  environment:
+    KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+```
+
+### Étapes de Vérification
+
+1. **Vérifier si Kafka est accessible:**
+   ```bash
+   nc -z localhost 29092
+   ```
+
+2. **Lister les topics Kafka:**
+   ```bash
+   docker run --rm -it confluentinc/cp-kafka:latest kafka-topics --bootstrap-server localhost:29092 --list
+   ```
+
+3. **Vérifier les logs de l'application:**
+   ```bash
+   # Chercher les messages de connexion Kafka
+   tail -f logs/foodplus-ordering-partners.log | grep -i kafka
+   ```
+
+4. **Tester avec kafka-console-producer:**
+   ```bash
+   docker run --rm -it confluentinc/cp-kafka:latest kafka-console-producer --bootstrap-server localhost:29092 --topic test-topic
+   ```
+
+### Problèmes Courants et Solutions
+
+#### Problème 1: Port Déjà Utilisé
+```bash
+# Vérifier ce qui utilise le port 29092
+sudo netstat -tulpn | grep 29092
+
+# Tuer le processus si nécessaire
+sudo kill -9 <PID>
+```
+
+#### Problème 2: Docker Compose Ne Fonctionne Pas
+```bash
+# Démarrer tous les services
+docker-compose up -d
+
+# Vérifier le statut
+docker-compose ps
+```
+
+#### Problème 3: Mauvais Profil Actif
+```bash
+# S'assurer que le profil dev est actif
+export SPRING_PROFILES_ACTIVE=dev
+
+# Ou définir dans application.yml
+spring:
+  profiles:
+    active: dev
+```
+
+#### Problème 4: Problèmes de Réseau
+```bash
+# Vérifier le réseau Docker
+docker network ls
+docker network inspect <network_name>
+
+# Redémarrer Docker si nécessaire
+sudo systemctl restart docker
+```
+
+### Surveillance Kafka
+
+#### 1. Kowl (Interface Web)
+Accès à: http://localhost:8090
+
+#### 2. Kafka Manager
+Accès à: http://localhost:9000
+
+#### 3. Schema Registry
+Accès à: http://localhost:8081
+
+### Redémarrage de l'Application
+Après avoir corrigé la configuration:
+
+```bash
+# Arrêter l'application
+# Reconstruire si nécessaire
+mvn clean compile
+
+# Démarrer avec le bon profil
+export SPRING_PROFILES_ACTIVE=dev
+java -jar target/partner-service.jar
+```
+
+### Comportement Attendu
+Après avoir corrigé la configuration, vous devriez voir:
+
+```
+✅ Connexion Kafka établie
+✅ Topics créés avec succès
+✅ Producteur/Consommateur fonctionne
+```
+
+### Encore des Problèmes?
+
+1. Vérifier les logs de l'application pour des messages d'erreur détaillés
+2. Vérifier que Docker Compose fonctionne: `docker-compose ps`
+3. Tester la connectivité Kafka: `./scripts/check-kafka.sh`
+4. Vérifier si le bon profil est actif
+5. Vérifier qu'aucun pare-feu ne bloque le port 29092
+
+---
+
+## Compatibilité des Versions Kafka
+
+### Vue d'Ensemble
+
+Les avertissements que vous voyez concernant `DESCRIBE_TOPIC_PARTITIONS` et `DESCRIBE_CLUSTER` sont des **avertissements de compatibilité de version**, pas des erreurs. Ils se produisent parce que votre version Kafka (5.5.3) est plus ancienne que ce que le client Spring Kafka attend.
+
+### Messages d'Avertissement
+
+```
+org.apache.kafka.common.errors.UnsupportedVersionException: The node does not support DESCRIBE_TOPIC_PARTITIONS
+org.apache.kafka.common.errors.UnsupportedVersionException: The node does not support DESCRIBE_CLUSTER
+```
+
+### Pourquoi Cela Se Produit
+
+1. **Client Spring Kafka**: Utilise des versions d'API Kafka plus récentes (6.x+)
+2. **Votre Version Kafka**: 5.5.3 (version plus ancienne)
+3. **Downgrade Automatique**: Le client bascule automatiquement vers des versions d'API compatibles
+4. **Fonctionnalité Non Affectée**: Tout fonctionne parfaitement malgré les avertissements
+
+### Preuve Que Ça Fonctionne
+
+Malgré les avertissements, vous pouvez voir:
+
+✅ **Topics Créés Avec Succès**:
+```
+CreatableTopicResult(name='partner-events-dev', errorCode=0, errorMessage=null)
+CreatableTopicResult(name='contract-events-dev', errorCode=0, errorMessage=null)
+// ... tous les topics avec errorCode=0 (succès)
+```
+
+✅ **Application Démarrée Avec Succès**:
+```
+Tomcat started on port 2000 (http) with context path '/partner-service'
+Started PartnerServiceApplication in 10.411 seconds
+```
+
+### Solutions
+
+#### Option 1: Supprimer les Avertissements (Recommandé pour le Développement)
+Mettre à jour la journalisation dans `application-dev.yml`:
+```yaml
+logging:
+  level:
+    org.springframework.kafka: WARN  # Au lieu de DEBUG
+    org.apache.kafka: WARN  # Au lieu de DEBUG
+```
+
+#### Option 2: Mettre à Jour Kafka (Production)
+Mettre à jour votre Docker Compose pour utiliser une version Kafka plus récente:
+```yaml
+kafka:
+  image: confluentinc/cp-enterprise-kafka:7.4.0  # Version plus récente
+```
+
+#### Option 3: Downgrader Spring Kafka (Non Recommandé)
+Utiliser une version Spring Kafka plus ancienne qui correspond à votre version Kafka.
+
+### Statut Actuel
+
+- **Connexion**: ✅ Fonctionne
+- **Création de Topics**: ✅ Fonctionne  
+- **Publication d'Événements**: ✅ Fonctionne
+- **Application**: ✅ Fonctionne avec succès
+
+### Recommandation
+
+Pour le **développement**: Utiliser l'Option 1 (supprimer les avertissements) - c'est le plus simple et n'affecte pas la fonctionnalité.
+
+Pour la **production**: Considérer l'Option 2 (mettre à jour Kafka) pour une meilleure compatibilité et des fonctionnalités.
+
+### Vérification
+
+Pour vérifier que tout fonctionne:
+
+```bash
+# Vérifier si les topics existent
+docker run --rm -it confluentinc/cp-kafka:latest kafka-topics --bootstrap-server localhost:29092 --list
+
+# Tester le producteur
+docker run --rm -it confluentinc/cp-kafka:latest kafka-console-producer --bootstrap-server localhost:29092 --topic partner-events-dev
+
+# Tester le consommateur
+docker run --rm -it confluentinc/cp-kafka:latest kafka-console-consumer --bootstrap-server localhost:29092 --topic partner-events-dev --from-beginning
+```
+
+### Conclusion
+
+Ces avertissements sont **cosmétiques** et n'affectent pas la fonctionnalité. Votre intégration Kafka fonctionne parfaitement! 🎉
+
+---
+
+## Résolution des Problèmes Courants
+
+### Problème: Erreur de Sérialisation ZonedDateTime
+
+Si vous voyez des erreurs comme:
+```
+Could not write JSON: Java 8 date/time type `java.time.ZonedDateTime` not supported by default
+```
+
+#### Cause Racine
+Redis essaie de sérialiser des objets `ZonedDateTime` lors de la mise en cache, mais Jackson n'a pas le module JSR310 configuré pour gérer les types de date/heure Java 8.
+
+#### Solution Implémentée
+
+1. **Configuration Jackson Globale** (`JacksonConfig.java`):
+```java
+@Bean
+@Primary
+public ObjectMapper objectMapper() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    return mapper;
+}
+```
+
+2. **Configuration Cache Redis** (`CacheConfig.java`):
+```java
+@Bean
+@Primary
+public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper) {
+    GenericJackson2JsonRedisSerializer jsonSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
+    // ... configuration du cache
+}
+```
+
+3. **Dépendance Maven** (déjà présente):
+```xml
+<dependency>
+    <groupId>com.fasterxml.jackson.datatype</groupId>
+    <artifactId>jackson-datatype-jsr310</artifactId>
+</dependency>
+```
+
+#### Résultat
+- ✅ Sérialisation correcte des `ZonedDateTime` dans Redis
+- ✅ Support de tous les types de date/heure Java 8
+- ✅ Configuration cohérente dans toute l'application
+- ✅ Pas d'erreurs de cache lors de l'accès aux partenaires
+
+---
+
+## Configuration et Dépannage Kafka

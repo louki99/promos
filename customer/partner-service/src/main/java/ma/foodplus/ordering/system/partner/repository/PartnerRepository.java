@@ -28,6 +28,9 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
     @Query("SELECT p FROM Partner p WHERE TYPE(p) = :type")
     List<Partner> findByPartnerType(@Param("type") Class<? extends Partner> type);
 
+    @Query("SELECT p FROM Partner p WHERE TYPE(p) = :type")
+    Page<Partner> findByPartnerType(@Param("type") Class<? extends Partner> type, Pageable pageable);
+
     @Query("SELECT COUNT(p) FROM Partner p WHERE TYPE(p) = :type")
     long countByPartnerType(@Param("type") Class<? extends Partner> type);
     

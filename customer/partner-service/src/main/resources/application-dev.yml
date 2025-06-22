@@ -74,8 +74,6 @@ logging:
 # Development server settings
 server:
   port: 2000
-  servlet:
-    context-path: /partner-service
 
 # Development management endpoints
 management:

@@ -118,8 +118,6 @@ kafka:
 
 server:
   port: 2000
-  servlet:
-    context-path: /partner-service
 
 management:
   endpoints:

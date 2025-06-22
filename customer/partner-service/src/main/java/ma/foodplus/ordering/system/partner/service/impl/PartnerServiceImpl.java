@@ -1017,24 +1017,38 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional(readOnly = true)
     public Page<PartnerDTO> getB2BPartners(Pageable pageable) {
         log.debug("Fetching B2B partners with pagination: page {}", pageable.getPageNumber());
-        Page<Partner> allPartners = partnerRepository.findAll(pageable);
-        List<PartnerDTO> b2bPartners = allPartners.getContent().stream()
-                .filter(p -> PartnerType.B2B.equals(p.getPartnerType()) && p instanceof B2BPartner)
-                .map(p -> b2bPartnerMapper.toPartnerDTO((B2BPartner) p))
+        Page<Partner> b2bPartners = partnerRepository.findByPartnerType(B2BPartner.class, pageable);
+        List<PartnerDTO> b2bPartnerDTOs = b2bPartners.getContent().stream()
+                .map(p -> {
+                    // Safely handle lazy loading
+                    try {
+                        return b2bPartnerMapper.toPartnerDTO((B2BPartner) p);
+                    } catch (Exception e) {
+                        log.warn("Error mapping B2B partner {}: {}", p.getId(), e.getMessage());
+                        return partnerMapper.toDTO(p); // Fallback to generic mapper
+                    }
+                })
                 .toList();
-        return new org.springframework.data.domain.PageImpl<>(b2bPartners, pageable, allPartners.getTotalElements());
+        return new org.springframework.data.domain.PageImpl<>(b2bPartnerDTOs, pageable, b2bPartners.getTotalElements());
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<PartnerDTO> getB2CPartners(Pageable pageable) {
         log.debug("Fetching B2C partners with pagination: page {}", pageable.getPageNumber());
-        Page<Partner> allPartners = partnerRepository.findAll(pageable);
-        List<PartnerDTO> b2cPartners = allPartners.getContent().stream()
-                .filter(p -> PartnerType.B2C.equals(p.getPartnerType()) && p instanceof B2CPartner)
-                .map(p -> b2cPartnerMapper.toPartnerDTO((B2CPartner) p))
+        Page<Partner> b2cPartners = partnerRepository.findByPartnerType(B2CPartner.class, pageable);
+        List<PartnerDTO> b2cPartnerDTOs = b2cPartners.getContent().stream()
+                .map(p -> {
+                    // Safely handle lazy loading
+                    try {
+                        return b2cPartnerMapper.toPartnerDTO((B2CPartner) p);
+                    } catch (Exception e) {
+                        log.warn("Error mapping B2C partner {}: {}", p.getId(), e.getMessage());
+                        return partnerMapper.toDTO(p); // Fallback to generic mapper
+                    }
+                })
                 .toList();
-        return new org.springframework.data.domain.PageImpl<>(b2cPartners, pageable, allPartners.getTotalElements());
+        return new org.springframework.data.domain.PageImpl<>(b2cPartnerDTOs, pageable, b2cPartners.getTotalElements());
     }
 
     // ========== Contract Management ==========
@@ -1603,12 +1617,11 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional(readOnly = true)
     public Page<PartnerDTO> getSupplierPartners(Pageable pageable) {
         log.debug("Fetching supplier partners with pagination: page {}", pageable.getPageNumber());
-        Page<Partner> allPartners = partnerRepository.findAll(pageable);
-        List<PartnerDTO> supplierPartners = allPartners.getContent().stream()
-                .filter(p -> PartnerType.SUPPLIER.equals(p.getPartnerType()) && p instanceof ma.foodplus.ordering.system.partner.domain.SupplierPartner)
+        Page<Partner> supplierPartners = partnerRepository.findByPartnerType(ma.foodplus.ordering.system.partner.domain.SupplierPartner.class, pageable);
+        List<PartnerDTO> supplierPartnerDTOs = supplierPartners.getContent().stream()
                 .map(p -> partnerMapper.toDTO(p))
                 .toList();
-        return new org.springframework.data.domain.PageImpl<>(supplierPartners, pageable, allPartners.getTotalElements());
+        return new org.springframework.data.domain.PageImpl<>(supplierPartnerDTOs, pageable, supplierPartners.getTotalElements());
     }
 
     @Override

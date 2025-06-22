@@ -29,7 +29,7 @@ public class PartnerGroup{
 
     private String description;
 
-    @ManyToMany(mappedBy = "partnerGroups")
+    @ManyToMany(mappedBy = "partnerGroups", fetch = FetchType.LAZY)
     private Set<Partner> partners= new HashSet<>();
 
     @CreationTimestamp
