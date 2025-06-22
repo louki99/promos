@@ -1,0 +1,1152 @@
+{
+  "info": {
+    "_postman_id": "b2b2c-partner-service-collection-001",
+    "name": "Partner Service API Collection",
+    "description": "Collection complète pour tester toutes les fonctionnalités du microservice Partner Service (B2B, B2C, groupes, fidélité, crédit, contrats, statistiques, audit). Utilisez la variable {{baseUrl}} pour l'URL de base.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "B2B Partners",
+      "item": [
+        {
+          "name": "Créer un partenaire B2B",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ctNum\": \"CT123456\",\n  \"ice\": \"1234567890123\",\n  \"description\": \"Entreprise B2B\",\n  \"companyName\": \"Société Test\",\n  \"contractNumber\": \"C-2024-001\",\n  \"creditLimit\": 10000,\n  \"email\": \"b2b@example.com\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir tous les partenaires B2B",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir un partenaire B2B par ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mettre à jour un partenaire B2B",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ctNum\": \"CT123456\",\n  \"ice\": \"1234567890123\",\n  \"description\": \"Entreprise B2B modifiée\",\n  \"companyName\": \"Société Test Modifiée\",\n  \"contractNumber\": \"C-2024-001\",\n  \"creditLimit\": 12000,\n  \"email\": \"b2b@example.com\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Supprimer un partenaire B2B",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Activer un partenaire B2B",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/activate",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "activate" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Désactiver un partenaire B2B",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/deactivate",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "deactivate" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mettre à jour les points de fidélité B2B",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/loyalty-points",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "loyalty-points" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"points\": 100\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir le niveau de fidélité B2B",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/loyalty-level",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "loyalty-level" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mettre à jour la limite de crédit B2B",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/credit-limit",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "credit-limit" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"creditLimit\": 15000\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir le total dépensé B2B",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/total-spent",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "total-spent" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir les contrats expirants B2B",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/expiring-contracts",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "expiring-contracts" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Renouveler le contrat B2B",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/renew-contract",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "renew-contract" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newEndDate\": \"2025-12-31\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Terminer le contrat B2B",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/terminate-contract",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "terminate-contract" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir le statut du contrat B2B",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/contract-status",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "contract-status" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir par tranche de chiffre d'affaires",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/by-annual-turnover",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "by-annual-turnover" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir par activité commerciale",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/by-business-activity",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "by-business-activity" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir les paiements en retard B2B",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/overdue-payments",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "overdue-payments" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Traiter le paiement B2B",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/process-payment",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "process-payment" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 5000,\n  \"paymentMethod\": \"BANK_TRANSFER\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir le résumé du crédit B2B",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/credit-summary",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "credit-summary" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Valider le placement de commande B2B",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/validate-order",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "validate-order" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderAmount\": 5000\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir le statut de validation B2B",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2b/1/validation-status",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2b", "1", "validation-status" ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "B2C Partners",
+      "item": [
+        {
+          "name": "Créer un partenaire B2C",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ctNum\": \"CT654321\",\n  \"ice\": \"9876543210987\",\n  \"description\": \"Client B2C\",\n  \"email\": \"b2c@example.com\",\n  \"loyaltyPoints\": 50\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir tous les partenaires B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir un partenaire B2C par ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mettre à jour un partenaire B2C",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ctNum\": \"CT654321\",\n  \"ice\": \"9876543210987\",\n  \"description\": \"Client B2C modifié\",\n  \"email\": \"b2c@example.com\",\n  \"loyaltyPoints\": 75\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Supprimer un partenaire B2C",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Activer un partenaire B2C",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/activate",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "activate" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Désactiver un partenaire B2C",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/deactivate",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "deactivate" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mettre à jour la limite de crédit B2C",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/credit-limit",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "credit-limit" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"creditLimit\": 5000\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir le total dépensé B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/total-spent",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "total-spent" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir par tranche d'âge B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/by-age-range",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "by-age-range" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir les mineurs B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/minors",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "minors" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir par langue préférée B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/by-language",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "by-language" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir les éligibles au marketing B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/marketing-eligible",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "marketing-eligible" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mettre à jour le consentement marketing B2C",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/update-marketing-consent",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "update-marketing-consent" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marketingConsent\": true\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Traiter le paiement B2C",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/process-payment",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "process-payment" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 2000,\n  \"paymentMethod\": \"CREDIT_CARD\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir le résumé du crédit B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/credit-summary",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "credit-summary" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Valider le placement de commande B2C",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/validate-order",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "validate-order" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderAmount\": 2000\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir le statut de validation B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/validation-status",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "validation-status" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir les leaders de fidélité B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/loyalty-leaders",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "loyalty-leaders" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ajouter des points de fidélité B2C",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/add-loyalty-points",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "add-loyalty-points" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"points\": 25\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir les métriques de performance B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/performance-metrics",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "performance-metrics" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir les tendances de croissance B2C",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/b2c/1/growth-trends",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "b2c", "1", "growth-trends" ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Group Management",
+      "item": [
+        {
+          "name": "Ajouter un partenaire à un groupe",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/partner-groups/10/partners/1",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-groups", "10", "partners", "1" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Supprimer un partenaire d'un groupe",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/partner-groups/10/partners/1",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-groups", "10", "partners", "1" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Vérifier l'adhésion d'un partenaire à un groupe",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-groups/10/partners/1/check",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-groups", "10", "partners", "1", "check" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir les partenaires d'un groupe",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-groups/10/partners",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-groups", "10", "partners" ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Bulk Operations",
+      "item": [
+        {
+          "name": "Activer des partenaires en masse",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/bulk/activate",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "bulk", "activate" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partnerIds\": [1,2,3]\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Désactiver des partenaires en masse",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/bulk/deactivate",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "bulk", "deactivate" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partnerIds\": [1,2,3]\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mettre à jour les limites de crédit en masse",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/bulk/update-credit-limits",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "bulk", "update-credit-limits" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"updates\": [{\"partnerId\":1,\"creditLimit\":15000},{\"partnerId\":2,\"creditLimit\":20000}]\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ajouter en masse au groupe",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/bulk/add-to-group",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "bulk", "add-to-group" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"groupId\": 10,\n  \"partnerIds\": [1,2,3]\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Valider en masse les commandes",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/bulk/validate-orders",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "bulk", "validate-orders" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orders\": [{\"partnerId\":1,\"orderAmount\":5000},{\"partnerId\":2,\"orderAmount\":3000}]\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtenir en masse les métriques de performance",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/bulk/performance-metrics",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "bulk", "performance-metrics" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partnerIds\": [1,2,3]\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Exporter en masse les partenaires",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/bulk/export",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "bulk", "export" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partnerIds\": [1,2,3],\n  \"format\": \"CSV\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Importer en masse les partenaires",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/bulk/import",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "bulk", "import" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileContent\": \"base64-encoded-file-content\",\n  \"format\": \"CSV\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Envoyer en masse les notifications",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/bulk/send-notifications",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "bulk", "send-notifications" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partnerIds\": [1,2,3],\n  \"message\": \"Notification importante\",\n  \"type\": \"EMAIL\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Statistics & Analytics",
+      "item": [
+        {
+          "name": "Aperçu des partenaires",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/overview",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "overview" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Top partenaires dépensiers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/top-spenders",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "top-spenders" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Distribution par type",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/distribution/type",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "distribution", "type" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Valeur moyenne de commande par type",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/average-order-value",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "average-order-value" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Contrats expirants",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/expiring-contracts",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "expiring-contracts" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Paiements en retard",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/overdue-payments",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "overdue-payments" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partenaires par notation de crédit",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/by-credit-rating/A",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "by-credit-rating", "A" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partenaires par activité commerciale",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/by-business-activity",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "by-business-activity" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partenaires par tranche de chiffre d'affaires",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/by-annual-turnover",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "by-annual-turnover" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partenaires VIP",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/vip",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "vip" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partenaires actifs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partner-statistics/active",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partner-statistics", "active" ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Audit & History",
+      "item": [
+        {
+          "name": "Historique d'audit du partenaire",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/1/history",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "1", "history" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Journal d'activité du partenaire",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/1/activity-log",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "1", "activity-log" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Changements système-wide",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/system/changes",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "system", "changes" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Résumé d'activité système",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/system/activity-summary",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "system", "activity-summary" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Activités utilisateur",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/user/123/activities",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "user", "123", "activities" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Générer le rapport de conformité",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/compliance/report",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "compliance", "report" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Violations de conformité",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/compliance/violations",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "compliance", "violations" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Nettoyer les données d'audit anciennes",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/data-retention/cleanup",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "data-retention", "cleanup" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"olderThanDays\": 365\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Statut de rétention des données",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/data-retention/status",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "data-retention", "status" ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Exporter le journal d'audit",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/export/audit-trail",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "export", "audit-trail" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": \"2024-12-31\",\n  \"format\": \"CSV\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Sauvegarder les données d'audit",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/audit/backup/audit-data",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "partners", "audit", "backup", "audit-data" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"backupLocation\": \"/backup/audit-data\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:2000/partner-service/api/v1"
+    }
+  ]
+} 
