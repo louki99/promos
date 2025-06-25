@@ -24,7 +24,6 @@
 		<module>integration</module>
 		<module>common</module>
 
-
         <!-- <module>nvp</module> -->
 
 	</modules>

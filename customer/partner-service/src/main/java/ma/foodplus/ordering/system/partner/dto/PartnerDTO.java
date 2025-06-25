@@ -11,6 +11,7 @@ import ma.foodplus.ordering.system.partner.domain.PartnerType;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 /**
  * Legacy Partner DTO for backward compatibility.
@@ -61,13 +62,13 @@ public class PartnerDTO extends BasePartnerDTO {
     private String taxId; //identifiant fiscal
     private String vatNumber; //numéro de TVA
     private String businessActivity; //activité commerciale
-    private java.math.BigDecimal annualTurnover; //chiffre d'affaires annuel
+    private BigDecimal annualTurnover; //chiffre d'affaires annuel
     private Integer numberOfEmployees; //nombre d'employés
 
     // B2B Contract Information (legacy fields)
     private String contractNumber; //numéro de contrat
-    private java.time.ZonedDateTime contractStartDate; //date de début du contrat
-    private java.time.ZonedDateTime contractEndDate; //date de fin du contrat
+    private ZonedDateTime contractStartDate; //date de début du contrat
+    private ZonedDateTime contractEndDate; //date de fin du contrat
     private String contractType; //type de contrat (e.g., standard, custom)
     private String contractTerms; //conditions du contrat
     private String paymentTerms; //conditions de paiement
@@ -116,4 +117,30 @@ public class PartnerDTO extends BasePartnerDTO {
     private String dateOfBirth;
     private String preferredLanguage;
     private Boolean marketingConsent = false;
+    
+    // New fields for enhanced partner management
+    private String region;
+    private String segment;
+    private String industrySector;
+    
+    // Delivery Performance
+    private Integer lateDeliveries = 0;
+    private BigDecimal onTimeDeliveryRate;
+    private BigDecimal averageDeliveryDays;
+    
+    // Risk & Blocking
+    private Boolean isBlocked = false;
+    private String blockReason;
+    private String riskLevel = "LOW";
+    
+    // KYC & Compliance
+    private String kycStatus = "PENDING";
+    private String complianceNotes;
+    private Boolean blacklistCheck = false;
+    private String blacklistReason;
+    
+    // Relationships with new entities
+    private List<ContactPersonDTO> contactPersons;
+    private List<DocumentDTO> documents;
+    private List<PartnerInteractionDTO> interactions;
 } 

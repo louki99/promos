@@ -12,6 +12,7 @@
 
     <modules>
         <module>sync-service</module>
+        <module>pos-service</module>
     </modules>
 
 </project>

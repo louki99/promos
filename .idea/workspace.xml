@@ -6,17 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="fix migration">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/partner-service/KAFKA_TROUBLESHOOTING.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/partner-service/KAFKA_VERSION_COMPATIBILITY.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/partner-service/documentation.md" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/documentation.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/config/CacheConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/config/CacheConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/config/KafkaConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/config/KafkaConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/B2BPartner.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/B2BPartner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/Partner.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/Partner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/PartnerGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/domain/PartnerGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/repository/PartnerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/repository/PartnerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/dto/PartnerDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/dto/PartnerDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/service/impl/PartnerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner/service/impl/PartnerServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/resources/application-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/partner-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -497,7 +490,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750624339536</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="fix migration">
+      <option name="closed" value="true" />
+      <created>1750625785802</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1750625785802</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

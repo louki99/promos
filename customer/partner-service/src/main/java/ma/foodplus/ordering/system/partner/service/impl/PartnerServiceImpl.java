@@ -1345,13 +1345,13 @@ public class PartnerServiceImpl implements PartnerService {
         List<Map<String, Object>> history = new ArrayList<>();
         
         // Add basic audit info
-        Map<String, Object> auditEntry = new HashMap<>();
+            Map<String, Object> auditEntry = new HashMap<>();
         auditEntry.put("createdAt", partner.getCreatedAt());
         auditEntry.put("updatedAt", partner.getUpdatedAt());
         auditEntry.put("createdBy", partner.getCreatedBy());
         auditEntry.put("updatedBy", partner.getUpdatedBy());
         auditEntry.put("active", partner.getIsActive());
-        history.add(auditEntry);
+            history.add(auditEntry);
         
         return history;
     }
@@ -1393,7 +1393,7 @@ public class PartnerServiceImpl implements PartnerService {
         metrics.put("totalSpent", partner.getTotalSpent());
         metrics.put("averageOrderValue", partner.getAverageOrderValue());
         metrics.put("loyaltyPoints", partner.getLoyaltyPoints());
-        metrics.put("loyaltyLevel", getPartnerLoyaltyLevel(partnerId));
+            metrics.put("loyaltyLevel", getPartnerLoyaltyLevel(partnerId));
         
         metrics.put("creditLimit", partner.getCreditLimit());
         metrics.put("outstandingBalance", partner.getOutstandingBalance());
