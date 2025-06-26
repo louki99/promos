@@ -111,4 +111,33 @@ public class InventoryService {
     public void deleteInventory(Long id) {
         inventoryRepository.deleteById(id);
     }
+
+    public List<Inventory> getAllInventories() {
+        return inventoryRepository.findAll();
+    }
+
+    public List<Inventory> getInventoriesByProduct(Long productId) {
+        return inventoryRepository.findByProductId(productId);
+    }
+
+    public List<Inventory> getInventoriesByStore(Long storeId) {
+        return inventoryRepository.findByStoreId(storeId);
+    }
+
+    public Inventory createInventory(Inventory inventory) {
+        inventory.setCreatedAt(LocalDateTime.now());
+        inventory.setLastUpdated(LocalDateTime.now());
+        return inventoryRepository.save(inventory);
+    }
+
+    public Inventory updateInventory(Long id, Inventory inventoryDetails) {
+        Inventory inventory = inventoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+        inventory.setProduct(inventoryDetails.getProduct());
+        inventory.setStore(inventoryDetails.getStore());
+        inventory.setQuantity(inventoryDetails.getQuantity());
+        inventory.setReservedQuantity(inventoryDetails.getReservedQuantity());
+        inventory.setLastUpdated(LocalDateTime.now());
+        return inventoryRepository.save(inventory);
+    }
 }

@@ -1,6 +1,8 @@
 package ma.foodplus.ordering.system.pos.repository;
 
 import ma.foodplus.ordering.system.pos.domain.Sale;
+import ma.foodplus.ordering.system.pos.enums.SaleStatus;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,7 +21,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     List<Sale> findByStatus(SaleStatus status);
     List<Sale> findByStoreId(Long storeId);
     List<Sale> findByCashierId(Long cashierId);
-    List<Sale> findByCustomerId(Long customerId);
+    List<Sale> findByPartnerId(Long partnerId);
 
     @Query("SELECT s FROM Sale s WHERE s.saleDate BETWEEN :startDate AND :endDate")
     List<Sale> findBySaleDateBetween(@Param("startDate") LocalDateTime startDate,

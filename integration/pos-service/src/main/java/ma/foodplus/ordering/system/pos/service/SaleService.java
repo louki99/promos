@@ -32,7 +32,7 @@ public class SaleService {
     private InventoryService inventoryService;
 
     @Autowired
-    private CustomerService customerService;
+    private PartnerService partnerService;
 
     public List<Sale> getAllSales() {
         return saleRepository.findAll();
@@ -68,6 +68,10 @@ public class SaleService {
         return count != null ? count : 0L;
     }
 
+    public List<Sale> getSalesByPartner(Long customerId) {
+        return saleRepository.findByPartnerId(customerId);
+    }
+
     public Sale createSale(Sale sale) {
         // Generate sale number
         sale.setSaleNumber(generateSaleNumber());
@@ -92,11 +96,11 @@ public class SaleService {
             }
         }
 
-        // Update customer loyalty points
-        if (sale.getCustomer() != null) {
+        // Update partner loyalty points
+        if (sale.getPartner() != null) {
             int pointsEarned = calculateLoyaltyPoints(sale.getTotalAmount());
             sale.setLoyaltyPointsEarned(pointsEarned);
-            customerService.addLoyaltyPoints(sale.getCustomer().getId(), pointsEarned);
+            partnerService.addLoyaltyPoints(sale.getPartner().getId(), pointsEarned);
         }
 
         return saleRepository.save(savedSale);
@@ -142,8 +146,8 @@ public class SaleService {
         }
 
         // Revert loyalty points
-        if (sale.getCustomer() != null && sale.getLoyaltyPointsEarned() > 0) {
-            customerService.deductLoyaltyPoints(sale.getCustomer().getId(),
+        if (sale.getPartner() != null && sale.getLoyaltyPointsEarned() > 0) {
+            partnerService.deductLoyaltyPoints(sale.getPartner().getId(),
                     sale.getLoyaltyPointsEarned());
         }
 
@@ -164,5 +168,32 @@ public class SaleService {
 
     public List<Object[]> getTopSellingProducts(LocalDateTime startDate, LocalDateTime endDate) {
         return saleItemRepository.getTopSellingProducts(startDate, endDate);
+    }
+
+    public Sale updateSale(Long id, Sale saleDetails) {
+        Sale sale = saleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sale not found"));
+        // Update fields as needed
+        sale.setPartner(saleDetails.getPartner());
+        sale.setCashier(saleDetails.getCashier());
+        sale.setStore(saleDetails.getStore());
+        sale.setSubtotal(saleDetails.getSubtotal());
+        sale.setTaxAmount(saleDetails.getTaxAmount());
+        sale.setDiscountAmount(saleDetails.getDiscountAmount());
+        sale.setTotalAmount(saleDetails.getTotalAmount());
+        sale.setPaidAmount(saleDetails.getPaidAmount());
+        sale.setChangeAmount(saleDetails.getChangeAmount());
+        sale.setPaymentMethod(saleDetails.getPaymentMethod());
+        sale.setStatus(saleDetails.getStatus());
+        sale.setNotes(saleDetails.getNotes());
+        sale.setLoyaltyPointsEarned(saleDetails.getLoyaltyPointsEarned());
+        sale.setLoyaltyPointsUsed(saleDetails.getLoyaltyPointsUsed());
+        sale.setSaleDate(saleDetails.getSaleDate());
+        sale.setUpdatedAt(LocalDateTime.now());
+        return saleRepository.save(sale);
+    }
+
+    public void deleteSale(Long id) {
+        saleRepository.deleteById(id);
     }
 }

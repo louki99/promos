@@ -7,7 +7,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>customer</artifactId>
+    <artifactId>partner</artifactId>
     <packaging>pom</packaging>
 
     <modules>

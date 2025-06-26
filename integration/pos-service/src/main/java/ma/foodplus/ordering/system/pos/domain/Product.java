@@ -3,14 +3,11 @@ package ma.foodplus.ordering.system.pos.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import ma.foodplus.ordering.system.pos.enums.CustomerType;
+import ma.foodplus.ordering.system.pos.enums.PartnerType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static ma.foodplus.ordering.system.pos.enums.CustomerType.VIP;
-import static ma.foodplus.ordering.system.pos.enums.CustomerType.WHOLESALE;
 
 @Entity
 @Table(name = "products")
@@ -97,8 +94,8 @@ public class Product {
     }
 
     // Business methods
-    public BigDecimal getPriceForCustomerType(CustomerType customerType) {
-        return switch (customerType) {
+    public BigDecimal getPriceForCustomerType(PartnerType partnerType) {
+        return switch (partnerType) {
             case WHOLESALE -> wholesalePrice != null ? wholesalePrice : sellingPrice;
             case VIP -> sellingPrice.multiply(BigDecimal.valueOf(0.95)); // 5% discount
             default -> sellingPrice;

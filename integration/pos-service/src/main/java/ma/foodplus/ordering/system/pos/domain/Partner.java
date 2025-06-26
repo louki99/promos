@@ -2,15 +2,15 @@ package ma.foodplus.ordering.system.pos.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import ma.foodplus.ordering.system.pos.enums.CustomerType;
+import ma.foodplus.ordering.system.pos.enums.PartnerType;
 import ma.foodplus.ordering.system.pos.enums.LoyaltyTier;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "partners")
+public class Partner{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +36,7 @@ public class Customer {
     private String city;
 
     @Enumerated(EnumType.STRING)
-    private CustomerType customerType = CustomerType.REGULAR;
+    private PartnerType partnerType= PartnerType.REGULAR;
 
     @Enumerated(EnumType.STRING)
     private LoyaltyTier loyaltyTier = LoyaltyTier.BRONZE;
@@ -47,16 +47,16 @@ public class Customer {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "partner")
     private List<Sale> sales;
 
     // Constructors
-    public Customer() {
+    public Partner() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Customer(String firstName, String lastName, String email, String phone) {
+    public Partner(String firstName,String lastName,String email,String phone) {
         this();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -106,8 +106,8 @@ public class Customer {
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
 
-    public CustomerType getCustomerType() { return customerType; }
-    public void setCustomerType(CustomerType customerType) { this.customerType = customerType; }
+    public PartnerType getPartnerType() { return partnerType; }
+    public void setPartnerType(PartnerType partnerType) { this.partnerType=partnerType; }
 
     public LoyaltyTier getLoyaltyTier() { return loyaltyTier; }
     public void setLoyaltyTier(LoyaltyTier loyaltyTier) { this.loyaltyTier = loyaltyTier; }

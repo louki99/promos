@@ -22,8 +22,8 @@ public class Sale {
     private String saleNumber;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "partner_id")
+    private Partner partner;
 
     @ManyToOne
     @JoinColumn(name = "cashier_id", nullable = false)
@@ -128,8 +128,8 @@ public class Sale {
     public String getSaleNumber() { return saleNumber; }
     public void setSaleNumber(String saleNumber) { this.saleNumber = saleNumber; }
 
-    public Customer getCustomer() { return customer; }
-    public void setCustomer(Customer customer) { this.customer = customer; }
+    public Partner getPartner() { return partner; }
+    public void setPartner(Partner partner) { this.partner=partner; }
 
     public User getCashier() { return cashier; }
     public void setCashier(User cashier) { this.cashier = cashier; }

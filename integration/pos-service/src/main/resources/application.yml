@@ -1,0 +1,45 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: partner-service
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:postgresql://10.113.181.84:5432/allinone?currentSchema=pos
+    username: ${DB_USERNAME:manager}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+jwt:
+  secret: 7e4f91b9c3a248fc8a1c993e1b5df3c0e69a01300aa3e8c9a3f3c3fbbd55a1af
+  expiration: 36000000 # 10 hours in milliseconds

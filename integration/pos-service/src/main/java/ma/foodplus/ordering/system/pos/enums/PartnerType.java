@@ -1,6 +1,6 @@
 package ma.foodplus.ordering.system.pos.enums;
 
-public enum CustomerType {
+public enum PartnerType{
     WALK_IN,
     REGULAR,
     VIP,

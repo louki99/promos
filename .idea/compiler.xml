@@ -8,6 +8,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
       </profile>
+      <profile name="Annotation profile for partner-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="partner-service" />
+      </profile>
       <profile name="Annotation profile for foodplus-ordering-system" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -19,6 +28,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
         </processorPath>
         <module name="common-application" />
+        <module name="pos-service" />
         <module name="sync-service" />
         <module name="receipt-service" />
         <module name="cart-service" />
@@ -35,15 +45,6 @@
         <module name="reporting-service" />
         <module name="order-service" />
         <module name="common-dataaccess" />
-      </profile>
-      <profile name="Annotation profile for partner-service" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
-        </processorPath>
-        <module name="partner-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -80,6 +81,7 @@
       <module name="partner-service" options="-parameters" />
       <module name="payment" options="-parameters" />
       <module name="payment-service" options="-parameters" />
+      <module name="pos-service" options="-parameters" />
       <module name="price-list-service" options="-parameters" />
       <module name="product-application" options="-parameters" />
       <module name="product-application-service" options="-parameters" />
