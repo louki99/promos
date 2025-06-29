@@ -1,6 +1,5 @@
 package ma.foodplus.ordering.system.pos.domain;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import ma.foodplus.ordering.system.pos.enums.PartnerType;
@@ -79,7 +78,11 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Inventory> inventories;
 
-    // Constructors
+    @ManyToOne
+    @JoinColumn(name = "product_cluster_id")
+    private ProductCluster productCluster;
+
+
     public Product() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
@@ -177,4 +180,12 @@ public class Product {
 
     public List<Inventory> getInventories() { return inventories; }
     public void setInventories(List<Inventory> inventories) { this.inventories = inventories; }
+
+    public ProductCluster getProductCluster(){
+        return productCluster;
+    }
+
+    public void setProductCluster(ProductCluster productCluster){
+        this.productCluster=productCluster;
+    }
 }

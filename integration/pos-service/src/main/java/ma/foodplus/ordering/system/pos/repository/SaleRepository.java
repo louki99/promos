@@ -45,5 +45,11 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
                                                 @Param("startDate") LocalDateTime startDate,
                                                 @Param("endDate") LocalDateTime endDate);
 
+    @Query("SELECT DATE(s.saleDate), SUM(s.totalAmount) FROM Sale s WHERE s.store.id = :storeId AND " +
+            "s.status = 'COMPLETED' AND s.saleDate BETWEEN :startDate AND :endDate GROUP BY DATE(s.saleDate) ORDER BY DATE(s.saleDate)")
+    List<Object[]> getDailyRevenue(@Param("storeId") Long storeId,
+                                   @Param("startDate") LocalDateTime startDate,
+                                   @Param("endDate") LocalDateTime endDate);
+
     Page<Sale> findByStoreIdOrderBySaleDateDesc(Long storeId, Pageable pageable);
 }

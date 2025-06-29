@@ -2,6 +2,7 @@ package ma.foodplus.ordering.system.pos.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import ma.foodplus.ordering.system.pos.enums.TerminalType;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,6 +25,10 @@ public class Terminal {
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TerminalType type = TerminalType.CASH_REGISTER;
 
     private boolean active = true;
     private LocalDateTime createdAt;
@@ -48,6 +53,15 @@ public class Terminal {
         this.location = location;
     }
 
+    public Terminal(String name, String code, Store store, TerminalType type, String location) {
+        this();
+        this.name = name;
+        this.code = code;
+        this.store = store;
+        this.type = type;
+        this.location = location;
+    }
+
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -57,6 +71,8 @@ public class Terminal {
     public void setCode(String code) { this.code = code; }
     public Store getStore() { return store; }
     public void setStore(Store store) { this.store = store; }
+    public TerminalType getType() { return type; }
+    public void setType(TerminalType type) { this.type = type; }
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
     public LocalDateTime getCreatedAt() { return createdAt; }

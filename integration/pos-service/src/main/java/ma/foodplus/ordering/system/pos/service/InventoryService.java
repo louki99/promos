@@ -140,4 +140,16 @@ public class InventoryService {
         inventory.setLastUpdated(LocalDateTime.now());
         return inventoryRepository.save(inventory);
     }
+
+    public List<Object[]> getLowStockProducts(Long storeId) {
+        return inventoryRepository.findLowStockProducts(storeId);
+    }
+
+    public List<Object[]> getOutOfStockProducts(Long storeId) {
+        return inventoryRepository.findOutOfStockProducts(storeId);
+    }
+
+    public List<Object[]> getSlowMovingProducts(Long storeId) {
+        return inventoryRepository.findSlowMovingProducts(storeId);
+    }
 }

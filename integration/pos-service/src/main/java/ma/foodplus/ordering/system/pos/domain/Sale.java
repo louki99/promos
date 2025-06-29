@@ -8,6 +8,7 @@ import ma.foodplus.ordering.system.pos.enums.SaleStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "sales")
@@ -27,11 +28,22 @@ public class Sale {
 
     @ManyToOne
     @JoinColumn(name = "cashier_id", nullable = false)
+    @NotNull(message = "Cashier is required")
     private User cashier;
 
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
+    @NotNull(message = "Store is required")
     private Store store;
+
+    @ManyToOne
+    @JoinColumn(name = "terminal_id", nullable = false)
+    @NotNull(message = "Terminal is required")
+    private Terminal terminal;
+
+    @ManyToOne
+    @JoinColumn(name = "cash_session_id")
+    private CashSession cashSession;
 
     @NotNull
     @DecimalMin("0.0")
@@ -90,35 +102,51 @@ public class Sale {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Sale(String saleNumber, User cashier, Store store) {
+    public Sale(String saleNumber, User cashier, Store store, Terminal terminal) {
         this();
         this.saleNumber = saleNumber;
         this.cashier = cashier;
         this.store = store;
+        this.terminal = terminal;
     }
 
     // Business methods
     public void calculateTotals() {
-        this.subtotal = saleItems.stream()
-                .map(SaleItem::getTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if (saleItems != null && !saleItems.isEmpty()) {
+            this.subtotal = saleItems.stream()
+                    .map(SaleItem::getTotalPrice)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        this.taxAmount = saleItems.stream()
-                .map(SaleItem::getTaxAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            this.taxAmount = saleItems.stream()
+                    .map(SaleItem::getTaxAmount)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        this.totalAmount = subtotal.add(taxAmount).subtract(discountAmount);
+            this.totalAmount = subtotal.add(taxAmount).subtract(discountAmount);
 
-        if (paidAmount != null) {
-            this.changeAmount = paidAmount.subtract(totalAmount);
-            if (changeAmount.compareTo(BigDecimal.ZERO) < 0) {
-                this.changeAmount = BigDecimal.ZERO;
+            if (paidAmount != null) {
+                this.changeAmount = paidAmount.subtract(totalAmount);
+                if (changeAmount.compareTo(BigDecimal.ZERO) < 0) {
+                    this.changeAmount = BigDecimal.ZERO;
+                }
             }
+        } else {
+            this.subtotal = BigDecimal.ZERO;
+            this.taxAmount = BigDecimal.ZERO;
+            this.totalAmount = BigDecimal.ZERO;
+            this.changeAmount = BigDecimal.ZERO;
         }
     }
 
     public boolean isFullyPaid() {
         return paidAmount != null && paidAmount.compareTo(totalAmount) >= 0;
+    }
+
+    public boolean hasValidSession() {
+        return cashSession != null && cashSession.isOpen();
+    }
+
+    public boolean isLinkedToSession() {
+        return cashSession != null;
     }
 
     // Getters and Setters
@@ -136,6 +164,12 @@ public class Sale {
 
     public Store getStore() { return store; }
     public void setStore(Store store) { this.store = store; }
+
+    public Terminal getTerminal() { return terminal; }
+    public void setTerminal(Terminal terminal) { this.terminal = terminal; }
+
+    public CashSession getCashSession() { return cashSession; }
+    public void setCashSession(CashSession cashSession) { this.cashSession = cashSession; }
 
     public BigDecimal getSubtotal() { return subtotal; }
     public void setSubtotal(BigDecimal subtotal) { this.subtotal = subtotal; }

@@ -35,4 +35,46 @@ public class CategoryService{
     public List<Category> getParentCategories(){
         return categoryRepository.findActiveParentCategories();
     }
+
+    public Category createCategory(Category category) {
+        if (categoryRepository.existsByCode(category.getCode())) {
+            throw new RuntimeException("Category code already exists");
+        }
+        category.setCreatedAt(java.time.LocalDateTime.now());
+        category.setUpdatedAt(java.time.LocalDateTime.now());
+        return categoryRepository.save(category);
+    }
+
+    public Category updateCategory(Long id, Category categoryDetails) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        
+        // Check if code is being changed and if it already exists
+        if (!category.getCode().equals(categoryDetails.getCode()) && 
+            categoryRepository.existsByCode(categoryDetails.getCode())) {
+            throw new RuntimeException("Category code already exists");
+        }
+        
+        category.setName(categoryDetails.getName());
+        category.setCode(categoryDetails.getCode());
+        category.setDescription(categoryDetails.getDescription());
+        category.setParentCategory(categoryDetails.getParentCategory());
+        category.setActive(categoryDetails.isActive());
+        category.setUpdatedAt(java.time.LocalDateTime.now());
+        
+        return categoryRepository.save(category);
+    }
+
+    public void deleteCategory(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        
+        // Check if category has subcategories
+        List<Category> subCategories = categoryRepository.findActiveSubCategories(id);
+        if (!subCategories.isEmpty()) {
+            throw new RuntimeException("Cannot delete category with subcategories");
+        }
+        
+        categoryRepository.deleteById(id);
+    }
 }

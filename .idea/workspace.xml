@@ -5,25 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="345a6023-f591-4667-a83f-55a49338b1ab" name="Changes" comment="build pos microservice">
-      <change afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/repository/PartnerRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/service/PartnerService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/integration/pos-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/partner-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/customer/partner-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/customer/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration/pos-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/domain/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/domain/Partner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/config/DataInitializer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/SaleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/SaleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/StockMovementController.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/StockMovementController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/domain/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/domain/Product.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/domain/Sale.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/domain/Sale.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/enums/CustomerType.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/enums/PartnerType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/repository/CustomerRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/domain/Terminal.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/domain/Terminal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/repository/InventoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/repository/InventoryRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/repository/SaleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/repository/SaleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/service/CustomerService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/security/CashierDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/security/CashierDetailsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/security/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/security/JwtUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/service/CategoryService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/service/InventoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/service/InventoryService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/service/SaleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/service/SaleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/model/CustomerType.java" beforeDir="false" afterPath="$PROJECT_DIR$/nvp/src/main/java/ma/foodplus/ordering/system/customer/model/PartnerType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/service/StockMovementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/service/StockMovementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration/pos-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/integration/pos-service/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,47 +69,47 @@
     <option name="showMembers" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "Application.CategoryTarifServiceApplication.executor": "Run",
-    "Application.FoodPlusOrderingApplication.executor": "Run",
-    "Application.POSApplication.executor": "Debug",
-    "Application.PartnerServiceApplication.executor": "Run",
-    "Application.ProductServiceApplication.executor": "Run",
-    "JUnit.PromotionApplicationServiceTest.calculatePromotions_InvalidRequest.executor": "Run",
-    "JUnit.PromotionApplicationServiceTest.calculatePromotions_Success.executor": "Run",
-    "JUnit.PromotionApplicationServiceTest.executor": "Run",
-    "JUnit.PromotionApplicationServiceTest.getEligiblePromotions_Success.executor": "Debug",
-    "JUnit.PromotionApplicationServiceTest.validatePromotionCode_Invalid.executor": "Run",
-    "JUnit.PromotionApplicationServiceTest.validatePromotionCode_Valid.executor": "Run",
-    "JUnit.PromotionCalculationServiceTest.executor": "Run",
-    "JUnit.RewardApplicatorTest.executor": "Run",
-    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
-    "Maven.foodplus-ordering-system [clean].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ChatTagsLlmMigration": "true",
-    "RunOnceActivity.ClientConfigCleanupMigration": "true",
-    "RunOnceActivity.CodyAccountHistoryMigration": "true",
-    "RunOnceActivity.CodyAccountsIdsRefresh": "true",
-    "RunOnceActivity.CodyAssignOrphanedChatsToActiveAccount": "true",
-    "RunOnceActivity.CodyConvertUrlToCodebaseName": "true",
-    "RunOnceActivity.CodyHistoryLlmMigration": "true",
-    "RunOnceActivity.CodyMigrateChatHistory-v2": "true",
-    "RunOnceActivity.CodyProjectSettingsMigration": "true",
-    "RunOnceActivity.DeprecatedChatLlmMigration": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.ToggleCodyToolWindowAfterMigration": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "develop",
-    "last_opened_file_path": "/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Application.CategoryTarifServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FoodPlusOrderingApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.POSApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.PartnerServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ProductServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PromotionApplicationServiceTest.calculatePromotions_InvalidRequest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PromotionApplicationServiceTest.calculatePromotions_Success.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PromotionApplicationServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PromotionApplicationServiceTest.getEligiblePromotions_Success.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.PromotionApplicationServiceTest.validatePromotionCode_Invalid.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PromotionApplicationServiceTest.validatePromotionCode_Valid.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PromotionCalculationServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RewardApplicatorTest.executor&quot;: &quot;Run&quot;,
+    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.foodplus-ordering-system [clean].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ChatTagsLlmMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ClientConfigCleanupMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyAccountHistoryMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyAccountsIdsRefresh&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyAssignOrphanedChatsToActiveAccount&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyConvertUrlToCodebaseName&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyHistoryLlmMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyMigrateChatHistory-v2&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyProjectSettingsMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.DeprecatedChatLlmMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ToggleCodyToolWindowAfterMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/louki/MY_LAP/Organizations/foodplus/foodplus-ordering-system/customer/partner-service/src/main/java/ma/foodplus/ordering/system/partner&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="ma.foodplus.ordering.system.promos.dto" />
@@ -588,7 +590,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/integration/pos-service/src/main/java/ma/foodplus/ordering/system/pos/controller/AuthController.java</url>
-          <line>31</line>
+          <line>41</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>

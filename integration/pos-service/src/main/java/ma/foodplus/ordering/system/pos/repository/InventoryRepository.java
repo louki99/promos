@@ -25,4 +25,16 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     @Query("SELECT i FROM Inventory i WHERE i.store.id = :storeId AND i.quantity > 0")
     List<Inventory> findAvailableInventoryByStore(@Param("storeId") Long storeId);
+
+    @Query("SELECT i FROM Inventory i WHERE i.store.id = :storeId AND i.quantity <= i.product.minStockLevel")
+    List<Inventory> findLowStockByStore(@Param("storeId") Long storeId);
+
+    @Query("SELECT p.name, i.quantity, p.minStockLevel FROM Inventory i JOIN i.product p WHERE i.store.id = :storeId AND i.quantity <= p.minStockLevel")
+    List<Object[]> findLowStockProducts(@Param("storeId") Long storeId);
+
+    @Query("SELECT p.name, i.quantity FROM Inventory i JOIN i.product p WHERE i.store.id = :storeId AND i.quantity = 0")
+    List<Object[]> findOutOfStockProducts(@Param("storeId") Long storeId);
+
+    @Query("SELECT p.name, i.quantity, i.lastUpdated FROM Inventory i JOIN i.product p WHERE i.store.id = :storeId AND i.quantity > 0 ORDER BY i.lastUpdated ASC")
+    List<Object[]> findSlowMovingProducts(@Param("storeId") Long storeId);
 }

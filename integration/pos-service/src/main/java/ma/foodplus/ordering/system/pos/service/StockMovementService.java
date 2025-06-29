@@ -37,6 +37,21 @@ public class StockMovementService {
     }
 
     public StockMovement createStockMovement(StockMovement stockMovement) {
+        stockMovement.setCreatedAt(java.time.LocalDateTime.now());
+        return stockMovementRepository.save(stockMovement);
+    }
+
+    public StockMovement updateStockMovement(Long id, StockMovement stockMovementDetails) {
+        StockMovement stockMovement = stockMovementRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Stock movement not found"));
+        
+        stockMovement.setProduct(stockMovementDetails.getProduct());
+        stockMovement.setStore(stockMovementDetails.getStore());
+        stockMovement.setQuantity(stockMovementDetails.getQuantity());
+        stockMovement.setMovementType(stockMovementDetails.getMovementType());
+        stockMovement.setReference(stockMovementDetails.getReference());
+        stockMovement.setPerformedBy(stockMovementDetails.getPerformedBy());
+        
         return stockMovementRepository.save(stockMovement);
     }
 
